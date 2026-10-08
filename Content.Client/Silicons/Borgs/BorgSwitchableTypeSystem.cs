@@ -1,4 +1,6 @@
-﻿using Content.Shared.Movement.Components;
+﻿// Fish-edit
+using System.Numerics;
+using Content.Shared.Movement.Components;
 using Content.Shared.Silicons.Borgs;
 using Content.Shared.Silicons.Borgs.Components;
 using Robust.Client.GameObjects;
@@ -40,6 +42,23 @@ public sealed partial class BorgSwitchableTypeSystem : SharedBorgSwitchableTypeS
     {
         if (TryComp(entity, out SpriteComponent? sprite))
         {
+            // Fish-Start
+            // Mk2 рисуется из отдельного холста (_Lust), а RSI слоёв у живой сущности
+            // остался от родительского chassis. Меняем его до выставления state, иначе
+            // state вроде sec_mk2* будет искаться в vanilla-RSI и даст ERRO.
+            if (prototype.SpriteRsiPath is { } rsiPath)
+            {
+                var layerOffset = prototype.SpriteLayerOffset ?? Vector2.Zero;
+
+                _sprite.LayerSetRsi((entity, sprite), BorgVisualLayers.Body, rsiPath);
+                _sprite.LayerSetOffset((entity, sprite), BorgVisualLayers.Body, layerOffset);
+                _sprite.LayerSetRsi((entity, sprite), BorgVisualLayers.Light, rsiPath);
+                _sprite.LayerSetOffset((entity, sprite), BorgVisualLayers.Light, layerOffset);
+                _sprite.LayerSetRsi((entity, sprite), BorgVisualLayers.LightStatus, rsiPath);
+                _sprite.LayerSetOffset((entity, sprite), BorgVisualLayers.LightStatus, layerOffset);
+            }
+            // Fish-End
+
             _sprite.LayerSetRsiState((entity, sprite), BorgVisualLayers.Body, prototype.SpriteBodyState);
             _sprite.LayerSetRsiState((entity, sprite), BorgVisualLayers.LightStatus, prototype.SpriteToggleLightState);
         }
