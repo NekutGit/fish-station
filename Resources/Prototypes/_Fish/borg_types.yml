@@ -16,7 +16,7 @@
   inventoryTemplateId: borgShortMk2
   # Mk2 рисуется с холста _Lust вместо Mobs/Silicon/chassis.rsi, со смещением 0,0.5.
   spriteRsiPath: _Lust/Mobs/Silicon/chassis.rsi
-  spriteLayerOffset: 0,0.5
+  spriteOffset: 0,0.5
 
 - type: borgType
   id: engineeringMk2
@@ -26,7 +26,7 @@
   # Fish: шаблон с belt-слотом (обычные борги остаются на borgShort/borgTall/borgDutch).
   inventoryTemplateId: borgShortMk2
   spriteRsiPath: _Lust/Mobs/Silicon/chassis.rsi
-  spriteLayerOffset: 0,0.5
+  spriteOffset: 0,0.5
 
 - type: borgType
   id: miningMk2
@@ -39,7 +39,7 @@
   # чтобы не ловить State not found при движении.
   spriteBodyMovementState: miner
   spriteRsiPath: _Lust/Mobs/Silicon/chassis.rsi
-  spriteLayerOffset: 0,0.5
+  spriteOffset: 0,0.5
 
 - type: borgType
   id: janitorMk2
@@ -50,7 +50,7 @@
   inventoryTemplateId: borgShortMk2
   spriteBodyMovementState: janitor
   spriteRsiPath: _Lust/Mobs/Silicon/chassis.rsi
-  spriteLayerOffset: 0,0.5
+  spriteOffset: 0,0.5
 
 - type: borgType
   id: medicalMk2
@@ -61,7 +61,7 @@
   inventoryTemplateId: borgDutchMk2
   spriteBodyMovementState: medical
   spriteRsiPath: _Lust/Mobs/Silicon/chassis.rsi
-  spriteLayerOffset: 0,0.5
+  spriteOffset: 0,0.5
 
 - type: borgType
   id: serviceMk2
@@ -71,7 +71,7 @@
   # Fish: шаблон с belt-слотом (обычные борги остаются на borgShort/borgTall/borgDutch).
   inventoryTemplateId: borgTallMk2
   spriteRsiPath: _Lust/Mobs/Silicon/chassis.rsi
-  spriteLayerOffset: 0,0.5
+  spriteOffset: 0,0.5
 
 - type: borgType
   id: peaceMk2
@@ -81,7 +81,7 @@
   # Fish: шаблон с belt-слотом (обычные борги остаются на borgShort/borgTall/borgDutch).
   inventoryTemplateId: borgTallMk2
   spriteRsiPath: _Lust/Mobs/Silicon/chassis.rsi
-  spriteLayerOffset: 0,0.5
+  spriteOffset: 0,0.5
 
 - type: borgType
   id: clownMk2
@@ -91,7 +91,7 @@
   # Fish: шаблон с belt-слотом (обычные борги остаются на borgShort/borgTall/borgDutch).
   inventoryTemplateId: borgTallMk2
   spriteRsiPath: _Lust/Mobs/Silicon/chassis.rsi
-  spriteLayerOffset: 0,0.5
+  spriteOffset: 0,0.5
 
 - type: borgType
   id: securityMk2
@@ -105,4 +105,4 @@
   spriteNoMindState: sec_mk2_e_r
   spriteToggleLightState: sec_mk2_l
   spriteRsiPath: _Lust/Mobs/Silicon/chassis.rsi
-  spriteLayerOffset: 0,0.5
+  spriteOffset: 0,0.5

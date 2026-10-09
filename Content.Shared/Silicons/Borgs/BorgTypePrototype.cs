@@ -170,9 +170,11 @@ public sealed partial class BorgTypePrototype : IPrototype, IInheritingPrototype
     /// <summary>
     /// Смещение слоёв спрайта в тайлах. <c>null</c> — смещение не трогаем.
     /// Для _Lust (холст 32x64 против vanilla 32x32) нужно 0,0.5, иначе борг висит на полтайла ниже.
+    /// Вешается на корень SpriteComponent, а не на отдельные слои: так runtime-слои
+    /// предметов (in-hand, надетая экипировка) наследуют сдвиг и едут вместе с телом.
     /// </summary>
     [DataField]
-    public Vector2? SpriteLayerOffset;
+    public Vector2? SpriteOffset;
     // Fish-End
 
     //

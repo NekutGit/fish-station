@@ -1,5 +1,6 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Numerics;
 using Content.Client.DisplacementMap;
 using Content.Client.Examine;
 using Content.Client.Strip;
@@ -21,6 +22,7 @@ using Robust.Shared.Player;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Timing;
 using Robust.Shared.Utility;
+using static Robust.Client.GameObjects.SpriteComponent;
 
 namespace Content.Client.Hands.Systems
 {
@@ -336,6 +338,13 @@ namespace Content.Client.Hands.Systems
                 }
 
                 _sprite.LayerSetData((ent, sprite), index, layerData);
+
+                // Fish: у боргов со смещённым корнем спрайта (SpriteOffset) предметы в руках
+                // поднимаются вместе с телом и оказываются чуть выше нужного — компенсируем на 0.25.
+                if (sprite.Offset != Vector2.Zero && sprite[index] is Layer layer)
+                {
+                    _sprite.LayerSetOffset(layer, layer.Offset + new Vector2(0f, -0.25f));
+                }
 
                 // Add displacement maps
                 var displacement = hand.Value.Location switch

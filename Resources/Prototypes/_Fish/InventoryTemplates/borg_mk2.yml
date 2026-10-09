@@ -5,8 +5,9 @@
 # IInheritingPrototype (см. Content.Shared/Inventory/InventoryTemplatePrototype.cs),
 # поэтому parent: у inventoryTemplate не работает.
 #
-# offset у head перенесён как есть — он отвечает за позицию шлема на корпусе,
-# а у Mk2 борг рисуется с холста _Lust (смещение 0,0.5 задаётся на уровне Sprite).
+# offset у head перенесён как у ванильных боргов — шлемам правильно ехать вместе с корнем
+# спрайта (_Lust, SpriteOffset 0,0.5 на уровне Sprite). belt опущен на 0.25 (подбор).
+# armor спрятан на 5,5, его не трогаем.
 #
 # Применяется в двух местах:
 #   - спавн: BorgTypePrototype.InventoryTemplateId (Content.Server/.../BorgSwitchableTypeSystem.cs, SelectBorgModule);
@@ -45,6 +46,7 @@
     uiWindowPos: 2,0
     strippingWindowPos: 0,2
     displayName: Belt
+    offset: 0,-0.25
 
 - type: inventoryTemplate
   id: borgTallMk2
@@ -78,6 +80,7 @@
     uiWindowPos: 2,0
     strippingWindowPos: 0,2
     displayName: Belt
+    offset: 0,-0.25
 
 # taller than tall
 - type: inventoryTemplate
@@ -112,3 +115,4 @@
     uiWindowPos: 2,0
     strippingWindowPos: 0,2
     displayName: Belt
+    offset: 0,-0.25

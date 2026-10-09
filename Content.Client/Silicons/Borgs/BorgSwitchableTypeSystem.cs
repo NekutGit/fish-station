@@ -48,15 +48,15 @@ public sealed partial class BorgSwitchableTypeSystem : SharedBorgSwitchableTypeS
             // state вроде sec_mk2* будет искаться в vanilla-RSI и даст ERRO.
             if (prototype.SpriteRsiPath is { } rsiPath)
             {
-                var layerOffset = prototype.SpriteLayerOffset ?? Vector2.Zero;
-
                 _sprite.LayerSetRsi((entity, sprite), BorgVisualLayers.Body, rsiPath);
-                _sprite.LayerSetOffset((entity, sprite), BorgVisualLayers.Body, layerOffset);
                 _sprite.LayerSetRsi((entity, sprite), BorgVisualLayers.Light, rsiPath);
-                _sprite.LayerSetOffset((entity, sprite), BorgVisualLayers.Light, layerOffset);
                 _sprite.LayerSetRsi((entity, sprite), BorgVisualLayers.LightStatus, rsiPath);
-                _sprite.LayerSetOffset((entity, sprite), BorgVisualLayers.LightStatus, layerOffset);
             }
+
+            // Сдвиг уходит на корень спрайта: так runtime-слои предметов (in-hand,
+            // надетая экипировка) наследуют сдвиг и едут вместе с телом, а не отстают.
+            // Присваиваем безусловно, чтобы сбросить сдвиг у типов без него.
+            _sprite.SetOffset((entity.Owner, sprite), prototype.SpriteOffset ?? Vector2.Zero);
             // Fish-End
 
             _sprite.LayerSetRsiState((entity, sprite), BorgVisualLayers.Body, prototype.SpriteBodyState);
