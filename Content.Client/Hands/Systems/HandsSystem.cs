@@ -63,6 +63,11 @@ namespace Content.Client.Hands.Systems
             if (args.Current is not HandsComponentState state)
                 return;
 
+            // Fish: запоминаем смену ShowInHands, чтобы после применения state
+            // перерисовать in-hand слои уже занятых рук (например, апгрейд борга на Mk2).
+            var showInHandsChanged = state.ShowInHands != ent.Comp.ShowInHands;
+            ent.Comp.ShowInHands = state.ShowInHands;
+
             var newHands = state.Hands.Keys.Except(ent.Comp.Hands.Keys); // hands that were added between states
             var oldHands = ent.Comp.Hands.Keys.Except(state.Hands.Keys); // hands that were removed between states
 
@@ -78,6 +83,17 @@ namespace Content.Client.Hands.Systems
             ent.Comp.SortedHands = new (state.SortedHands);
 
             SetActiveHand(ent.AsNullable(), state.ActiveHandId);
+
+            // Fish: смена флага сама по себе не вызывает UpdateHandVisuals —
+            // обновляем слои всех рук, в которых уже лежат предметы.
+            if (showInHandsChanged && TryComp(ent, out SpriteComponent? sprite))
+            {
+                foreach (var handId in ent.Comp.SortedHands)
+                {
+                    if (GetHeldItem((ent, ent.Comp), handId) is { } held)
+                        UpdateHandVisuals((ent, ent.Comp, sprite), held, handId);
+                }
+            }
 
             _stripSys.UpdateUi(ent);
         }
