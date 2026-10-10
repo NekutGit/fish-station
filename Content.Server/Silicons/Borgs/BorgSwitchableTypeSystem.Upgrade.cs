@@ -40,37 +40,113 @@ public sealed partial class BorgSwitchableTypeSystem
         SubscribeLocalEvent<BorgUpgradeModuleComponent, BorgUpgradeDoAfterEvent>(OnUpgradeDoAfter);
     }
 
+    // Fish-Start
+    // Поток взаимидействия разбит по схеме OnEvent -> Try -> Can -> Do:
+    // обработчики событий тонкие, условия — в Can*, побочные эффекты — в Do*.
+
     private void OnUpgradeInteract(EntityUid uid, BorgUpgradeModuleComponent comp, AfterInteractEvent args)
     {
         if (args.Handled || !args.CanReach || args.Target is not { } target)
             return;
 
-        if (!TryComp<BorgSwitchableTypeComponent>(target, out var switchable))
+        if (!HasComp<BorgSwitchableTypeComponent>(target))
             return; // Не борг — интеракцию отдаём дальше.
 
+        // Помечаем событие обработанным сразу, как только цель опознана как борг:
+        // неудачные проверки (уже Mk2, идёт другой апгрейд) показывают popup
+        // и не должны прокидывать взаимодействие дальше.
         args.Handled = true;
 
-        if (!TryGetUpgradeTarget(switchable.SelectedBorgType, out var upgradeTarget))
+        TryStartUpgrade((uid, comp), target, args.User);
+    }
+
+    private void OnUpgradeDoAfter(EntityUid uid, BorgUpgradeModuleComponent comp, BorgUpgradeDoAfterEvent args)
+    {
+        // Звук глушим первым, до любой проверки — иначе он останется играть после отмены.
+        _ambientSoundSystem.SetAmbience(uid, false);
+
+        // Очистка состояния активного взаимодействия — независимо от исхода DoAfter:
+        // и при отмене, и при завершении следующий апгрейд должен видеть null.
+        if (args.Target is { } currentTarget
+            && TryComp<BorgSwitchableTypeComponent>(currentTarget, out var currentSwitchable))
+        {
+            currentSwitchable.ActiveUpgradeDoAfter = null;
+        }
+
+        if (args.Cancelled || args.Handled || args.Target is not { } target)
+            return;
+
+        args.Handled = TryFinishUpgrade((uid, comp), target, args.User);
+    }
+
+    /// <summary>
+    /// Пытается запустить апгрейд борга до Mk2: проверяет условия через
+    /// <see cref="CanStartUpgrade"/> и при успехе запускает DoAfter через <see cref="DoStartUpgrade"/>.
+    /// </summary>
+    /// <param name="item">Предмет-апгрейд.</param>
+    /// <param name="target">Цель-борг.</param>
+    /// <param name="user">Использующий игрок.</param>
+    /// <returns>True, если DoAfter запущен.</returns>
+    public bool TryStartUpgrade(Entity<BorgUpgradeModuleComponent> item, EntityUid target, EntityUid user)
+    {
+        if (!CanStartUpgrade(item, target, user))
+            return false;
+
+        return DoStartUpgrade(item, target, user);
+    }
+
+    /// <summary>
+    /// Проверяет, можно ли начать апгрейд <paramref name="target"/> предметом <paramref name="item"/>:
+    /// у цели выбран обычный (не Mk2) тип и по ней не запущен другой апгрейд.
+    /// Чистая проверка без побочных эффектов.
+    /// </summary>
+    /// <param name="quiet">Не показывать popup-сообщения игроку.</param>
+    public bool CanStartUpgrade(
+        Entity<BorgUpgradeModuleComponent> item,
+        EntityUid target,
+        EntityUid user,
+        bool quiet = false)
+    {
+        if (!TryComp<BorgSwitchableTypeComponent>(target, out var switchable))
+            return false;
+
+        if (!TryGetUpgradeTarget(switchable.SelectedBorgType, out _))
         {
             // Ещё не выбран тип, либо цель уже Mk2 (повторный апгрейд запрещён).
-            _upgradePopup.PopupClient(
-                Loc.GetString(switchable.SelectedBorgType == null
-                    ? "borg-upgrade-invalid-target"
-                    : "borg-upgrade-already-mk2"),
-                target, args.User);
-            return;
+            if (!quiet)
+            {
+                _upgradePopup.PopupClient(
+                    Loc.GetString(switchable.SelectedBorgType == null
+                        ? "borg-upgrade-invalid-target"
+                        : "borg-upgrade-already-mk2"),
+                    target, user);
+            }
+
+            return false;
         }
 
         // Дедупликация DoAfter работает per-user, поэтому от второго игрока с отдельным
         // предметом спасает только флаг на самой цели.
         if (_doAfter.IsRunning(switchable.ActiveUpgradeDoAfter))
         {
-            _upgradePopup.PopupClient(Loc.GetString("borg-upgrade-in-progress"), target, args.User);
-            return;
+            if (!quiet)
+                _upgradePopup.PopupClient(Loc.GetString("borg-upgrade-in-progress"), target, user);
+
+            return false;
         }
 
-        var doAfterArgs = new DoAfterArgs(EntityManager, args.User, comp.Delay,
-            new BorgUpgradeDoAfterEvent(), uid, target: target, used: uid)
+        return true;
+    }
+
+    /// <summary>
+    /// Запускает DoAfter апгрейда, записывает активное взаимодействие в
+    /// <see cref="BorgSwitchableTypeComponent.ActiveUpgradeDoAfter"/> и включает звук предмета.
+    /// </summary>
+    /// <returns>True, если DoAfter реально запущен.</returns>
+    private bool DoStartUpgrade(Entity<BorgUpgradeModuleComponent> item, EntityUid target, EntityUid user)
+    {
+        var doAfterArgs = new DoAfterArgs(EntityManager, user, item.Comp.Delay,
+            new BorgUpgradeDoAfterEvent(), item.Owner, target: target, used: item.Owner)
         {
             NeedHand = true,
             BreakOnDamage = true,
@@ -80,36 +156,67 @@ public sealed partial class BorgSwitchableTypeSystem
         };
 
         if (!_doAfter.TryStartDoAfter(doAfterArgs, out var doAfterId))
-            return;
-
-        switchable.ActiveUpgradeDoAfter = doAfterId;
-        _ambientSoundSystem.SetAmbience(uid, true);
-    }
-
-    private void OnUpgradeDoAfter(EntityUid uid, BorgUpgradeModuleComponent comp, BorgUpgradeDoAfterEvent args)
-    {
-        // Звук глушим первым, до любой проверки — иначе он останется играть после отмены.
-        _ambientSoundSystem.SetAmbience(uid, false);
-
-        if (args.Target is not { } target)
-            return;
+            return false;
 
         if (TryComp<BorgSwitchableTypeComponent>(target, out var switchable))
-            switchable.ActiveUpgradeDoAfter = null;
+            switchable.ActiveUpgradeDoAfter = doAfterId;
 
-        if (args.Cancelled || args.Handled || switchable == null)
-            return;
+        _ambientSoundSystem.SetAmbience(item.Owner, true);
+        return true;
+    }
+
+    /// <summary>
+    /// Пытается завершить апгрейд после DoAfter: повторно проверяет актуальные условия через
+    /// <see cref="CanFinishUpgrade"/> и при успехе выполняет апгрейд через <see cref="DoFinishUpgrade"/>.
+    /// </summary>
+    /// <param name="item">Предмет-апгрейд, завершивший DoAfter.</param>
+    /// <param name="target">Цель-борг.</param>
+    /// <param name="user">Инициатор апгрейда.</param>
+    /// <returns>True, если апгрейд выполнен.</returns>
+    public bool TryFinishUpgrade(Entity<BorgUpgradeModuleComponent> item, EntityUid target, EntityUid user)
+    {
+        if (!CanFinishUpgrade(target))
+            return false;
+
+        DoFinishUpgrade(item, target, user);
+        return true;
+    }
+
+    /// <summary>
+    /// Повторная проверка условий апгрейда на момент завершения DoAfter: цель могла быть
+    /// удалена, сменить состояние или уже стать Mk2, пока DoAfter шёл.
+    /// Чистая проверка без побочных эффектов.
+    /// </summary>
+    public bool CanFinishUpgrade(EntityUid target)
+    {
+        if (!TryComp<BorgSwitchableTypeComponent>(target, out var switchable))
+            return false;
 
         // Повторная проверка на случай гонки: цель могла стать Mk2, пока шёл DoAfter.
-        if (!TryGetUpgradeTarget(switchable.SelectedBorgType, out var upgradeTarget))
-            return;
+        return TryGetUpgradeTarget(switchable.SelectedBorgType, out _);
+    }
 
-        UpgradeToMk2((target, switchable), upgradeTarget, args.User, uid);
+    /// <summary>
+    /// Выполняет сам апгрейд: переключает тип, применяет компоненты, руки, инвентарь и броню Mk2
+    /// и расходует предмет-апгрейд.
+    /// </summary>
+    private void DoFinishUpgrade(Entity<BorgUpgradeModuleComponent> item, EntityUid target, EntityUid user)
+    {
+        // Условия уже проверены в CanFinishUpgrade; повторно добираем компонент и цель
+        // только для передачи в UpgradeToMk2.
+        if (!TryComp<BorgSwitchableTypeComponent>(target, out var switchable)
+            || !TryGetUpgradeTarget(switchable.SelectedBorgType, out var upgradeTarget))
+        {
+            return;
+        }
+
+        UpgradeToMk2((target, switchable), upgradeTarget, user, item.Owner);
 
         // Апгрейд успешен — предмет расходуется. При отмене сюда не доходим.
-        QueueDel(uid);
-        args.Handled = true;
+        QueueDel(item.Owner);
     }
+
+    // Fish-End
 
     /// <summary>
     /// Определяет Mk2-вариант для текущего типа борга по конвенции именования: у типа X
