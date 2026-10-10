@@ -245,8 +245,19 @@ public sealed partial class BorgSwitchableTypeSystem
 
     // Fish-Start
     /// <summary>
+    /// Шасси, которым дополнительная броня Mk2 положена и при апгрейде, и при спавне:
+    /// только СБ и миротворец. Остальные варианты Mk2 остаются на штатной BorgArmorSilicon.
+    /// </summary>
+    private static readonly string[] Mk2ArmorUpgradeWhitelist =
+    [
+        "BorgChassisSecurityMk2",
+        "BorgChassisPeaceMk2",
+    ];
+
+    /// <summary>
     /// Переводит инвентарь апгрейднутого борга на Mk2-шаблон (в нём есть belt-слот) и
-    /// заменяет BorgArmorSilicon на BorgArmorSiliconMk2.
+    /// заменяет BorgArmorSilicon на BorgArmorSiliconMk2 — но только для шасси из
+    /// <see cref="Mk2ArmorUpgradeWhitelist"/>; остальные остаются на прежней броне.
     /// </summary>
     private void ApplyMk2Inventory(EntityUid uid, BorgTypePrototype prototype)
     {
@@ -264,9 +275,18 @@ public sealed partial class BorgSwitchableTypeSystem
     /// Снимает BorgArmorSilicon и надевает BorgArmorSiliconMk2 — тот же предмет, что получает
     /// свежеспавненный Mk2 через Loadout. Loadout здесь не срабатывает, потому что он
     /// привязан к MapInitEvent, а сущность не пересоздаётся.
+    /// Для шасси вне <see cref="Mk2ArmorUpgradeWhitelist"/> — no-op.
     /// </summary>
     private void ApplyMk2Armor(EntityUid uid, BorgTypePrototype prototype)
     {
+        // Fish: броню Mk2 при апгрейде получают только Security и Peace —
+        // остальные варианты Mk2 остаются на штатной BorgArmorSilicon.
+        // Сравниваем строки (.Id): EntProtoId и string конвертируются друг в друга,
+        // из-за чего Array.IndexOf выбрал бы не-generic перегрузку (Array, object)
+        // и сравнивал бы строку с бокснутым EntProtoId (всегда false).
+        if (Array.IndexOf(Mk2ArmorUpgradeWhitelist, prototype.DummyPrototype.Id) < 0)
+            return;
+
         if (!TryGetMk2Armor(prototype, out var armorId))
             return;
 

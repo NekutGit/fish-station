@@ -33,9 +33,9 @@
       300: Dead
   - type: PowerCellDraw
     drawRate: 0.5
-  # Fish: броня Mk2 вместо BorgArmorSiliconLoadout из BaseBorgChassisNT.
+  # Fish: броня Mk2 при апгрейде запрещена — оставляем штатную BorgArmorSiliconLoadout из BaseBorgChassisNT.
   - type: Loadout
-    prototypes: [ BorgArmorSiliconLoadoutMk2 ]
+    prototypes: [ BorgArmorSiliconLoadout ]
   # Fish: AI видит Mk2 на 7 тайлов вместо 3 (стандарт для всех боргов).
   - type: StationAiVision
     range: 7
@@ -90,9 +90,9 @@
       300: Dead
   - type: PowerCellDraw
     drawRate: 0.5
-  # Fish: броня Mk2 вместо BorgArmorSiliconLoadout из BaseBorgChassisNT.
+  # Fish: броня Mk2 при апгрейде запрещена — оставляем штатную BorgArmorSiliconLoadout из BaseBorgChassisNT.
   - type: Loadout
-    prototypes: [ BorgArmorSiliconLoadoutMk2 ]
+    prototypes: [ BorgArmorSiliconLoadout ]
   # Fish: AI видит Mk2 на 7 тайлов вместо 3 (стандарт для всех боргов).
   - type: StationAiVision
     range: 7
@@ -147,9 +147,9 @@
       300: Dead
   - type: PowerCellDraw
     drawRate: 0.5
-  # Fish: броня Mk2 вместо BorgArmorSiliconLoadout из BaseBorgChassisNT.
+  # Fish: броня Mk2 при апгрейде запрещена — оставляем штатную BorgArmorSiliconLoadout из BaseBorgChassisNT.
   - type: Loadout
-    prototypes: [ BorgArmorSiliconLoadoutMk2 ]
+    prototypes: [ BorgArmorSiliconLoadout ]
   # Fish: AI видит Mk2 на 7 тайлов вместо 3 (стандарт для всех боргов).
   - type: StationAiVision
     range: 7
@@ -204,9 +204,9 @@
       300: Dead
   - type: PowerCellDraw
     drawRate: 0.5
-  # Fish: броня Mk2 вместо BorgArmorSiliconLoadout из BaseBorgChassisNT.
+  # Fish: броня Mk2 при апгрейде запрещена — оставляем штатную BorgArmorSiliconLoadout из BaseBorgChassisNT.
   - type: Loadout
-    prototypes: [ BorgArmorSiliconLoadoutMk2 ]
+    prototypes: [ BorgArmorSiliconLoadout ]
   # Fish: AI видит Mk2 на 7 тайлов вместо 3 (стандарт для всех боргов).
   - type: StationAiVision
     range: 7
@@ -261,9 +261,9 @@
       300: Dead
   - type: PowerCellDraw
     drawRate: 0.5
-  # Fish: броня Mk2 вместо BorgArmorSiliconLoadout из BaseBorgChassisNT.
+  # Fish: броня Mk2 при апгрейде запрещена — оставляем штатную BorgArmorSiliconLoadout из BaseBorgChassisNT.
   - type: Loadout
-    prototypes: [ BorgArmorSiliconLoadoutMk2 ]
+    prototypes: [ BorgArmorSiliconLoadout ]
   # Fish: AI видит Mk2 на 7 тайлов вместо 3 (стандарт для всех боргов).
   - type: StationAiVision
     range: 7
@@ -453,9 +453,9 @@
       300: Dead
   - type: PowerCellDraw
     drawRate: 0.5
-  # Fish: броня Mk2 вместо BorgArmorSiliconLoadout из BaseBorgChassisNT.
+  # Fish: броня Mk2 при апгрейде запрещена — оставляем штатную BorgArmorSiliconLoadout из BaseBorgChassisNT.
   - type: Loadout
-    prototypes: [ BorgArmorSiliconLoadoutMk2 ]
+    prototypes: [ BorgArmorSiliconLoadout ]
   # Fish: AI видит Mk2 на 7 тайлов вместо 3 (стандарт для всех боргов).
   - type: StationAiVision
     range: 7
@@ -510,7 +510,7 @@
       300: Dead
   - type: PowerCellDraw
     drawRate: 0.5
-  # Fish: броня Mk2 вместо BorgArmorSiliconLoadout из BaseBorgChassisNT.
+  # Fish: броня Mk2 вместо BorgArmorSiliconLoadout из BaseBorgChassisNT (положена только Security/Peace).
   - type: Loadout
     prototypes: [ BorgArmorSiliconLoadoutMk2 ]
   # Fish: AI видит Mk2 на 7 тайлов вместо 3 (стандарт для всех боргов).
@@ -567,9 +567,9 @@
       300: Dead
   - type: PowerCellDraw
     drawRate: 0.5
-  # Fish: броня Mk2 вместо BorgArmorSiliconLoadout из BaseBorgChassisNT.
+  # Fish: броня Mk2 при апгрейде запрещена — оставляем штатную BorgArmorSiliconLoadout из BaseBorgChassisNT.
   - type: Loadout
-    prototypes: [ BorgArmorSiliconLoadoutMk2 ]
+    prototypes: [ BorgArmorSiliconLoadout ]
   # Fish: AI видит Mk2 на 7 тайлов вместо 3 (стандарт для всех боргов).
   - type: StationAiVision
     range: 7
@@ -624,7 +624,7 @@
       300: Dead
   - type: PowerCellDraw
     drawRate: 0.5
-  # Fish: броня Mk2 вместо BorgArmorSiliconLoadout из BaseBorgChassisNT.
+  # Fish: броня Mk2 вместо BorgArmorSiliconLoadout из BaseBorgChassisNT (положена только Security/Peace).
   - type: Loadout
     prototypes: [ BorgArmorSiliconLoadoutMk2 ]
   # Fish: AI видит Mk2 на 7 тайлов вместо 3 (стандарт для всех боргов).
