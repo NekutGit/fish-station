@@ -802,3 +802,10 @@
     message: Не смотря на великую лень Феликса скинуть адекватно спрайты, был подготовлен и вырезан спрайт для иконок костюма джагаклоуна для ивента.
   id: 80
   url: https://github.com/makura-games/fish-station/pull/487
+- author: TiFeRi
+  time: '2026-10-10T07:53:48.0000000+00:00'
+  changes:
+  - type: Tweak
+    message: Различные обновления и улучшения шаттлов.
+  id: 81
+  url: https://github.com/makura-games/fish-station/pull/486
