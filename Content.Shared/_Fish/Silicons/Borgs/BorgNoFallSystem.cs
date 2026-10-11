@@ -2,6 +2,7 @@ using Content.Shared._Fish.Silicons.Borgs.Components;
 using Content.Shared.Light;
 using Content.Shared.Light.Components;
 using Content.Shared.Mobs;
+using Content.Shared.Mobs.Systems;
 using Content.Shared.Standing;
 
 namespace Content.Shared._Fish.Silicons.Borgs;
@@ -14,6 +15,7 @@ namespace Content.Shared._Fish.Silicons.Borgs;
 public sealed partial class BorgNoFallSystem : EntitySystem
 {
     [Dependency] private SharedHandheldLightSystem _handheldLight = default!;
+    [Dependency] private MobStateSystem _mobState = default!;
 
     public override void Initialize()
     {
@@ -23,9 +25,16 @@ public sealed partial class BorgNoFallSystem : EntitySystem
         SubscribeLocalEvent<BorgNoFallComponent, MobStateChangedEvent>(OnMobStateChanged);
     }
 
+    // DownAttemptEvent — класс (CancellableEntityEventArgs), не struct.
+    // Поднимается через RaiseLocalEvent(uid, msg, false) без ref, поэтому
+    // сигнатура (EntityUid, Comp, Event) — Entity<> оверлоад требует ref и не подходит.
     private void OnDownAttempt(EntityUid uid, BorgNoFallComponent component, DownAttemptEvent args)
     {
-        // Mk2 — робот, он не опрокидывается на пол при крите.
+        // Отменяем только падение в крите/смерти: живой борг Mk2 должен
+        // опрокидываться штатно (оглушение, гравитация и т.д.).
+        if (!_mobState.IsIncapacitated(uid))
+            return;
+
         args.Cancel();
     }
 

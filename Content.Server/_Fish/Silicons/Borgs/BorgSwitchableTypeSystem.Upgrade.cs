@@ -342,6 +342,8 @@ public sealed partial class BorgSwitchableTypeSystem
         "MobThresholds",
         "PowerCellDraw",
         "FlashImmunity",
+        // Борг не опрокидывается в крит/смерть и гасит фонарь (BorgNoFallSystem).
+        "BorgNoFall",
         // Радиус обзора AI у Mk2 шире (7 вместо 3), значения живут в borg_chassis_mk2.yml.
         "StationAiVision",
     ];
