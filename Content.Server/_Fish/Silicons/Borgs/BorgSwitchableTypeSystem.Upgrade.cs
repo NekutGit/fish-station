@@ -1,6 +1,5 @@
 using Content.Server.Audio;
 using Content.Shared.Administration.Logs;
-// Fish-edit
 using Content.Shared.Clothing.Components;
 using Content.Shared.Database;
 using Content.Shared.DoAfter;
@@ -16,6 +15,7 @@ using Content.Shared.Silicons.Borgs;
 using Content.Shared.Silicons.Borgs.Components;
 using Robust.Shared.Prototypes;
 
+#pragma warning disable IDE0130 // Необходимо поскольку этот partial класс расширяет ванильный тип и должен сохранять исходный namespace несмотря на расположение файла в _Fish.
 namespace Content.Server.Silicons.Borgs;
 
 /// <summary>
@@ -32,6 +32,9 @@ public sealed partial class BorgSwitchableTypeSystem
     [Dependency] private PowerCellSystem _powerCell = default!;
     [Dependency] private SharedHandsSystem _hands = default!;
 
+    /// <summary>
+    /// Подписывает обработчики апгрейда модулем BorgUpgradeModule.
+    /// </summary>
     public override void Initialize()
     {
         base.Initialize();
@@ -40,10 +43,13 @@ public sealed partial class BorgSwitchableTypeSystem
         SubscribeLocalEvent<BorgUpgradeModuleComponent, BorgUpgradeDoAfterEvent>(OnUpgradeDoAfter);
     }
 
-    // Fish-Start
-    // Поток взаимидействия разбит по схеме OnEvent -> Try -> Can -> Do:
+    // Поток взаимодействия разбит по схеме OnEvent -> Try -> Can -> Do:
     // обработчики событий тонкие, условия — в Can*, побочные эффекты — в Do*.
 
+    /// <summary>
+    /// Правый клик апгрейд-модулем по боргу; помечает событие обработанным
+    /// и запускает апгрейд через <see cref="TryStartUpgrade"/>.
+    /// </summary>
     private void OnUpgradeInteract(Entity<BorgUpgradeModuleComponent> ent, ref AfterInteractEvent args)
     {
         if (args.Handled || !args.CanReach || args.Target is not { } target)
@@ -60,6 +66,10 @@ public sealed partial class BorgSwitchableTypeSystem
         TryStartUpgrade(ent, target, args.User);
     }
 
+    /// <summary>
+    /// Завершение DoAfter апгрейда: гасит ambience, чистит активное взаимодействие
+    /// и при успехе выполняет апгрейд через <see cref="TryFinishUpgrade"/>.
+    /// </summary>
     private void OnUpgradeDoAfter(Entity<BorgUpgradeModuleComponent> ent, ref BorgUpgradeDoAfterEvent args)
     {
         // Звук глушим первым, до любой проверки — иначе он останется играть после отмены.
@@ -141,8 +151,10 @@ public sealed partial class BorgSwitchableTypeSystem
     /// <summary>
     /// Запускает DoAfter апгрейда, записывает активное взаимодействие в
     /// <see cref="BorgSwitchableTypeComponent.ActiveUpgradeDoAfter"/> и включает звук предмета.
+    /// При мгновенном завершении (InstantDoAfters) состояние уже обработано синхронным
+    /// событием — запись ID и звук пропускаются.
     /// </summary>
-    /// <returns>True, если DoAfter реально запущен.</returns>
+    /// <returns>True, если DoAfter запущен или завершился мгновенно.</returns>
     private bool DoStartUpgrade(Entity<BorgUpgradeModuleComponent> item, EntityUid target, EntityUid user)
     {
         var doAfterArgs = new DoAfterArgs(EntityManager, user, item.Comp.Delay,
@@ -157,6 +169,15 @@ public sealed partial class BorgSwitchableTypeSystem
 
         if (!_doAfter.TryStartDoAfter(doAfterArgs, out var doAfterId))
             return false;
+
+        // При теге InstantDoAfters (например, admin ghost) TryStartDoAfter поднимает
+        // событие синхронно и не хранит doAfter в DoAfterComponent — к этому моменту
+        // OnUpgradeDoAfter уже очистил состояние (и, возможно, завершил апгрейд с удалением
+        // модуля). Записывать ActiveUpgradeDoAfter и включать ambience в этом случае нельзя:
+        // ID устаревший, а звук остался бы играть у завершённого действия. Для обычного
+        // выполняющегося DoAfter IsRunning true и порядок записи ID/звука не меняется.
+        if (!_doAfter.IsRunning(doAfterId))
+            return true;
 
         if (TryComp<BorgSwitchableTypeComponent>(target, out var switchable))
             switchable.ActiveUpgradeDoAfter = doAfterId;
@@ -215,8 +236,6 @@ public sealed partial class BorgSwitchableTypeSystem
         // Апгрейд успешен — предмет расходуется. При отмене сюда не доходим.
         QueueDel(item.Owner);
     }
-
-    // Fish-End
 
     /// <summary>
     /// Определяет Mk2-вариант для текущего типа борга по конвенции именования: у типа X
@@ -287,7 +306,7 @@ public sealed partial class BorgSwitchableTypeSystem
         _upgradePopup.PopupClient(Loc.GetString("borg-upgrade-complete"), borg.Owner, user);
     }
 
-    // Fish: имена chassis-рук совпадают с руками в borg_chassis_mk2.yml.
+    // Имена chassis-рук совпадают с руками в borg_chassis_mk2.yml.
     private const string Mk2RightHandId = "hand_right";
     private const string Mk2LeftHandId = "hand_left";
 
@@ -323,7 +342,7 @@ public sealed partial class BorgSwitchableTypeSystem
         "MobThresholds",
         "PowerCellDraw",
         "FlashImmunity",
-        // Fish: радиус обзора AI у Mk2 шире (7 вместо 3), значения живут в borg_chassis_mk2.yml.
+        // Радиус обзора AI у Mk2 шире (7 вместо 3), значения живут в borg_chassis_mk2.yml.
         "StationAiVision",
     ];
 
@@ -359,7 +378,6 @@ public sealed partial class BorgSwitchableTypeSystem
         }
     }
 
-    // Fish-Start
     /// <summary>
     /// Шасси, которым дополнительная броня Mk2 положена и при апгрейде, и при спавне:
     /// только СБ и миротворец. Остальные варианты Mk2 остаются на штатной BorgArmorSilicon.
@@ -395,7 +413,7 @@ public sealed partial class BorgSwitchableTypeSystem
     /// </summary>
     private void ApplyMk2Armor(EntityUid uid, BorgTypePrototype prototype)
     {
-        // Fish: броню Mk2 при апгрейде получают только Security и Peace —
+        // Броню Mk2 при апгрейде получают только Security и Peace —
         // остальные варианты Mk2 остаются на штатной BorgArmorSilicon.
         // Сравниваем строки (.Id): EntProtoId и string конвертируются друг в друга,
         // из-за чего Array.IndexOf выбрал бы не-generic перегрузку (Array, object)
@@ -463,5 +481,4 @@ public sealed partial class BorgSwitchableTypeSystem
         // Защита от опечатки в YAML: Spawn на несуществующий прототип дал бы невалидный EntityUid.
         return Prototypes.TryIndex<EntityPrototype>(armorId, out _);
     }
-    // Fish-End
 }

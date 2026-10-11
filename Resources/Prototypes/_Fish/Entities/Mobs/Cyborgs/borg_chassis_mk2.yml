@@ -5,7 +5,8 @@
   components:
   - type: Sprite
     sprite: _Lust/Mobs/Silicon/chassis.rsi
-    offset: 0,0.5
+    offset: 0,0.4
+    scale: 0.8,0.8
     layers:
     - state: robot
       map: ["enum.BorgVisualLayers.Body", "movement"]
@@ -33,13 +34,13 @@
       300: Dead
   - type: PowerCellDraw
     drawRate: 0.5
-  # Fish: броня Mk2 при апгрейде запрещена — оставляем штатную BorgArmorSiliconLoadout из BaseBorgChassisNT.
+  # Броня Mk2 при апгрейде запрещена — оставляем штатную BorgArmorSiliconLoadout из BaseBorgChassisNT.
   - type: Loadout
     prototypes: [ BorgArmorSiliconLoadout ]
-  # Fish: AI видит Mk2 на 7 тайлов вместо 3 (стандарт для всех боргов).
+  # AI видит Mk2 на 7 тайлов вместо 3 (стандарт для всех боргов).
   - type: StationAiVision
     range: 7
-  # Fish: постоянные chassis-руки только у Mk2 (и риперов); showInHands включает
+  # Постоянные chassis-руки только у Mk2 (и риперов); showInHands включает
   # отображение предметов из этих рук на спрайте. Модульные руки (Functional) не видны.
   - type: Hands
     hands:
@@ -62,7 +63,8 @@
   components:
   - type: Sprite
     sprite: _Lust/Mobs/Silicon/chassis.rsi
-    offset: 0,0.5
+    offset: 0,0.4
+    scale: 0.8,0.8
     layers:
     - state: engineer
       map: ["enum.BorgVisualLayers.Body", "movement"]
@@ -119,7 +121,8 @@
   components:
   - type: Sprite
     sprite: _Lust/Mobs/Silicon/chassis.rsi
-    offset: 0,0.5
+    offset: 0,0.4
+    scale: 0.8,0.8
     layers:
     - state: miner
       map: ["enum.BorgVisualLayers.Body", "movement"]
@@ -176,7 +179,8 @@
   components:
   - type: Sprite
     sprite: _Lust/Mobs/Silicon/chassis.rsi
-    offset: 0,0.5
+    offset: 0,0.4
+    scale: 0.8,0.8
     layers:
     - state: janitor
       map: ["enum.BorgVisualLayers.Body", "movement"]
@@ -233,7 +237,8 @@
   components:
   - type: Sprite
     sprite: _Lust/Mobs/Silicon/chassis.rsi
-    offset: 0,0.5
+    offset: 0,0.4
+    scale: 0.8,0.8
     layers:
     - state: medical
       map: ["enum.BorgVisualLayers.Body", "movement"]
@@ -425,7 +430,8 @@
   components:
   - type: Sprite
     sprite: _Lust/Mobs/Silicon/chassis.rsi
-    offset: 0,0.5
+    offset: 0,0.4
+    scale: 0.8,0.8
     layers:
     - state: service
       map: ["enum.BorgVisualLayers.Body", "movement"]
@@ -482,7 +488,8 @@
   components:
   - type: Sprite
     sprite: _Lust/Mobs/Silicon/chassis.rsi
-    offset: 0,0.5
+    offset: 0,0.4
+    scale: 0.8,0.8
     layers:
     - state: peace
       map: ["enum.BorgVisualLayers.Body", "movement"]
@@ -539,7 +546,8 @@
   components:
   - type: Sprite
     sprite: _Lust/Mobs/Silicon/chassis.rsi
-    offset: 0,0.5
+    offset: 0,0.4
+    scale: 0.8,0.8
     layers:
     - state: clown
       map: ["enum.BorgVisualLayers.Body", "movement"]
@@ -596,7 +604,8 @@
   components:
   - type: Sprite
     sprite: _Lust/Mobs/Silicon/chassis.rsi
-    offset: 0,0.5
+    offset: 0,0.4
+    scale: 0.8,0.8
     layers:
     - state: sec_mk2
       map: ["enum.BorgVisualLayers.Body", "movement"]

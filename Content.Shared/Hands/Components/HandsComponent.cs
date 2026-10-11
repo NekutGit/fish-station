@@ -180,6 +180,9 @@ public sealed class HandsComponentState : ComponentState
     // рантайме (например, при апгрейде борга на Mk2), поэтому поле реплицируется.
     public readonly bool ShowInHands;
 
+    /// <summary>
+    /// Fish: включает <see cref="ShowInHands"/> в состояние — сервер может менять его в рантайме.
+    /// </summary>
     public HandsComponentState(HandsComponent handComp)
     {
         // cloning lists because of test networking.

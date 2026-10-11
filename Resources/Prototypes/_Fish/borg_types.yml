@@ -14,9 +14,12 @@
   dummyPrototype: FishBorgChassisGenericMk2
   # Fish: шаблон с belt-слотом (обычные борги остаются на borgShort/borgTall/borgDutch).
   inventoryTemplateId: FishBorgShortMk2
-  # Mk2 рисуется с холста _Lust вместо Mobs/Silicon/chassis.rsi, со смещением 0,0.5.
+  # Mk2 рисуется с холста _Lust вместо Mobs/Silicon/chassis.rsi: масштаб 0.8
+  # (тело крупнее vanilla-пропорций) и смещение 0,0.4 (= 0,0.5 × 0.8,
+  # т.к. корневой Offset не масштабируется Scale).
   spriteRsiPath: _Lust/Mobs/Silicon/chassis.rsi
-  spriteOffset: 0,0.5
+  spriteScale: 0.8
+  spriteOffset: 0,0.4
 
 - type: borgType
   id: FishEngineeringMk2
@@ -26,7 +29,8 @@
   # Fish: шаблон с belt-слотом (обычные борги остаются на borgShort/borgTall/borgDutch).
   inventoryTemplateId: FishBorgShortMk2
   spriteRsiPath: _Lust/Mobs/Silicon/chassis.rsi
-  spriteOffset: 0,0.5
+  spriteScale: 0.8
+  spriteOffset: 0,0.4
 
 - type: borgType
   id: FishMiningMk2
@@ -39,7 +43,8 @@
   # чтобы не ловить State not found при движении.
   spriteBodyMovementState: miner
   spriteRsiPath: _Lust/Mobs/Silicon/chassis.rsi
-  spriteOffset: 0,0.5
+  spriteScale: 0.8
+  spriteOffset: 0,0.4
 
 - type: borgType
   id: FishJanitorMk2
@@ -50,7 +55,8 @@
   inventoryTemplateId: FishBorgShortMk2
   spriteBodyMovementState: janitor
   spriteRsiPath: _Lust/Mobs/Silicon/chassis.rsi
-  spriteOffset: 0,0.5
+  spriteScale: 0.8
+  spriteOffset: 0,0.4
 
 - type: borgType
   id: FishMedicalMk2
@@ -61,7 +67,8 @@
   inventoryTemplateId: FishBorgDutchMk2
   spriteBodyMovementState: medical
   spriteRsiPath: _Lust/Mobs/Silicon/chassis.rsi
-  spriteOffset: 0,0.5
+  spriteScale: 0.8
+  spriteOffset: 0,0.4
 
 - type: borgType
   id: FishServiceMk2
@@ -71,7 +78,8 @@
   # Fish: шаблон с belt-слотом (обычные борги остаются на borgShort/borgTall/borgDutch).
   inventoryTemplateId: FishBorgTallMk2
   spriteRsiPath: _Lust/Mobs/Silicon/chassis.rsi
-  spriteOffset: 0,0.5
+  spriteScale: 0.8
+  spriteOffset: 0,0.4
 
 - type: borgType
   id: FishPeaceMk2
@@ -81,7 +89,8 @@
   # Fish: шаблон с belt-слотом (обычные борги остаются на borgShort/borgTall/borgDutch).
   inventoryTemplateId: FishBorgTallMk2
   spriteRsiPath: _Lust/Mobs/Silicon/chassis.rsi
-  spriteOffset: 0,0.5
+  spriteScale: 0.8
+  spriteOffset: 0,0.4
 
 - type: borgType
   id: FishClownMk2
@@ -91,7 +100,8 @@
   # Fish: шаблон с belt-слотом (обычные борги остаются на borgShort/borgTall/borgDutch).
   inventoryTemplateId: FishBorgTallMk2
   spriteRsiPath: _Lust/Mobs/Silicon/chassis.rsi
-  spriteOffset: 0,0.5
+  spriteScale: 0.8
+  spriteOffset: 0,0.4
 
 - type: borgType
   id: FishSecurityMk2
@@ -105,4 +115,5 @@
   spriteNoMindState: sec_mk2_e_r
   spriteToggleLightState: sec_mk2_l
   spriteRsiPath: _Lust/Mobs/Silicon/chassis.rsi
-  spriteOffset: 0,0.5
+  spriteScale: 0.8
+  spriteOffset: 0,0.4

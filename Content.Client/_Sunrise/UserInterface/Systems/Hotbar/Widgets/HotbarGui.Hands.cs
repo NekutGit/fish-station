@@ -9,7 +9,7 @@ public sealed partial class HotbarGui
     // Fish: пока у сущности нет обычных (не-Functional) рук — например, у борга без chassis-рук —
     // модульные Functional-руки показываем в главном ряду рук (старое отображение module HUD),
     // а не в отдельном Functional-ряду. Значение пересчитывается при добавлении/удалении рук.
-    public bool FunctionalInMainRow;
+    public bool FunctionalInMainRow;  // Fish-Edit
 
     public void ClearHandButtons()
     {
@@ -17,11 +17,14 @@ public sealed partial class HotbarGui
         FunctionalHandContainer.ClearButtons();
     }
 
+    /// <summary>
+    /// Fish: привязывает HandsComponent к контейнерам и пересчитывает роутинг Functional-рук.
+    /// </summary>
     public void SetPlayerHandsComponent(Entity<HandsComponent> hands)
     {
         HandContainer.PlayerHandsComponent = hands.Comp;
         FunctionalHandContainer.PlayerHandsComponent = hands.Comp;
-        UpdateFunctionalRouting(hands.Comp);
+        UpdateFunctionalRouting(hands.Comp); // Fish-Edit
     }
 
     public bool TryGetHandButton(string handName, out HandButton? handButton)
@@ -63,12 +66,18 @@ public sealed partial class HotbarGui
         }
     }
 
+    /// <summary>
+    /// Fish: контейнер для руки; Functional-руки уходят в отдельный ряд,
+    /// пока они не показываются в главном (<see cref="FunctionalInMainRow"/>).
+    /// </summary>
     private HandsContainer GetHandContainer(HandLocation location)
     {
+        // Fish-Start
         if (location == HandLocation.Functional && !FunctionalInMainRow)
             return FunctionalHandContainer;
 
         return HandContainer;
+        // Fish-End
     }
 
     /// <summary>
@@ -77,6 +86,8 @@ public sealed partial class HotbarGui
     /// excludeHandName нужен из-за порядка событий: OnPlayerRemoveHand поднимается до
     /// удаления руки из компонента, поэтому исходящая рука исключается из проверки.
     /// </summary>
+
+    // Fish-Start
     public void UpdateFunctionalRouting(HandsComponent hands, string? excludeHandName = null)
     {
         // Пока не найдена ни одна не-Functional рука — считаем, что их нет.
@@ -100,7 +111,14 @@ public sealed partial class HotbarGui
         FunctionalInMainRow = mainRow;
         RelocateFunctionalButtons();
     }
+    // Fish-End
 
+    /// <summary>
+    /// Fish: переносит уже добавленные Functional-кнопки в контейнер,
+    /// выбранный <see cref="GetHandContainer"/> после смены роутинга.
+    /// </summary>
+
+    // Fish-Start
     private void RelocateFunctionalButtons()
     {
         var target = GetHandContainer(HandLocation.Functional);
@@ -132,4 +150,5 @@ public sealed partial class HotbarGui
             target.TryAddButton(button);
         }
     }
+    // Fish-End
 }

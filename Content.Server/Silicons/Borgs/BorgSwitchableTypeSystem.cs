@@ -3,7 +3,6 @@ using Content.Server.Radio.EntitySystems;
 using Content.Server.Station.Systems;
 using Content.Server.StationRecords.Systems;
 using Content.Server._Sunrise.Messenger;
-// Fish-edit
 using Content.Shared.Inventory;
 using Content.Shared.Radio;
 using Content.Shared.Roles;
@@ -27,6 +26,9 @@ public sealed partial class BorgSwitchableTypeSystem : SharedBorgSwitchableTypeS
     [Dependency] private MessengerServerSystem _messenger = default!;
     [Dependency] private StationSystem _station = default!;
 
+    /// <summary>
+    /// Fish: применяет выбранный тип — радиоканалы, транспондер, модули и максимум слотов.
+    /// </summary>
     protected override void SelectBorgModule(Entity<BorgSwitchableTypeComponent> ent, ProtoId<BorgTypePrototype> borgType)
     {
         var prototype = Prototypes.Index(borgType);

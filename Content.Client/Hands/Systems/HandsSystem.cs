@@ -1,6 +1,5 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using System.Numerics;
 using Content.Client.DisplacementMap;
 using Content.Client.Examine;
 using Content.Client.Strip;
@@ -12,8 +11,6 @@ using Content.Shared.Hands.EntitySystems;
 using Content.Shared.Humanoid;
 using Content.Shared.Inventory.VirtualItem;
 using Content.Shared.Item;
-using Content.Shared.Silicons.Borgs;
-using Content.Shared.Silicons.Borgs.Components;
 using JetBrains.Annotations;
 using Robust.Client.GameObjects;
 using Robust.Client.Player;
@@ -24,7 +21,12 @@ using Robust.Shared.Player;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Timing;
 using Robust.Shared.Utility;
+// Fish-Start
+using System.Numerics;
 using static Robust.Client.GameObjects.SpriteComponent;
+using Content.Shared.Silicons.Borgs;
+using Content.Shared.Silicons.Borgs.Components;
+// Fish-End
 
 namespace Content.Client.Hands.Systems
 {
@@ -38,7 +40,7 @@ namespace Content.Client.Hands.Systems
         [Dependency] private SpriteSystem _sprite = default!;
         [Dependency] private ExamineSystem _examine = default!;
         [Dependency] private DisplacementMapSystem _displacement = default!;
-        [Dependency] private IPrototypeManager _prototype = default!;
+        [Dependency] private IPrototypeManager _prototype = default!; // Fish-Edit
 
         public event Action<string?>? OnPlayerSetActiveHand;
         public event Action<Entity<HandsComponent>>? OnPlayerHandsAdded;
@@ -63,15 +65,23 @@ namespace Content.Client.Hands.Systems
         }
 
         #region StateHandling
+
+        /// <summary>
+        /// Fish: применяет сетевое состояние рук и при смене ShowInHands перерисовывает
+        /// in-hand слои уже занятых рук — сам флаг изменения состояния не вызывает
+        /// UpdateHandVisuals.
+        /// </summary>
         private void HandleComponentState(Entity<HandsComponent> ent, ref ComponentHandleState args)
         {
             if (args.Current is not HandsComponentState state)
                 return;
 
+            /// <summary>
             // Fish: запоминаем смену ShowInHands, чтобы после применения state
             // перерисовать in-hand слои уже занятых рук (например, апгрейд борга на Mk2).
-            var showInHandsChanged = state.ShowInHands != ent.Comp.ShowInHands;
-            ent.Comp.ShowInHands = state.ShowInHands;
+            /// </summary>
+            var showInHandsChanged = state.ShowInHands != ent.Comp.ShowInHands; // Fish-Edit
+            ent.Comp.ShowInHands = state.ShowInHands; // Fish-Edit
 
             var newHands = state.Hands.Keys.Except(ent.Comp.Hands.Keys); // hands that were added between states
             var oldHands = ent.Comp.Hands.Keys.Except(state.Hands.Keys); // hands that were removed between states
@@ -89,8 +99,11 @@ namespace Content.Client.Hands.Systems
 
             SetActiveHand(ent.AsNullable(), state.ActiveHandId);
 
+            /// <summary>
             // Fish: смена флага сама по себе не вызывает UpdateHandVisuals —
             // обновляем слои всех рук, в которых уже лежат предметы.
+            /// </summary>
+            // Fish-Start
             if (showInHandsChanged && TryComp(ent, out SpriteComponent? sprite))
             {
                 foreach (var handId in ent.Comp.SortedHands)
@@ -99,6 +112,7 @@ namespace Content.Client.Hands.Systems
                         UpdateHandVisuals((ent, ent.Comp, sprite), held, handId);
                 }
             }
+            // Fish-End
 
             _stripSys.UpdateUi(ent);
         }
@@ -282,11 +296,11 @@ namespace Content.Client.Hands.Systems
             if (ent == _playerManager.LocalEntity)
                 OnPlayerItemAdded?.Invoke(handId, held);
 
-            if (!handComp.ShowInHands)
-                return;
-
-            // Remove old layers. We could also just set them to invisible, but as items may add arbitrary layers, this
-            // may eventually bloat the player with lots of layers.
+            /// <summary>
+            // Fish: очистка старых слоёв до раннего выхода по ShowInHands: при выключении
+            // флага (true -> false) иначе ранее добавленные слои остаются на спрайте —
+            // HandleComponentState вызывает UpdateHandVisuals при смене флага в обе стороны.
+            /// </summary>
             if (handComp.RevealedLayers.TryGetValue(hand.Value.Location, out var revealedLayers))
             {
                 foreach (var key in revealedLayers)
@@ -296,7 +310,11 @@ namespace Content.Client.Hands.Systems
 
                 revealedLayers.Clear();
             }
-            else
+
+            if (!handComp.ShowInHands) // Fish-Edit
+                return; // Fish-Edit
+
+            if (revealedLayers == null) // Fish-Edit
             {
                 revealedLayers = new();
                 handComp.RevealedLayers[hand.Value.Location] = revealedLayers;
@@ -342,15 +360,19 @@ namespace Content.Client.Hands.Systems
 
                 _sprite.LayerSetData((ent, sprite), index, layerData);
 
+                /// <summary>
                 // Fish: у боргов со смещённым корнем спрайта (SpriteOffset у borgType, Mk2)
                 // предметы в руках поднимаются вместе с телом и оказываются чуть выше
                 // нужного — компенсируем на 0.25. Самих боргов определяем по настройке
                 // типа, а не по ненулевому Offset спрайта: Offset могут иметь и чужие сущности,
                 // для которых компенсация не нужна и каждый апдейт сдвигал бы слой ещё на 0.25.
+                /// </summary>
+                // Fish-Start
                 if (NeedsMk2HandOffsetCompensation(ent.Owner) && sprite[index] is Layer layer)
                 {
                     _sprite.LayerSetOffset(layer, layer.Offset + new Vector2(0f, -0.25f));
                 }
+                // Fish-End
 
                 // Add displacement maps
                 var displacement = hand.Value.Location switch
@@ -367,13 +389,15 @@ namespace Content.Client.Hands.Systems
             RaiseLocalEvent(held, new HeldVisualsUpdatedEvent(ent, revealedLayers), true);
         }
 
-        // Fish-Start
         /// <summary>
         /// Нужна ли компенсация смещения in-hand слоёв (-0.25 по Y): только для боргов,
         /// чей выбранный borgType задаёт ненулевой <see cref="BorgTypePrototype.SpriteOffset"/>
-        /// (Mk2 со смещённым на 0,0.5 корнем спрайта). Сущности без BorgSwitchableTypeComponent
+        /// (Mk2 со смещённым на 0,0.4 корнем спрайта). Сущности без BorgSwitchableTypeComponent
         /// или с типом без SpriteOffset компенсация не применяется.
+        /// Компенсация задаётся в слойных единицах и масштабируется корневым Scale спрайта
+        /// вместе с руками тела — при SpriteScale 0.8 визуально становится -0.2.
         /// </summary>
+        // Fish-Start
         private bool NeedsMk2HandOffsetCompensation(EntityUid uid)
         {
             if (!TryComp<BorgSwitchableTypeComponent>(uid, out var switchable))

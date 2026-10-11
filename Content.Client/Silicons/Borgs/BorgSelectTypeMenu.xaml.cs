@@ -27,6 +27,10 @@ public sealed partial class BorgSelectTypeMenu : FancyWindow
 
     private static readonly List<ProtoId<GuideEntryPrototype>> GuidebookEntries = new() { "Cyborgs", "Robotics" };
 
+    /// <summary>
+    /// Fish: заполняет список специализаций при открытии меню.
+    /// Скрытые типы (Mk2) не показываются — они недоступны для ручного выбора.
+    /// </summary>
     public BorgSelectTypeMenu()
     {
         RobustXamlLoader.Load(this);
@@ -57,6 +61,9 @@ public sealed partial class BorgSelectTypeMenu : FancyWindow
         HelpGuidebookIds = GuidebookEntries;
     }
 
+    /// <summary>
+    /// Fish: обновляет панель информации о выбранной специализации.
+    /// </summary>
     private void UpdateInformation(BorgTypePrototype prototype)
     {
         _selectedBorgType = prototype;
@@ -66,7 +73,7 @@ public sealed partial class BorgSelectTypeMenu : FancyWindow
         ConfirmTypeButton.Disabled = false;
 
         NameLabel.Text = PrototypeName(prototype);
-        DescriptionLabel.Text = Loc.GetString(prototype.GetLocKey("desc"));
+        DescriptionLabel.Text = Loc.GetString(prototype.GetLocKey("desc")); // Fish-Edit
         ChassisView.SetPrototype(prototype.DummyPrototype);
     }
 
@@ -78,8 +85,11 @@ public sealed partial class BorgSelectTypeMenu : FancyWindow
         ConfirmedBorgType?.Invoke(_selectedBorgType);
     }
 
+    /// <summary>
+    /// Fish: локализованное имя типа; ключ строится через <see cref="BorgTypePrototype.GetLocKey"/>.
+    /// </summary>
     private static string PrototypeName(BorgTypePrototype prototype)
     {
-        return Loc.GetString(prototype.GetLocKey("name"));
+        return Loc.GetString(prototype.GetLocKey("name")); // Fish-Edit
     }
 }

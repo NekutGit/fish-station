@@ -1,12 +1,13 @@
 using Content.Shared.PowerCell.Components;
 using Robust.Shared.Prototypes;
 
+#pragma warning disable IDE0130 // Необходимо поскольку этот partial класс расширяет ванильный тип и должен сохранять исходный namespace несмотря на расположение файла в _Fish
 namespace Content.Shared.PowerCell;
 
 public sealed partial class PowerCellSystem
 {
     /// <summary>
-    /// Fish: выставляет скорости разряда из прототипа, сохраняя текущее состояние включения.
+    /// Выставляет скорости разряда из прототипа, сохраняя текущее состояние включения.
     /// Нужно апгрейду борга до Mk2: компонент у живого борга уже есть, а перезапись прототипом
     /// сбросила бы <see cref="PowerCellDrawComponent.Enabled"/> и остановила бы разряд.
     /// </summary>

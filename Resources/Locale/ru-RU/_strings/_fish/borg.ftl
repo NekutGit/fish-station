@@ -35,12 +35,12 @@ borg-type-fish-clown-mk2-transponder = { borg-type-clown-transponder } Мк2
 
 ## Охранник Mk2: описание собственное, без ссылки на родителя.
 borg-type-fish-security-mk2-name = Охранник Мк2
-borg-type-fish-security-mk2-desc = Усиленный вариант охранного борга с обновлённой бронёй и внутренними системами.
+borg-type-fish-security-mk2-desc = Усиленный вариант охранного киборга с обновлённой бронёй и внутренними системами.
 borg-type-fish-security-mk2-transponder = киборг-охранник Мк2
 
 ## Borg Upgrade Module (предмет FishBorgUpgradeModule): отменяемый за 15 секунд
-## апгрейд обычного борга до его Mk2-варианта. Сущность не пересоздаётся — меняется только тип.
-borg-upgrade-invalid-target = Этот борг нельзя апгрейдить.
-borg-upgrade-already-mk2 = Этот борг уже Mk2.
+## апгрейд обычного киборга до его Mk2-варианта. Сущность не пересоздаётся — меняется только тип.
+borg-upgrade-invalid-target = Этот киборг нельзя апгрейдить.
+borg-upgrade-already-mk2 = Этот киборг уже Mk2.
 borg-upgrade-in-progress = Апгрейд уже выполняется.
-borg-upgrade-complete = Борг был апгрейднут до Mk2.
+borg-upgrade-complete = Киборг был апгрейднут до Mk2.

@@ -64,6 +64,10 @@ public sealed partial class HandsUIController : UIController, IOnStateEntered<Ga
         _handsSystem.OnPlayerHandUnblocked -= HandUnblocked;
     }
 
+    /// <summary>
+    /// Fish: при добавлении руки пересчитывает роутинг Functional-рук до создания кнопки —
+    /// событие поднимается после вставки руки в компонент, поэтому новая рука уже учтена.
+    /// </summary>
     private void OnAddHand(Entity<HandsComponent> entity, string name, HandLocation location)
     {
         if (entity.Owner != _player.LocalEntity)
@@ -71,12 +75,16 @@ public sealed partial class HandsUIController : UIController, IOnStateEntered<Ga
 
         // Fish: пересчёт роутинга Functional-рук до добавления кнопки — событие поднимается
         // после вставки руки в компонент, поэтому новая рука уже учтена в проверке.
-        HandsGui?.UpdateFunctionalRouting(entity.Comp);
+        HandsGui?.UpdateFunctionalRouting(entity.Comp); // Fish-Edit
 
         if (_handsSystem.TryGetHand((entity.Owner, entity.Comp), name, out var hand))
             AddHand(name, hand.Value);
     }
 
+    /// <summary>
+    /// Fish: при удалении руки пересчитывает роутинг Functional-рук; исходящая рука
+    /// исключается — событие поднимается до удаления руки из компонента.
+    /// </summary>
     private void OnRemoveHand(Entity<HandsComponent> entity, string name)
     {
         if (entity.Owner != _player.LocalEntity)
@@ -84,7 +92,7 @@ public sealed partial class HandsUIController : UIController, IOnStateEntered<Ga
 
         // Fish: событие поднимается до удаления руки из компонента,
         // поэтому исходящая рука исключается из пересчёта.
-        HandsGui?.UpdateFunctionalRouting(entity.Comp, name);
+        HandsGui?.UpdateFunctionalRouting(entity.Comp, name); // Fish-Edit
 
         RemoveHand(name);
     }
@@ -290,6 +298,9 @@ public sealed partial class HandsUIController : UIController, IOnStateEntered<Ga
         return HandsGui?.GetHandButton(handName); // Sunrise-Edit - ищем обычные и функциональные руки
     }
 
+    /// <summary>
+    /// Fish: контейнер кнопки руки выбирает HotbarGui (FunctionalInMainRow), а не location.
+    /// </summary>
     private HandButton AddHand(string handName, Hand hand)
     {
         var button = new HandButton(handName, hand.Location);
