@@ -1,9 +1,8 @@
-﻿// Fish-edit
-using System.Numerics;
-using Content.Shared.Movement.Components;
-using Content.Shared.Silicons.Borgs;
+﻿using Content.Shared.Silicons.Borgs;
 using Content.Shared.Silicons.Borgs.Components;
 using Robust.Client.GameObjects;
+using System.Numerics;  // Fish-Edit
+using Content.Shared.Movement.Components;  // Fish-Edit
 
 namespace Content.Client.Silicons.Borgs;
 

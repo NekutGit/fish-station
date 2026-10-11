@@ -109,6 +109,7 @@ public abstract partial class SharedHandsSystem
     /// (например, при апгрейде борга на Mk2). Поле реплицируется через HandsComponentState,
     /// поэтому отдельного Dirty у вызывающего не требуется.
     /// </summary>
+    // Fish-Start
     public void SetShowInHands(Entity<HandsComponent?> ent, bool show)
     {
         if (!Resolve(ent, ref ent.Comp, false) || ent.Comp.ShowInHands == show)
@@ -117,6 +118,7 @@ public abstract partial class SharedHandsSystem
         ent.Comp.ShowInHands = show;
         Dirty(ent);
     }
+    // Fish-End
 
     /// <summary>
     /// Removes the specified hand from the specified entity

@@ -300,8 +300,9 @@ namespace Content.Client.Hands.Systems
             // Fish: очистка старых слоёв до раннего выхода по ShowInHands: при выключении
             // флага (true -> false) иначе ранее добавленные слои остаются на спрайте —
             // HandleComponentState вызывает UpdateHandVisuals при смене флага в обе стороны.
+            // Ключ - hand ID, чтобы несколько Functional-рук не разделяли один HashSet.
             /// </summary>
-            if (handComp.RevealedLayers.TryGetValue(hand.Value.Location, out var revealedLayers))
+            if (handComp.RevealedLayers.TryGetValue(handId, out var revealedLayers)) // Fish-Edit
             {
                 foreach (var key in revealedLayers)
                 {
@@ -317,7 +318,7 @@ namespace Content.Client.Hands.Systems
             if (revealedLayers == null) // Fish-Edit
             {
                 revealedLayers = new();
-                handComp.RevealedLayers[hand.Value.Location] = revealedLayers;
+                handComp.RevealedLayers[handId] = revealedLayers; // Fish-Edit
             }
 
             if (HandIsEmpty((ent, handComp), handId))

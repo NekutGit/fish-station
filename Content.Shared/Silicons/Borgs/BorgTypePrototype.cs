@@ -1,6 +1,4 @@
-﻿// Fish-edit
-using Content.Shared.Interaction.Components;
-using Content.Shared.Inventory;
+﻿using Content.Shared.Inventory;
 using Content.Shared.Radio;
 using Content.Shared.Roles;
 using Content.Shared.Silicons.Borgs.Components;
@@ -8,13 +6,13 @@ using Content.Shared.Whitelist;
 using Robust.Shared.Audio;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom.Prototype;
-// Fish-edit
+// Fish-Start
+using Content.Shared.Interaction.Components;
 using System.Numerics;
-// Fish-edit
 using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom.Prototype.Array;
-// Fish-edit
 using Robust.Shared.Utility;
 using System.Text;
+// Fish-End
 
 namespace Content.Shared.Silicons.Borgs;
 
@@ -23,7 +21,7 @@ namespace Content.Shared.Silicons.Borgs;
 /// </summary>
 /// <seealso cref="SharedBorgSwitchableTypeSystem"/>
 [Prototype]
-public sealed partial class BorgTypePrototype : IPrototype, IInheritingPrototype
+public sealed partial class BorgTypePrototype : IPrototype, IInheritingPrototype // Fish-Edit
 {
     private static readonly ProtoId<SoundCollectionPrototype> DefaultFootsteps = new("FootstepBorg");
 
@@ -223,6 +221,15 @@ public sealed partial class BorgTypePrototype : IPrototype, IInheritingPrototype
     /// </summary>
     [DataField]
     public float? SpriteScale;
+
+    /// <summary>
+    /// Состояние спрайта тела в критическом/мёртвом состоянии. <c>null</c> — тело не меняется.
+    /// У Mk2 используется wreck-кадр из _Lust RSI (например, robot_wreck).
+    /// Переключение выполняет клиентский BorgSystem при смене MobStateVisuals.State;
+    /// при возврате в Alive тело восстанавливается в <see cref="SpriteBodyState"/>.
+    /// </summary>
+    [DataField]
+    public string? SpriteWreckState;
     // Fish-End
 
     //

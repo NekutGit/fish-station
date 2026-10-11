@@ -5,7 +5,9 @@
 # Уникальность визуала даёт RSI у chassis (_Lust/Mobs/Silicon/chassis.rsi), а не имя state:
 # spriteBodyState у восьми типов совпадает с родителем и берётся из холста chassis.
 # Отдельные имена state нужны только FishSecurityMk2 (sec_mk2*).
-# *_rest / *_tipped / *_wreck из _Lust не используются и сюда не переносятся.
+# *_rest / *_tipped из _Lust не используются и сюда не переносятся.
+# *_wreck подключены через spriteWreckState: переключение на критическом/мёртвом
+# состоянии выполняет клиентский BorgSystem (Content.Client/_Fish/.../BorgSystem.Wreck.cs).
 
 - type: borgType
   id: FishGenericMk2
@@ -20,6 +22,7 @@
   spriteRsiPath: _Lust/Mobs/Silicon/chassis.rsi
   spriteScale: 0.8
   spriteOffset: 0,0.4
+  spriteWreckState: robot_wreck
 
 - type: borgType
   id: FishEngineeringMk2
@@ -31,6 +34,7 @@
   spriteRsiPath: _Lust/Mobs/Silicon/chassis.rsi
   spriteScale: 0.8
   spriteOffset: 0,0.4
+  spriteWreckState: engineer_wreck
 
 - type: borgType
   id: FishMiningMk2
@@ -45,6 +49,7 @@
   spriteRsiPath: _Lust/Mobs/Silicon/chassis.rsi
   spriteScale: 0.8
   spriteOffset: 0,0.4
+  spriteWreckState: miner_wreck
 
 - type: borgType
   id: FishJanitorMk2
@@ -57,6 +62,7 @@
   spriteRsiPath: _Lust/Mobs/Silicon/chassis.rsi
   spriteScale: 0.8
   spriteOffset: 0,0.4
+  spriteWreckState: janitor_wreck
 
 - type: borgType
   id: FishMedicalMk2
@@ -69,6 +75,7 @@
   spriteRsiPath: _Lust/Mobs/Silicon/chassis.rsi
   spriteScale: 0.8
   spriteOffset: 0,0.4
+  spriteWreckState: medical_wreck
 
 - type: borgType
   id: FishServiceMk2
@@ -80,6 +87,7 @@
   spriteRsiPath: _Lust/Mobs/Silicon/chassis.rsi
   spriteScale: 0.8
   spriteOffset: 0,0.4
+  spriteWreckState: service_wreck
 
 - type: borgType
   id: FishPeaceMk2
@@ -91,6 +99,7 @@
   spriteRsiPath: _Lust/Mobs/Silicon/chassis.rsi
   spriteScale: 0.8
   spriteOffset: 0,0.4
+  spriteWreckState: peace_wreck
 
 - type: borgType
   id: FishClownMk2
@@ -102,6 +111,7 @@
   spriteRsiPath: _Lust/Mobs/Silicon/chassis.rsi
   spriteScale: 0.8
   spriteOffset: 0,0.4
+  spriteWreckState: clown_wreck
 
 - type: borgType
   id: FishSecurityMk2
@@ -117,3 +127,4 @@
   spriteRsiPath: _Lust/Mobs/Silicon/chassis.rsi
   spriteScale: 0.8
   spriteOffset: 0,0.4
+  spriteWreckState: sec_mk2_wreck

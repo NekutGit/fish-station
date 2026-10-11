@@ -53,6 +53,8 @@
     - hand_left
     activeHandId: hand_right
     showInHands: true
+  # Fish: не падает в крите и гасит фонарь (BorgNoFallSystem).
+  - type: BorgNoFall
   - type: BorgSwitchableType
     selectedBorgType: FishGenericMk2
 
@@ -111,6 +113,8 @@
     - hand_left
     activeHandId: hand_right
     showInHands: true
+  # Fish: не падает в крите и гасит фонарь (BorgNoFallSystem).
+  - type: BorgNoFall
   - type: BorgSwitchableType
     selectedBorgType: FishEngineeringMk2
 
@@ -169,6 +173,8 @@
     - hand_left
     activeHandId: hand_right
     showInHands: true
+  # Fish: не падает в крите и гасит фонарь (BorgNoFallSystem).
+  - type: BorgNoFall
   - type: BorgSwitchableType
     selectedBorgType: FishMiningMk2
 
@@ -227,6 +233,8 @@
     - hand_left
     activeHandId: hand_right
     showInHands: true
+  # Fish: не падает в крите и гасит фонарь (BorgNoFallSystem).
+  - type: BorgNoFall
   - type: BorgSwitchableType
     selectedBorgType: FishJanitorMk2
 
@@ -285,6 +293,8 @@
     - hand_left
     activeHandId: hand_right
     showInHands: true
+  # Fish: не падает в крите и гасит фонарь (BorgNoFallSystem).
+  - type: BorgNoFall
   - type: BorgSwitchableType
     selectedBorgType: FishMedicalMk2
 
@@ -478,6 +488,8 @@
     - hand_left
     activeHandId: hand_right
     showInHands: true
+  # Fish: не падает в крите и гасит фонарь (BorgNoFallSystem).
+  - type: BorgNoFall
   - type: BorgSwitchableType
     selectedBorgType: FishServiceMk2
 
@@ -536,6 +548,8 @@
     - hand_left
     activeHandId: hand_right
     showInHands: true
+  # Fish: не падает в крите и гасит фонарь (BorgNoFallSystem).
+  - type: BorgNoFall
   - type: BorgSwitchableType
     selectedBorgType: FishPeaceMk2
 
@@ -594,6 +608,8 @@
     - hand_left
     activeHandId: hand_right
     showInHands: true
+  # Fish: не падает в крите и гасит фонарь (BorgNoFallSystem).
+  - type: BorgNoFall
   - type: BorgSwitchableType
     selectedBorgType: FishClownMk2
 
@@ -652,5 +668,7 @@
     - hand_left
     activeHandId: hand_right
     showInHands: true
+  # Fish: не падает в крите и гасит фонарь (BorgNoFallSystem).
+  - type: BorgNoFall
   - type: BorgSwitchableType
     selectedBorgType: FishSecurityMk2

@@ -59,7 +59,7 @@ public partial record struct BorgHand
     /// The settings for the hand, including a whitelist.
     /// </summary>
     [DataField]
-    public Hand Hand = new(HandLocation.Functional);
+    public Hand Hand = new(HandLocation.Functional);  // Fish-Edit
 
     [DataField]
     public bool ForceRemovable = false;

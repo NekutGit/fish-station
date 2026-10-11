@@ -63,8 +63,10 @@ public sealed partial class HandsComponent : Component
     /// <summary>
     ///     Data about the current sprite layers that the hand is contributing to the owner entity. Used for sprite in-hands.
     ///     Used by the client.
+    ///     Fish: ключ — hand ID (string), а не HandLocation: несколько Functional-рук борга
+    ///     разделяли бы один HashSet и вторая рука стирала слои первой при перерисовке.
     /// </summary>
-    public readonly Dictionary<HandLocation, HashSet<string>> RevealedLayers = new();
+    public readonly Dictionary<string, HashSet<string>> RevealedLayers = new(); // Fish-Edit
 
     /// <summary>
     ///     The time at which throws will be allowed again.
@@ -189,7 +191,7 @@ public sealed class HandsComponentState : ComponentState
         Hands = new(handComp.Hands);
         SortedHands = new(handComp.SortedHands);
         ActiveHandId = handComp.ActiveHandId;
-        ShowInHands = handComp.ShowInHands;
+        ShowInHands = handComp.ShowInHands;  // Fish-Edit
     }
 }
 
