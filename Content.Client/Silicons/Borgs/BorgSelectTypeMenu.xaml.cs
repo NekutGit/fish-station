@@ -66,7 +66,7 @@ public sealed partial class BorgSelectTypeMenu : FancyWindow
         ConfirmTypeButton.Disabled = false;
 
         NameLabel.Text = PrototypeName(prototype);
-        DescriptionLabel.Text = Loc.GetString($"borg-type-{prototype.ID}-desc");
+        DescriptionLabel.Text = Loc.GetString(prototype.GetLocKey("desc"));
         ChassisView.SetPrototype(prototype.DummyPrototype);
     }
 
@@ -80,6 +80,6 @@ public sealed partial class BorgSelectTypeMenu : FancyWindow
 
     private static string PrototypeName(BorgTypePrototype prototype)
     {
-        return Loc.GetString($"borg-type-{prototype.ID}-name");
+        return Loc.GetString(prototype.GetLocKey("name"));
     }
 }

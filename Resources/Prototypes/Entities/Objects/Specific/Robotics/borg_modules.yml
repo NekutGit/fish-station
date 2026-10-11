@@ -484,7 +484,7 @@
     hands:
     - item: CableApcStack10
       hand:
-        location: Functional
+        location: Functional # Fish-edit
         emptyRepresentative: CableApcStack10
         emptyLabel: borg-slot-cables-empty
         whitelist:
@@ -492,7 +492,7 @@
           - CableCoil
     - item: CableMVStack10
       hand:
-        location: Functional
+        location: Functional # Fish-edit
         emptyRepresentative: CableMVStack10
         emptyLabel: borg-slot-cables-empty
         whitelist:
@@ -500,7 +500,7 @@
           - CableCoil
     - item: CableHVStack10
       hand:
-        location: Functional
+        location: Functional # Fish-edit
         emptyRepresentative: CableHVStack10
         emptyLabel: borg-slot-cables-empty
         whitelist:
@@ -581,7 +581,7 @@
     hands:
     - item: InflatableDoorStack
       hand:
-        location: Functional
+        location: Functional # Fish-edit
         emptyRepresentative: InflatableDoorStack
         emptyLabel: borg-slot-inflatable-door-empty
         whitelist:
@@ -589,7 +589,7 @@
           - Inflatable
     - item: InflatableWallStack
       hand:
-        location: Functional
+        location: Functional # Fish-edit
         emptyRepresentative: InflatableWallStack
         emptyLabel: borg-slot-inflatable-wall-empty
         whitelist:
@@ -718,7 +718,7 @@
   - type: ItemBorgModule
     hands:
     - hand:
-        location: Functional
+        location: Functional # Fish-edit
         emptyRepresentative: BorgModuleConstructionMaterialPlaceholder
         emptyLabel: borg-slot-construction-empty
         whitelist:
@@ -729,21 +729,21 @@
           - Nanopaste
           # Sunrise-End
     - hand:
-        location: Functional
+        location: Functional # Fish-edit
         emptyRepresentative: BorgModuleConstructionMaterialPlaceholder
         emptyLabel: borg-slot-construction-empty
         whitelist:
           tags:
           - ConstructionMaterial
     - hand:
-        location: Functional
+        location: Functional # Fish-edit
         emptyRepresentative: BorgModuleConstructionMaterialPlaceholder
         emptyLabel: borg-slot-construction-empty
         whitelist:
           tags:
           - ConstructionMaterial
     - hand:
-        location: Functional
+        location: Functional # Fish-edit
         emptyRepresentative: DoorElectronics
         emptyLabel: borg-slot-circuitboards-empty
         whitelist:
@@ -753,7 +753,7 @@
           components:
           - SiliconLawProvider
     - hand:
-        location: Functional
+        location: Functional # Fish-edit
         emptyRepresentative: MicroManipulatorStockPart
         emptyLabel: borg-slot-construction-empty
         whitelist:
@@ -768,28 +768,28 @@
           - Igniter
           # Sunrise-End
     - hand:
-        location: Functional
+        location: Functional # Fish-edit
         emptyRepresentative: SpaceHeaterFlatpack
         emptyLabel: borg-slot-flatpacks-empty
         whitelist:
           components:
           - Flatpack
     - hand:
-        location: Functional
+        location: Functional # Fish-edit
         emptyRepresentative: FloorTileItemSteel
         emptyLabel: borg-slot-tiles-empty
         whitelist:
           components:
           - FloorTile
     - hand:
-        location: Functional
+        location: Functional # Fish-edit
         emptyRepresentative: FloorTileItemWhite
         emptyLabel: borg-slot-tiles-empty
         whitelist:
           components:
           - FloorTile
     - hand:
-        location: Functional
+        location: Functional # Fish-edit
         emptyRepresentative: FloorTileItemDark
         emptyLabel: borg-slot-tiles-empty
         whitelist:
@@ -836,7 +836,7 @@
     - item: Plunger
     - item: SoapNT
       hand:
-        location: Functional
+        location: Functional # Fish-edit
         emptyLabel: borg-slot-soap-empty
         emptyRepresentative: SoapNT
         whitelist:
@@ -883,7 +883,7 @@
     - item: BorgDropper
     - item: Beaker
       hand:
-        location: Functional
+        location: Functional # Fish-edit
         emptyLabel: borg-slot-beakers-empty
         emptyRepresentative: Beaker
         whitelist:
@@ -924,7 +924,7 @@
     - item: HypoBorgMedical
     - item: Gauze
       hand:
-        location: Functional
+        location: Functional # Fish-edit
         emptyLabel: borg-slot-topicals-empty
         emptyRepresentative: Gauze
         whitelist:
@@ -932,7 +932,7 @@
           - Healing
     - item: Brutepack
       hand:
-        location: Functional
+        location: Functional # Fish-edit
         emptyLabel: borg-slot-topicals-empty
         emptyRepresentative: Brutepack
         whitelist:
@@ -940,7 +940,7 @@
           - Healing
     - item: Ointment
       hand:
-        location: Functional
+        location: Functional # Fish-edit
         emptyLabel: borg-slot-topicals-empty
         emptyRepresentative: Ointment
         whitelist:
@@ -983,7 +983,7 @@
     - item: AdvancedJetInjector # Sunrise-Edit
     - item: Syringe
       hand:
-        location: Functional
+        location: Functional # Fish-edit
         emptyLabel: borg-slot-injector-dropper-empty
         emptyRepresentative: Syringe
         whitelist:
@@ -992,7 +992,7 @@
           - Syringe
     - item: PillCanister
       hand:
-        location: Functional
+        location: Functional # Fish-edit
         emptyLabel: borg-slot-small-containers-empty
         emptyRepresentative: PillCanister
         whitelist:
@@ -1002,7 +1002,7 @@
           - Pill
     - item: Beaker
       hand:
-        location: Functional
+        location: Functional # Fish-edit
         emptyLabel: borg-slot-chemical-containers-empty
         emptyRepresentative: Beaker
         whitelist:
@@ -1012,7 +1012,7 @@
           - ChemDispensable
     - item: Beaker
       hand:
-        location: Functional
+        location: Functional # Fish-edit
         emptyLabel: borg-slot-chemical-containers-empty
         emptyRepresentative: Beaker
         whitelist:
@@ -1039,7 +1039,7 @@
     - item: HypoBorgMedicalAdvanced #- item: BorgHypo # Sunrise-Edit
     - item: Gauze
       hand:
-        location: Functional
+        location: Functional # Fish-edit
         emptyLabel: borg-slot-topicals-empty
         emptyRepresentative: Gauze
         whitelist:
@@ -1047,7 +1047,7 @@
           - Healing
     - item: Brutepack
       hand:
-        location: Functional
+        location: Functional # Fish-edit
         emptyLabel: borg-slot-topicals-empty
         emptyRepresentative: Brutepack
         whitelist:
@@ -1055,7 +1055,7 @@
           - Healing
     - item: Ointment
       hand:
-        location: Functional
+        location: Functional # Fish-edit
         emptyLabel: borg-slot-topicals-empty
         emptyRepresentative: Ointment
         whitelist:
@@ -1083,7 +1083,7 @@
     - item: BorgDropper
     - item: ChemistryEmptyVial
       hand:
-        location: Functional
+        location: Functional # Fish-edit
         emptyLabel: borg-slot-small-containers-empty
         emptyRepresentative: ChemistryEmptyVial
         whitelist:
@@ -1109,14 +1109,14 @@
     - item: AnomalyLocatorWideUnpowered
     - item: HandLabeler
     - hand:
-        location: Functional
+        location: Functional # Fish-edit
         emptyRepresentative: SheetRGlass
         emptyLabel: borg-slot-construction-empty
         whitelist:
           tags:
           - ConstructionMaterial
     - hand:
-        location: Functional
+        location: Functional # Fish-edit
         emptyRepresentative: SheetRPGlass
         emptyLabel: borg-slot-construction-empty
         whitelist:
@@ -1142,7 +1142,7 @@
     - item: Pen
     - item: BooksBag
     - hand:
-        location: Functional
+        location: Functional # Fish-edit
         emptyLabel: borg-slot-documents-empty
         emptyRepresentative: BookBase
         whitelist:
@@ -1154,7 +1154,7 @@
           - TabletopBoard
           - Write
     - hand:
-        location: Functional
+        location: Functional # Fish-edit
         emptyLabel: borg-slot-documents-empty
         emptyRepresentative: Paper
         whitelist:
@@ -1171,7 +1171,7 @@
     - item: BorgDropper
     - item: DrinkShaker
       hand:
-        location: Functional
+        location: Functional # Fish-edit
         emptyLabel: borg-slot-small-containers-empty
         emptyRepresentative: DrinkShaker
         whitelist:
@@ -1194,7 +1194,7 @@
     hands:
     - item: SynthesizerInstrument
       hand:
-        location: Functional
+        location: Functional # Fish-edit
         emptyLabel: borg-slot-instruments-empty
         emptyRepresentative: SynthesizerInstrument
         whitelist:
@@ -1202,7 +1202,7 @@
           - Instrument
     - item: ElectricGuitarInstrument
       hand:
-        location: Functional
+        location: Functional # Fish-edit
         emptyLabel: borg-slot-instruments-empty
         emptyRepresentative: ElectricGuitarInstrument
         whitelist:
@@ -1210,7 +1210,7 @@
           - Instrument
     - item: SaxophoneInstrument
       hand:
-        location: Functional
+        location: Functional # Fish-edit
         emptyLabel: borg-slot-instruments-empty
         emptyRepresentative: SaxophoneInstrument
         whitelist:
@@ -1218,7 +1218,7 @@
           - Instrument
     - item: SuperSynthesizerInstrument
       hand:
-        location: Functional
+        location: Functional # Fish-edit
         emptyLabel: borg-slot-instruments-empty
         emptyRepresentative: SuperSynthesizerInstrument
         whitelist:
@@ -1477,7 +1477,7 @@
     hands:
     - item: DoorRemoteXenoborg
     - hand:
-        location: Functional
+        location: Functional # Fish-edit
         emptyRepresentative: MMIFilled
         emptyLabel: borg-slot-brains-empty
         whitelist:
@@ -1485,21 +1485,21 @@
           - Brain
           - BorgBrain
     - hand:
-        location: Functional
+        location: Functional # Fish-edit
         emptyRepresentative: XenoborgModuleBasic
         emptyLabel: borg-slot-modules-empty
         whitelist:
           components:
           - BorgModule
     - hand:
-        location: Functional
+        location: Functional # Fish-edit
         emptyRepresentative: BorgModuleConstructionMaterialPlaceholder
         emptyLabel: borg-slot-construction-empty
         whitelist:
           tags:
           - ConstructionMaterial
     - hand:
-        location: Functional
+        location: Functional # Fish-edit
         emptyRepresentative: PowerCellHigh
         emptyLabel: borg-slot-powercell-empty
         whitelist:
@@ -1522,7 +1522,7 @@
   - type: ItemBorgModule
     hands:
     - hand:
-        location: Functional
+        location: Functional # Fish-edit
         emptyRepresentative: BorgModuleConstructionMaterialPlaceholder
         emptyLabel: borg-slot-construction-empty
         whitelist:

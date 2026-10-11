@@ -1,5 +1,5 @@
 - type: entity
-  id: BorgChassisGenericMk2
+  id: FishBorgChassisGenericMk2
   parent: BorgChassisGeneric
   name: generic cyborg Mk2
   components:
@@ -53,10 +53,10 @@
     activeHandId: hand_right
     showInHands: true
   - type: BorgSwitchableType
-    selectedBorgType: genericMk2
+    selectedBorgType: FishGenericMk2
 
 - type: entity
-  id: BorgChassisEngineerMk2
+  id: FishBorgChassisEngineerMk2
   parent: BorgChassisEngineer
   name: engineer cyborg Mk2
   components:
@@ -110,10 +110,10 @@
     activeHandId: hand_right
     showInHands: true
   - type: BorgSwitchableType
-    selectedBorgType: engineeringMk2
+    selectedBorgType: FishEngineeringMk2
 
 - type: entity
-  id: BorgChassisMiningMk2
+  id: FishBorgChassisMiningMk2
   parent: BorgChassisMining
   name: salvage cyborg Mk2
   components:
@@ -167,10 +167,10 @@
     activeHandId: hand_right
     showInHands: true
   - type: BorgSwitchableType
-    selectedBorgType: miningMk2
+    selectedBorgType: FishMiningMk2
 
 - type: entity
-  id: BorgChassisJanitorMk2
+  id: FishBorgChassisJanitorMk2
   parent: BorgChassisJanitor
   name: janitor cyborg Mk2
   components:
@@ -224,10 +224,10 @@
     activeHandId: hand_right
     showInHands: true
   - type: BorgSwitchableType
-    selectedBorgType: janitorMk2
+    selectedBorgType: FishJanitorMk2
 
 - type: entity
-  id: BorgChassisMedicalMk2
+  id: FishBorgChassisMedicalMk2
   parent: BorgChassisMedical
   name: medical cyborg Mk2
   components:
@@ -281,11 +281,11 @@
     activeHandId: hand_right
     showInHands: true
   - type: BorgSwitchableType
-    selectedBorgType: medicalMk2
+    selectedBorgType: FishMedicalMk2
 
 - type: entity
-  id: BorgChassisMedicalMk2Battery
-  parent: BorgChassisMedicalMk2
+  id: FishBorgChassisMedicalMk2Battery
+  parent: FishBorgChassisMedicalMk2
   suffix: Battery
   components:
   - type: ContainerFill
@@ -299,8 +299,8 @@
         startingItem: PowerCellHigh
 
 - type: entity
-  id: BorgChassisGenericMk2Battery
-  parent: BorgChassisGenericMk2
+  id: FishBorgChassisGenericMk2Battery
+  parent: FishBorgChassisGenericMk2
   suffix: Battery
   components:
   - type: ContainerFill
@@ -314,8 +314,8 @@
         startingItem: PowerCellHigh
 
 - type: entity
-  id: BorgChassisEngineerMk2Battery
-  parent: BorgChassisEngineerMk2
+  id: FishBorgChassisEngineerMk2Battery
+  parent: FishBorgChassisEngineerMk2
   suffix: Battery
   components:
   - type: ContainerFill
@@ -329,8 +329,8 @@
         startingItem: PowerCellHigh
 
 - type: entity
-  id: BorgChassisMiningMk2Battery
-  parent: BorgChassisMiningMk2
+  id: FishBorgChassisMiningMk2Battery
+  parent: FishBorgChassisMiningMk2
   suffix: Battery
   components:
   - type: ContainerFill
@@ -344,8 +344,8 @@
         startingItem: PowerCellHigh
 
 - type: entity
-  id: BorgChassisJanitorMk2Battery
-  parent: BorgChassisJanitorMk2
+  id: FishBorgChassisJanitorMk2Battery
+  parent: FishBorgChassisJanitorMk2
   suffix: Battery
   components:
   - type: ContainerFill
@@ -359,8 +359,8 @@
         startingItem: PowerCellHigh
 
 - type: entity
-  id: BorgChassisServiceMk2Battery
-  parent: BorgChassisServiceMk2
+  id: FishBorgChassisServiceMk2Battery
+  parent: FishBorgChassisServiceMk2
   suffix: Battery
   components:
   - type: ContainerFill
@@ -374,8 +374,8 @@
         startingItem: PowerCellHigh
 
 - type: entity
-  id: BorgChassisPeaceMk2Battery
-  parent: BorgChassisPeaceMk2
+  id: FishBorgChassisPeaceMk2Battery
+  parent: FishBorgChassisPeaceMk2
   suffix: Battery
   components:
   - type: ContainerFill
@@ -389,8 +389,8 @@
         startingItem: PowerCellHigh
 
 - type: entity
-  id: BorgChassisClownMk2Battery
-  parent: BorgChassisClownMk2
+  id: FishBorgChassisClownMk2Battery
+  parent: FishBorgChassisClownMk2
   suffix: Battery
   components:
   - type: ContainerFill
@@ -404,8 +404,8 @@
         startingItem: PowerCellHigh
 
 - type: entity
-  id: BorgChassisSecurityMk2Battery
-  parent: BorgChassisSecurityMk2
+  id: FishBorgChassisSecurityMk2Battery
+  parent: FishBorgChassisSecurityMk2
   suffix: Battery
   components:
   - type: ContainerFill
@@ -419,7 +419,7 @@
         startingItem: PowerCellHigh
 
 - type: entity
-  id: BorgChassisServiceMk2
+  id: FishBorgChassisServiceMk2
   parent: BorgChassisService
   name: service cyborg Mk2
   components:
@@ -473,10 +473,10 @@
     activeHandId: hand_right
     showInHands: true
   - type: BorgSwitchableType
-    selectedBorgType: serviceMk2
+    selectedBorgType: FishServiceMk2
 
 - type: entity
-  id: BorgChassisPeaceMk2
+  id: FishBorgChassisPeaceMk2
   parent: BorgChassisPeace
   name: peace cyborg Mk2
   components:
@@ -530,10 +530,10 @@
     activeHandId: hand_right
     showInHands: true
   - type: BorgSwitchableType
-    selectedBorgType: peaceMk2
+    selectedBorgType: FishPeaceMk2
 
 - type: entity
-  id: BorgChassisClownMk2
+  id: FishBorgChassisClownMk2
   parent: BorgChassisClown
   name: clown cyborg Mk2
   components:
@@ -587,10 +587,10 @@
     activeHandId: hand_right
     showInHands: true
   - type: BorgSwitchableType
-    selectedBorgType: clownMk2
+    selectedBorgType: FishClownMk2
 
 - type: entity
-  id: BorgChassisSecurityMk2
+  id: FishBorgChassisSecurityMk2
   parent: BorgChassisSecurity
   name: security cyborg Mk2
   components:
@@ -644,4 +644,4 @@
     activeHandId: hand_right
     showInHands: true
   - type: BorgSwitchableType
-    selectedBorgType: securityMk2
+    selectedBorgType: FishSecurityMk2

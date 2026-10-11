@@ -15,7 +15,7 @@
 # Обычные борги на эти шаблоны не переходят — у них остаются borgShort/borgTall/borgDutch.
 
 - type: inventoryTemplate
-  id: borgShortMk2
+  id: FishBorgShortMk2
   slots:
   - name: head
     slotTexture: head
@@ -49,7 +49,7 @@
     offset: 0,-0.25
 
 - type: inventoryTemplate
-  id: borgTallMk2
+  id: FishBorgTallMk2
   slots:
   - name: head
     slotTexture: head
@@ -84,7 +84,7 @@
 
 # taller than tall
 - type: inventoryTemplate
-  id: borgDutchMk2
+  id: FishBorgDutchMk2
   slots:
   - name: head
     slotTexture: head

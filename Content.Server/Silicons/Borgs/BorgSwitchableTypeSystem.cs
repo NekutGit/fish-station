@@ -162,7 +162,7 @@ public sealed partial class BorgSwitchableTypeSystem : SharedBorgSwitchableTypeS
 
         _borgSystem.SetTransponderName(
             (ent.Owner, transponder),
-            Loc.GetString($"borg-type-{borgType}-transponder"));
+            Loc.GetString(prototype.GetLocKey("transponder")));
     }
     // Fish-End
 }

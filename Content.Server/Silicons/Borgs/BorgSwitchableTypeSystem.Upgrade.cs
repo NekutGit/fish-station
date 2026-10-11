@@ -44,7 +44,7 @@ public sealed partial class BorgSwitchableTypeSystem
     // Поток взаимидействия разбит по схеме OnEvent -> Try -> Can -> Do:
     // обработчики событий тонкие, условия — в Can*, побочные эффекты — в Do*.
 
-    private void OnUpgradeInteract(EntityUid uid, BorgUpgradeModuleComponent comp, AfterInteractEvent args)
+    private void OnUpgradeInteract(Entity<BorgUpgradeModuleComponent> ent, ref AfterInteractEvent args)
     {
         if (args.Handled || !args.CanReach || args.Target is not { } target)
             return;
@@ -57,13 +57,13 @@ public sealed partial class BorgSwitchableTypeSystem
         // и не должны прокидывать взаимодействие дальше.
         args.Handled = true;
 
-        TryStartUpgrade((uid, comp), target, args.User);
+        TryStartUpgrade(ent, target, args.User);
     }
 
-    private void OnUpgradeDoAfter(EntityUid uid, BorgUpgradeModuleComponent comp, BorgUpgradeDoAfterEvent args)
+    private void OnUpgradeDoAfter(Entity<BorgUpgradeModuleComponent> ent, ref BorgUpgradeDoAfterEvent args)
     {
         // Звук глушим первым, до любой проверки — иначе он останется играть после отмены.
-        _ambientSoundSystem.SetAmbience(uid, false);
+        _ambientSoundSystem.SetAmbience(ent.Owner, false);
 
         // Очистка состояния активного взаимодействия — независимо от исхода DoAfter:
         // и при отмене, и при завершении следующий апгрейд должен видеть null.
@@ -76,7 +76,7 @@ public sealed partial class BorgSwitchableTypeSystem
         if (args.Cancelled || args.Handled || args.Target is not { } target)
             return;
 
-        args.Handled = TryFinishUpgrade((uid, comp), target, args.User);
+        args.Handled = TryFinishUpgrade(ent, target, args.User);
     }
 
     /// <summary>
@@ -220,8 +220,8 @@ public sealed partial class BorgSwitchableTypeSystem
 
     /// <summary>
     /// Определяет Mk2-вариант для текущего типа борга по конвенции именования: у типа X
-    /// существует скрытый от меню тип XMk2. Проще и безопаснее явной таблицы соответствий —
-    /// править чужие borgType-прототипы не приходится.
+    /// существует скрытый от меню Fish-тип FishXMk2. Проще и безопаснее явной таблицы
+    /// соответствий — править чужие borgType-прототипы не приходится.
     /// </summary>
     private bool TryGetUpgradeTarget(ProtoId<BorgTypePrototype>? source, out ProtoId<BorgTypePrototype> target)
     {
@@ -230,10 +230,16 @@ public sealed partial class BorgSwitchableTypeSystem
         if (source is not { } sourceId)
             return false;
 
-        if (!Prototypes.TryIndex(sourceId.ToString(), out BorgTypePrototype? sourceProto) || sourceProto.HideInMenu)
+        var sourceStr = sourceId.ToString();
+
+        if (!Prototypes.TryIndex(sourceStr, out BorgTypePrototype? sourceProto) || sourceProto.HideInMenu)
             return false;
 
-        var candidate = $"{sourceId}Mk2";
+        if (sourceStr.Length == 0)
+            return false;
+
+        // Fish-прототипы форка обязаны иметь Fish-префикс: generic → FishGenericMk2.
+        var candidate = $"Fish{char.ToUpperInvariant(sourceStr[0])}{sourceStr[1..]}Mk2";
 
         if (!Prototypes.TryIndex(candidate, out BorgTypePrototype? targetProto) || !targetProto.HideInMenu)
             return false;
@@ -357,8 +363,8 @@ public sealed partial class BorgSwitchableTypeSystem
     /// </summary>
     private static readonly string[] Mk2ArmorUpgradeWhitelist =
     [
-        "BorgChassisSecurityMk2",
-        "BorgChassisPeaceMk2",
+        "FishBorgChassisSecurityMk2",
+        "FishBorgChassisPeaceMk2",
     ];
 
     /// <summary>

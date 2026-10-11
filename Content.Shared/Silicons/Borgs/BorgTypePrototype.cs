@@ -14,6 +14,7 @@ using System.Numerics;
 using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom.Prototype.Array;
 // Fish-edit
 using Robust.Shared.Utility;
+using System.Text;
 
 namespace Content.Shared.Silicons.Borgs;
 
@@ -59,6 +60,42 @@ public sealed partial class BorgTypePrototype : IPrototype, IInheritingPrototype
     /// </summary>
     [DataField]
     public bool HideInMenu;
+    // Fish-End
+
+    // Fish-Start
+    // FTL-ключи borgType (name/desc/transponder) генерируются из ID прототипа.
+    // Ванильные ID — lowercase (generic), Fish-префиксы — CamelCase (FishGenericMk2),
+    // поэтому ID переводится в kebab-case: ключи вида borg-type-fish-generic-mk2-name.
+    /// <summary>
+    /// Строит FTL-ключ <c>borg-type-{kebab-case ID}-{suffix}</c> для name/desc/transponder.
+    /// </summary>
+    public string GetLocKey(string suffix) => $"borg-type-{ToKebabId(ID)}-{suffix}";
+
+    /// <summary>
+    /// CamelCase → kebab-case для построения FTL-ключей из ID прототипа:
+    /// <c>FishGenericMk2</c> → <c>fish-generic-mk2</c>, <c>generic</c> → <c>generic</c>.
+    /// </summary>
+    public static string ToKebabId(string id)
+    {
+        var builder = new StringBuilder(id.Length + 8);
+
+        foreach (var ch in id)
+        {
+            if (char.IsUpper(ch))
+            {
+                if (builder.Length > 0)
+                    builder.Append('-');
+
+                builder.Append(char.ToLowerInvariant(ch));
+            }
+            else
+            {
+                builder.Append(ch);
+            }
+        }
+
+        return builder.ToString();
+    }
     // Fish-End
 
     //

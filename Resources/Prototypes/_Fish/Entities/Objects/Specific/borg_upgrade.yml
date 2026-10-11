@@ -3,7 +3,7 @@
 # сущность борга не пересоздаётся — у неё меняется только тип (BorgSwitchableTypeComponent),
 # поэтому мозг, имя, модули и инвентарь остаются на месте.
 - type: entity
-  id: BorgUpgradeModule
+  id: FishBorgUpgradeModule
   parent: BaseSecurityUpgrade
   name: cyborg upgrade module
   description: An upgrade module that converts a standard cyborg into its upgraded Mk2 variant.
