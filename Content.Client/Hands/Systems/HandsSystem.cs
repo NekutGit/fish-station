@@ -12,6 +12,8 @@ using Content.Shared.Hands.EntitySystems;
 using Content.Shared.Humanoid;
 using Content.Shared.Inventory.VirtualItem;
 using Content.Shared.Item;
+using Content.Shared.Silicons.Borgs;
+using Content.Shared.Silicons.Borgs.Components;
 using JetBrains.Annotations;
 using Robust.Client.GameObjects;
 using Robust.Client.Player;
@@ -36,6 +38,7 @@ namespace Content.Client.Hands.Systems
         [Dependency] private SpriteSystem _sprite = default!;
         [Dependency] private ExamineSystem _examine = default!;
         [Dependency] private DisplacementMapSystem _displacement = default!;
+        [Dependency] private IPrototypeManager _prototype = default!;
 
         public event Action<string?>? OnPlayerSetActiveHand;
         public event Action<Entity<HandsComponent>>? OnPlayerHandsAdded;
@@ -339,9 +342,12 @@ namespace Content.Client.Hands.Systems
 
                 _sprite.LayerSetData((ent, sprite), index, layerData);
 
-                // Fish: у боргов со смещённым корнем спрайта (SpriteOffset) предметы в руках
-                // поднимаются вместе с телом и оказываются чуть выше нужного — компенсируем на 0.25.
-                if (sprite.Offset != Vector2.Zero && sprite[index] is Layer layer)
+                // Fish: у боргов со смещённым корнем спрайта (SpriteOffset у borgType, Mk2)
+                // предметы в руках поднимаются вместе с телом и оказываются чуть выше
+                // нужного — компенсируем на 0.25. Самих боргов определяем по настройке
+                // типа, а не по ненулевому Offset спрайта: Offset могут иметь и чужие сущности,
+                // для которых компенсация не нужна и каждый апдейт сдвигал бы слой ещё на 0.25.
+                if (NeedsMk2HandOffsetCompensation(ent.Owner) && sprite[index] is Layer layer)
                 {
                     _sprite.LayerSetOffset(layer, layer.Offset + new Vector2(0f, -0.25f));
                 }
@@ -360,6 +366,27 @@ namespace Content.Client.Hands.Systems
 
             RaiseLocalEvent(held, new HeldVisualsUpdatedEvent(ent, revealedLayers), true);
         }
+
+        // Fish-Start
+        /// <summary>
+        /// Нужна ли компенсация смещения in-hand слоёв (-0.25 по Y): только для боргов,
+        /// чей выбранный borgType задаёт ненулевой <see cref="BorgTypePrototype.SpriteOffset"/>
+        /// (Mk2 со смещённым на 0,0.5 корнем спрайта). Сущности без BorgSwitchableTypeComponent
+        /// или с типом без SpriteOffset компенсация не применяется.
+        /// </summary>
+        private bool NeedsMk2HandOffsetCompensation(EntityUid uid)
+        {
+            if (!TryComp<BorgSwitchableTypeComponent>(uid, out var switchable))
+                return false;
+
+            if (switchable.SelectedBorgType is not { } borgType)
+                return false;
+
+            return _prototype.TryIndex(borgType, out BorgTypePrototype? prototype)
+                && prototype.SpriteOffset is { } offset
+                && offset != Vector2.Zero;
+        }
+        // Fish-End
 
         private void OnVisualsChanged(EntityUid uid, HandsComponent component, VisualsChangedEvent args)
         {

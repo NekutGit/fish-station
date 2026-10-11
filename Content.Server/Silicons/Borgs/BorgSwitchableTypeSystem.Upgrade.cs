@@ -232,11 +232,14 @@ public sealed partial class BorgSwitchableTypeSystem
 
         var sourceStr = sourceId.ToString();
 
-        if (!Prototypes.TryIndex(sourceStr, out BorgTypePrototype? sourceProto) || sourceProto.HideInMenu)
+        // Пустую строку проверяем до индексации: TryIndex на "" всегда неудачен,
+        // а кандидат Fish{char.ToUpperInvariant(sourceStr[0])}... бросил бы IndexOutOfRange.
+        if (sourceStr.Length == 0
+            || !Prototypes.TryIndex(sourceStr, out BorgTypePrototype? sourceProto)
+            || sourceProto.HideInMenu)
+        {
             return false;
-
-        if (sourceStr.Length == 0)
-            return false;
+        }
 
         // Fish-прототипы форка обязаны иметь Fish-префикс: generic → FishGenericMk2.
         var candidate = $"Fish{char.ToUpperInvariant(sourceStr[0])}{sourceStr[1..]}Mk2";
