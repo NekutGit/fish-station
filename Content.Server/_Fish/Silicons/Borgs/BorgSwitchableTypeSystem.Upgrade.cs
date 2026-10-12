@@ -11,6 +11,8 @@ using Content.Shared.Popups;
 using Content.Shared.PowerCell;
 using Content.Shared.PowerCell.Components;
 using Content.Shared.Roles;
+using Content.Shared._Fish.Silicons.Borgs;
+using Content.Shared._Fish.Silicons.Borgs.Components;
 using Content.Shared.Silicons.Borgs;
 using Content.Shared.Silicons.Borgs.Components;
 using Robust.Shared.Prototypes;
