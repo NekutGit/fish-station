@@ -318,6 +318,10 @@ namespace Content.Client.Hands.Systems
                 return;
             }
 
+            // Fish: компенсация in-hand смещения Mk2 зависит только от сущности и её
+            // borgType, а не от слоя — вычисляем один раз на вызов вне цикла по слоям.
+            var needsMk2Compensation = NeedsMk2HandOffsetCompensation(ent.Owner); // Fish-Edit
+
             // add the new layers
             foreach (var (key, layerData) in ev.Layers)
             {
@@ -342,7 +346,7 @@ namespace Content.Client.Hands.Systems
 
                 _sprite.LayerSetData((ent, sprite), index, layerData);
 
-                ApplyMk2HandOffsetCompensation((ent, sprite), index); // Fish-Edit
+                ApplyMk2HandOffsetCompensation((ent, sprite), index, needsMk2Compensation); // Fish-Edit
 
                 // Add displacement maps
                 var displacement = hand.Value.Location switch

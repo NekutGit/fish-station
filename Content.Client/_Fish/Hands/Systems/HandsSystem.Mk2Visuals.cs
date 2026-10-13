@@ -34,13 +34,13 @@ public sealed partial class HandsSystem
     /// Fish: компенсирует смещение in-hand слоя (-0.25 по Y) для боргов Mk2.
     /// Вызывается после LayerSetData: у боргов со смещённым корнем спрайта
     /// (SpriteOffset у borgType) предметы в руках поднимаются вместе с телом
-    /// и оказываются чуть выше нужного. Самих боргов определяем по настройке
-    /// типа, а не по ненулевому Offset спрайта: Offset могут иметь и чужие сущности,
-    /// для которых компенсация не нужна и каждый апдейт сдвигал бы слой ещё на 0.25.
+    /// и оказываются чуть выше нужного. Результат <see cref="NeedsMk2HandOffsetCompensation"/>
+    /// вычисляется вызывающим один раз на UpdateHandVisuals вне цикла по слоям
+    /// и передаётся сюда, чтобы не повторять TryComp/TryIndex для каждого слоя.
     /// </summary>
-    private void ApplyMk2HandOffsetCompensation(Entity<SpriteComponent> spriteEnt, int layerIndex)
+    private void ApplyMk2HandOffsetCompensation(Entity<SpriteComponent> spriteEnt, int layerIndex, bool needsCompensation)
     {
-        if (!NeedsMk2HandOffsetCompensation(spriteEnt.Owner))
+        if (!needsCompensation)
             return;
 
         if (spriteEnt.Comp[layerIndex] is not Layer layer)
