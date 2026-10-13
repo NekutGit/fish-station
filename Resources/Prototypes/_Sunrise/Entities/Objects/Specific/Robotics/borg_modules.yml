@@ -407,7 +407,7 @@
     - item: RubberStampDenied
     - item: BooksBag
       hand:
-        location: Functional
+        location: Functional # Fish-Edit
         emptyLabel: borg-slot-documents-empty
         emptyRepresentative: BookBase
         whitelist:

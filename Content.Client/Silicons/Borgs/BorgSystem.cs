@@ -42,13 +42,16 @@ public sealed partial class BorgSystem : SharedBorgSystem
             bui.Update();
     }
 
+    /// <summary>
+    /// Fish: wreck-спрайт Mk2 в крите
+    /// </summary>
     private void OnBorgAppearanceChanged(Entity<BorgChassisComponent> chassis, ref AppearanceChangeEvent args)
     {
         if (args.Sprite == null)
             return;
 
         UpdateBorgAppearance((chassis.Owner, chassis.Comp, args.Component, args.Sprite));
-        UpdateBorgWreckAppearance(chassis, ref args); // Fish: wreck-спрайт Mk2 в крите
+        UpdateBorgWreckAppearance(chassis, ref args); // Fish-Edit
     }
 
     protected override void OnInserted(Entity<BorgChassisComponent> chassis, ref EntInsertedIntoContainerMessage args)

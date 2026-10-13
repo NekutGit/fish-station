@@ -1,11 +1,10 @@
-// Необходимо поскольку этот partial класс расширяет ванильный тип и должен сохранять исходный namespace несмотря на расположение файла в _Fish
-#pragma warning disable IDE0130 // Namespace does not match folder structure
 using Content.Shared.Mobs;
 using Content.Shared.Silicons.Borgs;
 using Content.Shared.Silicons.Borgs.Components;
 using Robust.Client.GameObjects;
 using Robust.Shared.Prototypes;
 
+#pragma warning disable IDE0130 // Необходимо поскольку этот partial класс расширяет ванильный тип и должен сохранять исходный namespace несмотря на расположение файла в _Fish
 namespace Content.Client.Silicons.Borgs;
 
 /// <summary>
@@ -17,12 +16,20 @@ public sealed partial class BorgSystem
 {
     [Dependency] private IPrototypeManager _wreckPrototypes = default!;
 
+    /// <summary>
+    /// Переключает Body-слой на wreck-состояние борга Mk2 в критическом/мёртвом
+    /// состоянии и обратно при возврате в Alive. Wreck-спрайт есть только у типов,
+    /// задавших <see cref="BorgTypePrototype.SpriteWreckState"/>.
+    /// Также гасит слой фонаря (LightStatus) в крите: сервер уже вызывает
+    /// HandheldLight.TurnOff через BorgNoFallSystem, но визуал обновляется с задержкой —
+    /// прячем сразу на клиенте. При возврате в Alive слой восстановит ToggleableVisuals
+    /// при включении фонаря.
+    /// </summary>
     private void UpdateBorgWreckAppearance(Entity<BorgChassisComponent> chassis, ref AppearanceChangeEvent args)
     {
         if (args.Sprite == null)
             return;
 
-        // Wreck-спрайт есть только у типов, задавших SpriteWreckState (Mk2).
         if (!TryComp<BorgSwitchableTypeComponent>(chassis, out var switchable))
             return;
 
@@ -43,10 +50,6 @@ public sealed partial class BorgSystem
 
         _sprite.LayerSetRsiState((chassis.Owner, args.Sprite), BorgVisualLayers.Body, bodyState!);
 
-        // Страховка: в крите гасим слой фонаря (LightStatus), чтобы он не накладывался
-        // на wreck-спрайт. Сервер уже вызывает HandheldLight.TurnOff через BorgNoFallSystem,
-        // но визуал обновляется с задержкой — прячем сразу на клиенте.
-        // При возврате в Alive слой восстановит ToggleableVisuals при включении фонаря.
         if (state != MobState.Alive)
             _sprite.LayerSetVisible((chassis.Owner, args.Sprite), BorgVisualLayers.LightStatus, false);
     }

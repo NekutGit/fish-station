@@ -6,8 +6,6 @@ using Robust.Client.Animations;
 using Robust.Client.GameObjects;
 using Robust.Shared.Animations;
 using Robust.Shared.Map;
-using Content.Shared.Silicons.Borgs; // Fish-Edit
-using Content.Shared.Silicons.Borgs.Components; // Fish-Edit
 
 namespace Content.Client.Weapons.Melee;
 
@@ -25,24 +23,18 @@ public sealed partial class MeleeWeaponSystem
         if (!Timing.IsFirstTimePredicted)
             return;
 
-        // Fish-Start
-        // <summary>
         // Fish: база lunge-анимации — постоянное смещение спрайта (borgType или прототип),
         // а не текущий Offset: во время уже идущего lunge Offset содержит промежуточный
         // кадр, и повторный удар закрепил бы его как базовый — спрайт бы «дрейфовал».
         // Для мобов без смещения поведение не меняется.
-        // </summary>
         var baseOffset = GetBaseSpriteOffset(user);
 
-        // <summary>
         // Fish: амплитуда lunge задаётся в мировых метрах (корневой Offset Scale не
         // масштабируется), поэтому для уменьшенных спрайтов (Mk2, Scale 0.75) вылет
         // приводим к масштабу тела — иначе смещение выглядело бы относительно сильнее.
-        // </summary>
         var lungeScale = TryComp(user, out SpriteComponent? userSprite) ? userSprite.Scale.X : 1f;
 
         var lunge = GetLungeAnimation(localPos, baseOffset, lungeScale);
-        // Fish-End
 
         // Stop any existing lunges on the user.
         _animation.Stop(user, MeleeLungeKey);
@@ -112,34 +104,6 @@ public sealed partial class MeleeWeaponSystem
                 break;
         }
     }
-
-    /// <summary>
-    /// Fish: постоянное смещение корня спрайта для базы lunge-анимации.
-    /// Для боргов берётся <see cref="BorgTypePrototype.SpriteOffset"/> выбранного типа
-    /// (он применяется на лету к SpriteComponent и отсутствует в прототипе шасси),
-    /// иначе — offset из компонента Sprite прототипа сущности, иначе Vector2.Zero.
-    /// Текущий SpriteComponent.Offset не используется: во время lunge он содержит
-    /// промежуточный кадр анимации.
-    /// </summary>
-    // Fish-Start
-    private Vector2 GetBaseSpriteOffset(EntityUid uid)
-    {
-        if (TryComp(uid, out BorgSwitchableTypeComponent? switchable)
-            && switchable.SelectedBorgType is { } borgType
-            && _prototype.TryIndex(borgType, out BorgTypePrototype? prototype))
-        {
-            return prototype.SpriteOffset ?? Vector2.Zero;
-        }
-
-        if (MetaData(uid).EntityPrototype?.Components.TryGetComponent("Sprite", out var spriteComp) == true
-            && spriteComp is SpriteComponent protoSprite)
-        {
-            return protoSprite.Offset;
-        }
-
-        return Vector2.Zero;
-    }
-    // Fish-End
 
     /// <summary>
     /// Makes the sprite move in a slash motion around the player.
@@ -246,44 +210,6 @@ public sealed partial class MeleeWeaponSystem
                     }
                 }
             }
-        };
-    }
-
-    /// <summary>
-    /// Gets the sprite offset animation to use for mob lunges.
-    /// This is applied to the attacker to show who is attacking.
-    /// Fish: keyframes считаются от baseOffset (текущий Offset спрайта), чтобы не затирать
-    /// пользовательские смещения — иначе после lunge Offset сбрасывается в ноль и не восстанавливается.
-    /// lungeScale — масштаб спрайта атакующего: амплитуда 0.15 задана в мировых метрах
-    /// (корневой Offset Scale не масштабируется), для уменьшенных спрайтов (Mk2) вылет
-    /// уменьшается пропорционально телу.
-    /// </summary>
-    private Animation GetLungeAnimation(Vector2 direction, Vector2 baseOffset, float lungeScale = 1f) // Fish-Edit
-    {
-        const float length = 0.1f;
-
-        var amplitude = 0.15f * lungeScale; // Fish-Edit
-
-        return new Animation
-        {
-            Length = TimeSpan.FromSeconds(length),
-            AnimationTracks =
-            {
-                new AnimationTrackComponentProperty()
-                {
-                    ComponentType = typeof(SpriteComponent),
-                    Property = nameof(SpriteComponent.Offset),
-                    InterpolationMode = AnimationInterpolationMode.Linear,
-                    KeyFrames =
-                    {
-                        // Fish-Start
-                        new AnimationTrackProperty.KeyFrame(baseOffset, 0f),
-                        new AnimationTrackProperty.KeyFrame(baseOffset + direction.Normalized() * amplitude, length*0.4f),
-                        new AnimationTrackProperty.KeyFrame(baseOffset, length*0.6f),
-                        // Fish-End
-                    },
-                },
-            },
         };
     }
 

@@ -96,7 +96,7 @@
   - type: Hands
     showInHands: false
     disableExplosionRecursion: true
-    canBeStripped: true
+    canBeStripped: true # Fish-Edit
   - type: ComplexInteraction
   - type: IntrinsicRadioReceiver
   - type: IntrinsicRadioTransmitter

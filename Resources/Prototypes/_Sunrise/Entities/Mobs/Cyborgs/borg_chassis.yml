@@ -93,6 +93,7 @@
   - type: Body
   # Fish: постоянные chassis-руки рипера; showInHands включает отображение
   # предметов из этих рук на спрайте. Модульные руки (Functional) не видны.
+  # Fish-Start
   - type: Hands
     hands:
       hand_right:
@@ -104,6 +105,7 @@
     - hand_left
     activeHandId: hand_right
     showInHands: true
+  # Fish-End
   - type: Loadout
     prototypes: [SyndiReaperHardsuitGear]
   - type: FootstepModifier
@@ -521,6 +523,7 @@
     entityTargetActions:
     - AccessBreaker
   # Fish: derelict-рипер тоже несёт постоянные chassis-руки, как и боевой рипер.
+  # Fish-Start
   - type: Hands
     hands:
       hand_right:
@@ -532,6 +535,7 @@
     - hand_left
     activeHandId: hand_right
     showInHands: true
+  # Fish-End
   - type: Construction
     node: derelictcyborg
 

@@ -1,4 +1,5 @@
-﻿using Content.Shared.Inventory;
+﻿using Content.Shared.Interaction.Components;
+using Content.Shared.Inventory;
 using Content.Shared.Radio;
 using Content.Shared.Roles;
 using Content.Shared.Silicons.Borgs.Components;
@@ -6,13 +7,6 @@ using Content.Shared.Whitelist;
 using Robust.Shared.Audio;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom.Prototype;
-// Fish-Start
-using Content.Shared.Interaction.Components;
-using System.Numerics;
-using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom.Prototype.Array;
-using Robust.Shared.Utility;
-using System.Text;
-// Fish-End
 
 namespace Content.Shared.Silicons.Borgs;
 
@@ -21,24 +15,12 @@ namespace Content.Shared.Silicons.Borgs;
 /// </summary>
 /// <seealso cref="SharedBorgSwitchableTypeSystem"/>
 [Prototype]
-public sealed partial class BorgTypePrototype : IPrototype, IInheritingPrototype // Fish-Edit
+public sealed partial class BorgTypePrototype : IPrototype // Fish-Edit: IInheritingPrototype — в _Fish/BorgTypePrototype.Mk2.cs
 {
     private static readonly ProtoId<SoundCollectionPrototype> DefaultFootsteps = new("FootstepBorg");
 
     [IdDataField]
     public required string ID { get; set; }
-
-    // Fish-Start
-    // Поддержка parent: для borgType (Mk2-варианты поверх существующих специализаций).
-    /// <inheritdoc/>
-    [ParentDataField(typeof(AbstractPrototypeIdArraySerializer<BorgTypePrototype>))]
-    public string[]? Parents { get; private set; }
-
-    /// <inheritdoc />
-    [NeverPushInheritance]
-    [AbstractDataField]
-    public bool Abstract { get; private set; }
-    // Fish-End
 
     //
     // Description info (name/desc) is configured via localization strings directly.
@@ -49,52 +31,6 @@ public sealed partial class BorgTypePrototype : IPrototype, IInheritingPrototype
     /// </summary>
     [DataField]
     public required EntProtoId DummyPrototype;
-
-    // Fish-Start
-    // Скрытие типа из меню выбора специализации.
-    /// <summary>
-    /// Не показывать тип в меню выбора специализации.
-    /// Используется для Mk2-вариантов, скрытых от ручного выбора.
-    /// </summary>
-    [DataField]
-    public bool HideInMenu;
-    // Fish-End
-
-    // Fish-Start
-    // FTL-ключи borgType (name/desc/transponder) генерируются из ID прототипа.
-    // Ванильные ID — lowercase (generic), Fish-префиксы — CamelCase (FishGenericMk2),
-    // поэтому ID переводится в kebab-case: ключи вида borg-type-fish-generic-mk2-name.
-    /// <summary>
-    /// Строит FTL-ключ <c>borg-type-{kebab-case ID}-{suffix}</c> для name/desc/transponder.
-    /// </summary>
-    public string GetLocKey(string suffix) => $"borg-type-{ToKebabId(ID)}-{suffix}";
-
-    /// <summary>
-    /// CamelCase → kebab-case для построения FTL-ключей из ID прототипа:
-    /// <c>FishGenericMk2</c> → <c>fish-generic-mk2</c>, <c>generic</c> → <c>generic</c>.
-    /// </summary>
-    public static string ToKebabId(string id)
-    {
-        var builder = new StringBuilder(id.Length + 8);
-
-        foreach (var ch in id)
-        {
-            if (char.IsUpper(ch))
-            {
-                if (builder.Length > 0)
-                    builder.Append('-');
-
-                builder.Append(char.ToLowerInvariant(ch));
-            }
-            else
-            {
-                builder.Append(ch);
-            }
-        }
-
-        return builder.ToString();
-    }
-    // Fish-End
 
     //
     // Functional information
@@ -189,48 +125,6 @@ public sealed partial class BorgTypePrototype : IPrototype, IInheritingPrototype
     /// </summary>
     [DataField]
     public string SpriteToggleLightState { get; set; } = "robot_l";
-
-    // Fish-Start
-    // Отдельный холст спрайта для типов, чей RSI не совпадает с RSI chassis сущности.
-    // Нужен Mk2: у них корпус рисуется из _Lust/Mobs/Silicon/chassis.rsi, а живая сущность
-    // осталась на Mobs/Silicon/chassis.rsi от родительского chassis. Без этого поля
-    // смена borgType меняла бы только state и оставляла старый холст (а у security
-    // state sec_mk2* на vanilla-RSI вообще отсутствует).
-    /// <summary>
-    /// RSI, из которого берутся все слои спрайта. <c>null</c> — RSI не трогаем.
-    /// </summary>
-    [DataField]
-    public ResPath? SpriteRsiPath;
-
-    /// <summary>
-    /// Смещение слоёв спрайта в тайлах. <c>null</c> — смещение не трогаем.
-    /// Для _Lust (холст 32x64 против vanilla 32x32) нужно 0,0.4 (= 0,0.5 × SpriteScale),
-    /// иначе борг висит ниже: корневой Offset задаётся в мировых метрах и корневым
-    /// Scale не масштабируется, а тело на холсте смещено на пол-холста.
-    /// Вешается на корень SpriteComponent, а не на отдельные слои: так runtime-слои
-    /// предметов (in-hand, надетая экипировка) наследуют сдвиг и едут вместе с телом.
-    /// </summary>
-    [DataField]
-    public Vector2? SpriteOffset;
-
-    /// <summary>
-    /// Единый масштаб спрайта типа (по X и Y). <c>null</c> — масштаб сбрасывается в 1.
-    /// Mk2: 0.8 — _Lust-холст крупнее vanilla-пропорций, тело визуально больше тайла.
-    /// Масштабируется всё дерево слоёв, включая in-hand предметы и надетую одежду;
-    /// физика/хитбоксы при этом не меняются.
-    /// </summary>
-    [DataField]
-    public float? SpriteScale;
-
-    /// <summary>
-    /// Состояние спрайта тела в критическом/мёртвом состоянии. <c>null</c> — тело не меняется.
-    /// У Mk2 используется wreck-кадр из _Lust RSI (например, robot_wreck).
-    /// Переключение выполняет клиентский BorgSystem при смене MobStateVisuals.State;
-    /// при возврате в Alive тело восстанавливается в <see cref="SpriteBodyState"/>.
-    /// </summary>
-    [DataField]
-    public string? SpriteWreckState;
-    // Fish-End
 
     //
     // Minor information
