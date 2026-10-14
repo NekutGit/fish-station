@@ -128,8 +128,12 @@ public sealed partial class HandsComponent : Component
 [Serializable, NetSerializable]
 public partial record struct Hand
 {
+    /// <summary>
+    /// Fish: дефолт Functional — модульные руки боргов (BorgHand) в YAML не задают location явно;
+    /// все остальные руки (мобы, HandOrgan, ExtraHandsEquipment) location указывают явно.
+    /// </summary>
     [DataField]
-    public HandLocation Location = HandLocation.Middle;
+    public HandLocation Location = HandLocation.Functional;  // Fish-Edit
 
     /// <summary>
     /// The label to be displayed for this hand when it does not contain an entity
