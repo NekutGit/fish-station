@@ -1,6 +1,7 @@
 using Content.Shared.Mobs;
 using Content.Shared.Silicons.Borgs;
 using Content.Shared.Silicons.Borgs.Components;
+using Content.Shared.Toggleable;
 using Robust.Client.GameObjects;
 using Robust.Shared.Prototypes;
 
@@ -20,10 +21,10 @@ public sealed partial class BorgSystem
     /// Переключает Body-слой на wreck-состояние борга Mk2 в критическом/мёртвом
     /// состоянии и обратно при возврате в Alive. Wreck-спрайт есть только у типов,
     /// задавших <see cref="BorgTypePrototype.SpriteWreckState"/>.
-    /// Также гасит слой фонаря (LightStatus) в крите: сервер уже вызывает
-    /// HandheldLight.TurnOff через BorgNoFallSystem, но визуал обновляется с задержкой —
-    /// прячем сразу на клиенте. При возврате в Alive слой восстановит ToggleableVisuals
-    /// при включении фонаря.
+    /// Также управляет слоем фонаря (LightStatus): в критическом/мёртвом состоянии слой
+    /// скрыт независимо от данных, а при возврате в Alive видимость читается напрямую
+    /// из ToggleableVisuals.Enabled в appearance — так слой синхронен с фактическим
+    /// состоянием фонаря и не зависит от порядка обработчиков AppearanceChangeEvent.
     /// </summary>
     private void UpdateBorgWreckAppearance(Entity<BorgChassisComponent> chassis, ref AppearanceChangeEvent args)
     {
@@ -50,7 +51,16 @@ public sealed partial class BorgSystem
 
         _sprite.LayerSetRsiState((chassis.Owner, args.Sprite), BorgVisualLayers.Body, bodyState!);
 
-        if (state != MobState.Alive)
-            _sprite.LayerSetVisible((chassis.Owner, args.Sprite), BorgVisualLayers.LightStatus, false);
+        var lightVisible = false;
+        if (state == MobState.Alive)
+        {
+            _appearance.TryGetData<bool>(
+                chassis.Owner,
+                ToggleableVisuals.Enabled,
+                out lightVisible,
+                args.Component);
+        }
+
+        _sprite.LayerSetVisible((chassis.Owner, args.Sprite), BorgVisualLayers.LightStatus, lightVisible);
     }
 }

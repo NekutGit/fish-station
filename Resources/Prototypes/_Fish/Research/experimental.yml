@@ -1,4 +1,4 @@
-# Fish: T3-технология Experimental, открывающая рецепт апгрейд-модуля борга до Mk2.
+# T3-технология Experimental, открывающая рецепт апгрейд-модуля борга до Mk2.
 # Иконка — кадр Generic Borg Mk2, вырезанный из _Lust/Mobs/Silicon/chassis.rsi/robot_tipped.png.
 - type: technology
   id: FishAdvancedCyborgChassis

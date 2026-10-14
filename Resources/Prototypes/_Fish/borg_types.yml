@@ -14,7 +14,7 @@
   parent: generic
   hideInMenu: true
   dummyPrototype: FishBorgChassisGenericMk2
-  # Fish: шаблон с belt-слотом (обычные борги остаются на borgShort/borgTall/borgDutch).
+  # Шаблон с belt-слотом (обычные борги остаются на borgShort/borgTall/borgDutch).
   inventoryTemplateId: FishBorgShortMk2
   # Mk2 рисуется с холста _Lust вместо Mobs/Silicon/chassis.rsi: масштаб 0.8
   # (тело крупнее vanilla-пропорций) и смещение 0,0.4 (= 0,0.5 × 0.8,
@@ -29,7 +29,7 @@
   parent: engineering
   hideInMenu: true
   dummyPrototype: FishBorgChassisEngineerMk2
-  # Fish: шаблон с belt-слотом (обычные борги остаются на borgShort/borgTall/borgDutch).
+  # Шаблон с belt-слотом (обычные борги остаются на borgShort/borgTall/borgDutch).
   inventoryTemplateId: FishBorgShortMk2
   spriteRsiPath: _Lust/Mobs/Silicon/chassis.rsi
   spriteScale: 0.8
@@ -41,7 +41,7 @@
   parent: mining
   hideInMenu: true
   dummyPrototype: FishBorgChassisMiningMk2
-  # Fish: шаблон с belt-слотом (обычные борги остаются на borgShort/borgTall/borgDutch).
+  # Шаблон с belt-слотом (обычные борги остаются на borgShort/borgTall/borgDutch).
   inventoryTemplateId: FishBorgTallMk2
   # miner_moving в _Lust отсутствует — кадр ходьбы откатываем на корпус,
   # чтобы не ловить State not found при движении.
@@ -56,7 +56,7 @@
   parent: janitor
   hideInMenu: true
   dummyPrototype: FishBorgChassisJanitorMk2
-  # Fish: шаблон с belt-слотом (обычные борги остаются на borgShort/borgTall/borgDutch).
+  # Шаблон с belt-слотом (обычные борги остаются на borgShort/borgTall/borgDutch).
   inventoryTemplateId: FishBorgShortMk2
   spriteBodyMovementState: janitor
   spriteRsiPath: _Lust/Mobs/Silicon/chassis.rsi
@@ -69,7 +69,7 @@
   parent: medical
   hideInMenu: true
   dummyPrototype: FishBorgChassisMedicalMk2
-  # Fish: шаблон с belt-слотом (обычные борги остаются на borgShort/borgTall/borgDutch).
+  # Шаблон с belt-слотом (обычные борги остаются на borgShort/borgTall/borgDutch).
   inventoryTemplateId: FishBorgDutchMk2
   spriteBodyMovementState: medical
   spriteRsiPath: _Lust/Mobs/Silicon/chassis.rsi
@@ -82,7 +82,7 @@
   parent: service
   hideInMenu: true
   dummyPrototype: FishBorgChassisServiceMk2
-  # Fish: шаблон с belt-слотом (обычные борги остаются на borgShort/borgTall/borgDutch).
+  # Шаблон с belt-слотом (обычные борги остаются на borgShort/borgTall/borgDutch).
   inventoryTemplateId: FishBorgTallMk2
   spriteRsiPath: _Lust/Mobs/Silicon/chassis.rsi
   spriteScale: 0.8
@@ -94,7 +94,7 @@
   parent: peace
   hideInMenu: true
   dummyPrototype: FishBorgChassisPeaceMk2
-  # Fish: шаблон с belt-слотом (обычные борги остаются на borgShort/borgTall/borgDutch).
+  # Шаблон с belt-слотом (обычные борги остаются на borgShort/borgTall/borgDutch).
   inventoryTemplateId: FishBorgTallMk2
   spriteRsiPath: _Lust/Mobs/Silicon/chassis.rsi
   spriteScale: 0.8
@@ -106,7 +106,7 @@
   parent: clown
   hideInMenu: true
   dummyPrototype: FishBorgChassisClownMk2
-  # Fish: шаблон с belt-слотом (обычные борги остаются на borgShort/borgTall/borgDutch).
+  # Шаблон с belt-слотом (обычные борги остаются на borgShort/borgTall/borgDutch).
   inventoryTemplateId: FishBorgTallMk2
   spriteRsiPath: _Lust/Mobs/Silicon/chassis.rsi
   spriteScale: 0.8
@@ -118,7 +118,7 @@
   parent: security
   hideInMenu: true
   dummyPrototype: FishBorgChassisSecurityMk2
-  # Fish: шаблон с belt-слотом (обычные борги остаются на borgShort/borgTall/borgDutch).
+  # Шаблон с belt-слотом (обычные борги остаются на borgShort/borgTall/borgDutch).
   inventoryTemplateId: FishBorgTallMk2
   spriteBodyState: sec_mk2
   spriteHasMindState: sec_mk2_e

@@ -53,7 +53,7 @@
     - hand_left
     activeHandId: hand_right
     showInHands: true
-  # Fish: не падает в крите и гасит фонарь (BorgNoFallSystem).
+  # Не падает в крите и гасит фонарь (BorgNoFallSystem).
   - type: BorgNoFall
   - type: BorgSwitchableType
     selectedBorgType: FishGenericMk2
@@ -94,13 +94,13 @@
       300: Dead
   - type: PowerCellDraw
     drawRate: 0.5
-  # Fish: броня Mk2 при апгрейде запрещена — оставляем штатную BorgArmorSiliconLoadout из BaseBorgChassisNT.
+  # Броня Mk2 при апгрейде запрещена — оставляем штатную BorgArmorSiliconLoadout из BaseBorgChassisNT.
   - type: Loadout
     prototypes: [ BorgArmorSiliconLoadout ]
-  # Fish: AI видит Mk2 на 7 тайлов вместо 3 (стандарт для всех боргов).
+  # AI видит Mk2 на 7 тайлов вместо 3 (стандарт для всех боргов).
   - type: StationAiVision
     range: 7
-  # Fish: постоянные chassis-руки только у Mk2 (и риперов); showInHands включает
+  # Постоянные chassis-руки только у Mk2 (и риперов); showInHands включает
   # отображение предметов из этих рук на спрайте. Модульные руки (Functional) не видны.
   - type: Hands
     hands:
@@ -113,7 +113,7 @@
     - hand_left
     activeHandId: hand_right
     showInHands: true
-  # Fish: не падает в крите и гасит фонарь (BorgNoFallSystem).
+  # Не падает в крите и гасит фонарь (BorgNoFallSystem).
   - type: BorgNoFall
   - type: BorgSwitchableType
     selectedBorgType: FishEngineeringMk2
@@ -154,13 +154,13 @@
       300: Dead
   - type: PowerCellDraw
     drawRate: 0.5
-  # Fish: броня Mk2 при апгрейде запрещена — оставляем штатную BorgArmorSiliconLoadout из BaseBorgChassisNT.
+  # Броня Mk2 при апгрейде запрещена — оставляем штатную BorgArmorSiliconLoadout из BaseBorgChassisNT.
   - type: Loadout
     prototypes: [ BorgArmorSiliconLoadout ]
-  # Fish: AI видит Mk2 на 7 тайлов вместо 3 (стандарт для всех боргов).
+  # AI видит Mk2 на 7 тайлов вместо 3 (стандарт для всех боргов).
   - type: StationAiVision
     range: 7
-  # Fish: постоянные chassis-руки только у Mk2 (и риперов); showInHands включает
+  # Постоянные chassis-руки только у Mk2 (и риперов); showInHands включает
   # отображение предметов из этих рук на спрайте. Модульные руки (Functional) не видны.
   - type: Hands
     hands:
@@ -173,7 +173,7 @@
     - hand_left
     activeHandId: hand_right
     showInHands: true
-  # Fish: не падает в крите и гасит фонарь (BorgNoFallSystem).
+  # Не падает в крите и гасит фонарь (BorgNoFallSystem).
   - type: BorgNoFall
   - type: BorgSwitchableType
     selectedBorgType: FishMiningMk2
@@ -214,13 +214,13 @@
       300: Dead
   - type: PowerCellDraw
     drawRate: 0.5
-  # Fish: броня Mk2 при апгрейде запрещена — оставляем штатную BorgArmorSiliconLoadout из BaseBorgChassisNT.
+  # Броня Mk2 при апгрейде запрещена — оставляем штатную BorgArmorSiliconLoadout из BaseBorgChassisNT.
   - type: Loadout
     prototypes: [ BorgArmorSiliconLoadout ]
-  # Fish: AI видит Mk2 на 7 тайлов вместо 3 (стандарт для всех боргов).
+  # AI видит Mk2 на 7 тайлов вместо 3 (стандарт для всех боргов).
   - type: StationAiVision
     range: 7
-  # Fish: постоянные chassis-руки только у Mk2 (и риперов); showInHands включает
+  # Постоянные chassis-руки только у Mk2 (и риперов); showInHands включает
   # отображение предметов из этих рук на спрайте. Модульные руки (Functional) не видны.
   - type: Hands
     hands:
@@ -233,7 +233,7 @@
     - hand_left
     activeHandId: hand_right
     showInHands: true
-  # Fish: не падает в крите и гасит фонарь (BorgNoFallSystem).
+  # Не падает в крите и гасит фонарь (BorgNoFallSystem).
   - type: BorgNoFall
   - type: BorgSwitchableType
     selectedBorgType: FishJanitorMk2
@@ -274,13 +274,13 @@
       300: Dead
   - type: PowerCellDraw
     drawRate: 0.5
-  # Fish: броня Mk2 при апгрейде запрещена — оставляем штатную BorgArmorSiliconLoadout из BaseBorgChassisNT.
+  # Броня Mk2 при апгрейде запрещена — оставляем штатную BorgArmorSiliconLoadout из BaseBorgChassisNT.
   - type: Loadout
     prototypes: [ BorgArmorSiliconLoadout ]
-  # Fish: AI видит Mk2 на 7 тайлов вместо 3 (стандарт для всех боргов).
+  # AI видит Mk2 на 7 тайлов вместо 3 (стандарт для всех боргов).
   - type: StationAiVision
     range: 7
-  # Fish: постоянные chassis-руки только у Mk2 (и риперов); showInHands включает
+  # Постоянные chassis-руки только у Mk2 (и риперов); showInHands включает
   # отображение предметов из этих рук на спрайте. Модульные руки (Functional) не видны.
   - type: Hands
     hands:
@@ -293,7 +293,7 @@
     - hand_left
     activeHandId: hand_right
     showInHands: true
-  # Fish: не падает в крите и гасит фонарь (BorgNoFallSystem).
+  # Не падает в крите и гасит фонарь (BorgNoFallSystem).
   - type: BorgNoFall
   - type: BorgSwitchableType
     selectedBorgType: FishMedicalMk2
@@ -469,13 +469,13 @@
       300: Dead
   - type: PowerCellDraw
     drawRate: 0.5
-  # Fish: броня Mk2 при апгрейде запрещена — оставляем штатную BorgArmorSiliconLoadout из BaseBorgChassisNT.
+  # Броня Mk2 при апгрейде запрещена — оставляем штатную BorgArmorSiliconLoadout из BaseBorgChassisNT.
   - type: Loadout
     prototypes: [ BorgArmorSiliconLoadout ]
-  # Fish: AI видит Mk2 на 7 тайлов вместо 3 (стандарт для всех боргов).
+  # AI видит Mk2 на 7 тайлов вместо 3 (стандарт для всех боргов).
   - type: StationAiVision
     range: 7
-  # Fish: постоянные chassis-руки только у Mk2 (и риперов); showInHands включает
+  # Постоянные chassis-руки только у Mk2 (и риперов); showInHands включает
   # отображение предметов из этих рук на спрайте. Модульные руки (Functional) не видны.
   - type: Hands
     hands:
@@ -488,7 +488,7 @@
     - hand_left
     activeHandId: hand_right
     showInHands: true
-  # Fish: не падает в крите и гасит фонарь (BorgNoFallSystem).
+  # Не падает в крите и гасит фонарь (BorgNoFallSystem).
   - type: BorgNoFall
   - type: BorgSwitchableType
     selectedBorgType: FishServiceMk2
@@ -529,13 +529,13 @@
       300: Dead
   - type: PowerCellDraw
     drawRate: 0.5
-  # Fish: броня Mk2 вместо BorgArmorSiliconLoadout из BaseBorgChassisNT (положена только Security/Peace).
+  # Броня Mk2 вместо BorgArmorSiliconLoadout из BaseBorgChassisNT (положена только Security/Peace).
   - type: Loadout
     prototypes: [ BorgArmorSiliconLoadoutMk2 ]
-  # Fish: AI видит Mk2 на 7 тайлов вместо 3 (стандарт для всех боргов).
+  # AI видит Mk2 на 7 тайлов вместо 3 (стандарт для всех боргов).
   - type: StationAiVision
     range: 7
-  # Fish: постоянные chassis-руки только у Mk2 (и риперов); showInHands включает
+  # Постоянные chassis-руки только у Mk2 (и риперов); showInHands включает
   # отображение предметов из этих рук на спрайте. Модульные руки (Functional) не видны.
   - type: Hands
     hands:
@@ -548,7 +548,7 @@
     - hand_left
     activeHandId: hand_right
     showInHands: true
-  # Fish: не падает в крите и гасит фонарь (BorgNoFallSystem).
+  # Не падает в крите и гасит фонарь (BorgNoFallSystem).
   - type: BorgNoFall
   - type: BorgSwitchableType
     selectedBorgType: FishPeaceMk2
@@ -589,13 +589,13 @@
       300: Dead
   - type: PowerCellDraw
     drawRate: 0.5
-  # Fish: броня Mk2 при апгрейде запрещена — оставляем штатную BorgArmorSiliconLoadout из BaseBorgChassisNT.
+  # Броня Mk2 при апгрейде запрещена — оставляем штатную BorgArmorSiliconLoadout из BaseBorgChassisNT.
   - type: Loadout
     prototypes: [ BorgArmorSiliconLoadout ]
-  # Fish: AI видит Mk2 на 7 тайлов вместо 3 (стандарт для всех боргов).
+  # AI видит Mk2 на 7 тайлов вместо 3 (стандарт для всех боргов).
   - type: StationAiVision
     range: 7
-  # Fish: постоянные chassis-руки только у Mk2 (и риперов); showInHands включает
+  # Постоянные chassis-руки только у Mk2 (и риперов); showInHands включает
   # отображение предметов из этих рук на спрайте. Модульные руки (Functional) не видны.
   - type: Hands
     hands:
@@ -608,7 +608,7 @@
     - hand_left
     activeHandId: hand_right
     showInHands: true
-  # Fish: не падает в крите и гасит фонарь (BorgNoFallSystem).
+  # Не падает в крите и гасит фонарь (BorgNoFallSystem).
   - type: BorgNoFall
   - type: BorgSwitchableType
     selectedBorgType: FishClownMk2
@@ -649,13 +649,13 @@
       300: Dead
   - type: PowerCellDraw
     drawRate: 0.5
-  # Fish: броня Mk2 вместо BorgArmorSiliconLoadout из BaseBorgChassisNT (положена только Security/Peace).
+  # Броня Mk2 вместо BorgArmorSiliconLoadout из BaseBorgChassisNT (положена только Security/Peace).
   - type: Loadout
     prototypes: [ BorgArmorSiliconLoadoutMk2 ]
-  # Fish: AI видит Mk2 на 7 тайлов вместо 3 (стандарт для всех боргов).
+  # AI видит Mk2 на 7 тайлов вместо 3 (стандарт для всех боргов).
   - type: StationAiVision
     range: 7
-  # Fish: постоянные chassis-руки только у Mk2 (и риперов); showInHands включает
+  # Постоянные chassis-руки только у Mk2 (и риперов); showInHands включает
   # отображение предметов из этих рук на спрайте. Модульные руки (Functional) не видны.
   - type: Hands
     hands:
@@ -668,7 +668,7 @@
     - hand_left
     activeHandId: hand_right
     showInHands: true
-  # Fish: не падает в крите и гасит фонарь (BorgNoFallSystem).
+  # Не падает в крите и гасит фонарь (BorgNoFallSystem).
   - type: BorgNoFall
   - type: BorgSwitchableType
     selectedBorgType: FishSecurityMk2
