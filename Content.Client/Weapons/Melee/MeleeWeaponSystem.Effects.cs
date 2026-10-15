@@ -23,20 +23,9 @@ public sealed partial class MeleeWeaponSystem
         if (!Timing.IsFirstTimePredicted)
             return;
 
-        // Fish-Start
-        // Fish: база lunge-анимации — постоянное смещение спрайта (borgType или прототип),
-        // а не текущий Offset: во время уже идущего lunge Offset содержит промежуточный
-        // кадр, и повторный удар закрепил бы его как базовый — спрайт бы «дрейфовал».
-        // Для мобов без смещения поведение не меняется.
-        var baseOffset = GetBaseSpriteOffset(user); // Fish-Edit
-
-        // Fish: амплитуда lunge задаётся в мировых метрах (корневой Offset Scale не
-        // масштабируется), поэтому для уменьшенных спрайтов (Mk2, Scale 0.75) вылет
-        // приводим к масштабу тела — иначе смещение выглядело бы относительно сильнее.
-        var lungeScale = TryComp(user, out SpriteComponent? userSprite) ? userSprite.Scale.X : 1f; // Fish-Edit
-
-        var lunge = GetLungeAnimation(localPos, baseOffset, lungeScale); // Fish-Edit
-        // Fish-End
+        // Fish: база lunge (постоянное Offset спрайта) и приведение амплитуды к масштабу
+        // тела — _Fish/Weapons/Melee/MeleeWeaponSystem.Mk2Lunge.cs.
+        var lunge = GetLungeAnimation(user, localPos); // Fish-Edit
 
         // Stop any existing lunges on the user.
         _animation.Stop(user, MeleeLungeKey);

@@ -37,12 +37,9 @@ public sealed partial class BorgSelectTypeMenu : FancyWindow
         IoCManager.InjectDependencies(this);
 
         var group = new ButtonGroup();
-        // Fish-Start
-        // Скрытые типы (Mk2) не участвуют в выборе специализации.
-        foreach (var borgType in _prototypeManager.EnumeratePrototypes<BorgTypePrototype>()
-                     .Where(type => !type.HideInMenu)
-                     .OrderBy(PrototypeName))
-        // Fish-End
+        // Fish: фильтр скрытых типов (HideInMenu) и сортировка —
+        // в _Fish/Silicons/Borgs/BorgSelectTypeMenu.Selection.cs.
+        foreach (var borgType in GetSelectableBorgTypes()) // Fish-Edit
         {
             var button = new Button
             {
@@ -73,7 +70,7 @@ public sealed partial class BorgSelectTypeMenu : FancyWindow
         ConfirmTypeButton.Disabled = false;
 
         NameLabel.Text = PrototypeName(prototype);
-        DescriptionLabel.Text = Loc.GetString(prototype.GetLocKey("desc")); // Fish-Edit
+        DescriptionLabel.Text = GetBorgTypeDescription(prototype); // Fish-Edit
         ChassisView.SetPrototype(prototype.DummyPrototype);
     }
 
@@ -85,11 +82,7 @@ public sealed partial class BorgSelectTypeMenu : FancyWindow
         ConfirmedBorgType?.Invoke(_selectedBorgType);
     }
 
-    /// <summary>
-    /// Fish: локализованное имя типа; ключ строится через <see cref="BorgTypePrototype.GetLocKey"/>.
-    /// </summary>
-    private static string PrototypeName(BorgTypePrototype prototype)
-    {
-        return Loc.GetString(prototype.GetLocKey("name")); // Fish-Edit
-    }
+    // Fish: PrototypeName (Fish-ключи локализации), фильтр HideInMenu и сортировка
+    // перенесены в _Fish/Silicons/Borgs/BorgSelectTypeMenu.Selection.cs
+    // Fish-Edit
 }

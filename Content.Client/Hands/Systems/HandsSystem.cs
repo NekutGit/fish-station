@@ -69,10 +69,9 @@ namespace Content.Client.Hands.Systems
             if (args.Current is not HandsComponentState state)
                 return;
 
-            // Fish: запоминаем смену ShowInHands, чтобы после применения state
-            // перерисовать in-hand слои уже занятых рук (например, апгрейд борга на Mk2).
-            var showInHandsChanged = state.ShowInHands != ent.Comp.ShowInHands; // Fish-Edit
-            ent.Comp.ShowInHands = state.ShowInHands; // Fish-Edit
+            // Fish: смена ShowInHands запоминается и применяется здесь же; refresh занятых
+            // рук — перед _stripSys.UpdateUi. Логика: _Fish/Hands/Systems/HandsSystem.ShowInHands.cs.
+            var showInHandsChanged = ApplyShowInHandsState(ent, state); // Fish-Edit
 
             var newHands = state.Hands.Keys.Except(ent.Comp.Hands.Keys); // hands that were added between states
             var oldHands = ent.Comp.Hands.Keys.Except(state.Hands.Keys); // hands that were removed between states
@@ -279,28 +278,12 @@ namespace Content.Client.Hands.Systems
             if (ent == _playerManager.LocalEntity)
                 OnPlayerItemAdded?.Invoke(handId, held);
 
-            // Fish: очистка старых слоёв до раннего выхода по ShowInHands: при выключении
-            // флага (true -> false) иначе ранее добавленные слои остаются на спрайте —
-            // HandleComponentState вызывает UpdateHandVisuals при смене флага в обе стороны.
-            // Ключ - hand ID, чтобы несколько Functional-рук не разделяли один HashSet.
-            if (handComp.RevealedLayers.TryGetValue(handId, out var revealedLayers)) // Fish-Edit
-            {
-                foreach (var key in revealedLayers)
-                {
-                    _sprite.RemoveLayer((ent, sprite), key);
-                }
-
-                revealedLayers.Clear();
-            }
-
-            if (!handComp.ShowInHands) // Fish-Edit
-                return; // Fish-Edit
-
-            if (revealedLayers == null) // Fish-Edit
-            {
-                revealedLayers = new();
-                handComp.RevealedLayers[handId] = revealedLayers; // Fish-Edit
-            }
+            // Fish: очистка старых слоёв до раннего выхода по ShowInHands и привязка
+            // RevealedLayers по handId — _Fish/Hands/Systems/HandsSystem.ShowInHands.cs.
+            // Fish-Start
+            if (!TryPrepareRevealedLayers(ent.Owner, handComp, sprite, handId, out var revealedLayers))
+                return;
+            // Fish-End
 
             if (HandIsEmpty((ent, handComp), handId))
             {

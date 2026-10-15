@@ -41,6 +41,22 @@ public sealed partial class MeleeWeaponSystem
     }
 
     /// <summary>
+    /// Fish: lunge-анимация для удара: база — постоянное смещение корня спрайта
+    /// (borgType или прототип), а не текущий Offset — во время уже идущего lunge
+    /// Offset содержит промежуточный кадр, и повторный удар закрепил бы его как
+    /// базовый — спрайт бы «дрейфовал». Для мобов без смещения поведение не меняется.
+    /// lungeScale — амплитуда в мировых метрах (корневой Offset Scale не масштабируется),
+    /// поэтому для уменьшенных спрайтов (Mk2, Scale 0.75) вылет приводим к масштабу
+    /// тела — иначе смещение выглядело бы относительно сильнее.
+    /// </summary>
+    private Animation GetLungeAnimation(EntityUid user, Vector2 localPos)
+    {
+        var baseOffset = GetBaseSpriteOffset(user);
+        var lungeScale = TryComp(user, out SpriteComponent? userSprite) ? userSprite.Scale.X : 1f;
+        return GetLungeAnimation(localPos, baseOffset, lungeScale);
+    }
+
+    /// <summary>
     /// Fish: lunge-анимация с учётом базового смещения спрайта и его масштаба.
     /// Keyframes считаются от baseOffset (базовый Offset спрайта), чтобы не затирать
     /// пользовательские смещения — иначе после lunge Offset сбрасывается в ноль и не восстанавливается.
