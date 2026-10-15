@@ -15,7 +15,7 @@ namespace Content.Client.Silicons.Borgs;
 /// </summary>
 public sealed partial class BorgSystem
 {
-    [Dependency] private IPrototypeManager _wreckPrototypes = default!;
+    [Dependency] private IPrototypeManager _prototype = default!;
 
     /// <summary>
     /// Переключает Body-слой на wreck-состояние борга Mk2 в критическом/мёртвом
@@ -37,7 +37,7 @@ public sealed partial class BorgSystem
         if (switchable.SelectedBorgType is not { } borgType)
             return;
 
-        if (!_wreckPrototypes.TryIndex(borgType, out var prototype) || prototype.SpriteWreckState == null)
+        if (!_prototype.TryIndex(borgType, out var prototype) || prototype.SpriteWreckState == null)
             return;
 
         if (!_appearance.TryGetData<MobState>(chassis.Owner, MobStateVisuals.State, out var state, args.Component))

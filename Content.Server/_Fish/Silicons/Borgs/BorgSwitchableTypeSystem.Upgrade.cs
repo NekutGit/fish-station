@@ -28,9 +28,9 @@ namespace Content.Server.Silicons.Borgs;
 public sealed partial class BorgSwitchableTypeSystem
 {
     [Dependency] private SharedDoAfterSystem _doAfter = default!;
-    [Dependency] private AmbientSoundSystem _ambientSoundSystem = default!;
-    [Dependency] private SharedPopupSystem _upgradePopup = default!;
-    [Dependency] private ISharedAdminLogManager _upgradeAdminLog = default!;
+    [Dependency] private AmbientSoundSystem _ambientSound = default!;
+    [Dependency] private SharedPopupSystem _popup = default!;
+    [Dependency] private ISharedAdminLogManager _adminLog = default!;
     [Dependency] private PowerCellSystem _powerCell = default!;
     [Dependency] private SharedHandsSystem _hands = default!;
 
@@ -75,7 +75,7 @@ public sealed partial class BorgSwitchableTypeSystem
     private void OnUpgradeDoAfter(Entity<BorgUpgradeModuleComponent> ent, ref BorgUpgradeDoAfterEvent args)
     {
         // Звук глушим первым, до любой проверки — иначе он останется играть после отмены.
-        _ambientSoundSystem.SetAmbience(ent.Owner, false);
+        _ambientSound.SetAmbience(ent.Owner, false);
 
         // Очистка состояния активного взаимодействия — независимо от исхода DoAfter:
         // и при отмене, и при завершении следующий апгрейд должен видеть null.
@@ -127,7 +127,7 @@ public sealed partial class BorgSwitchableTypeSystem
             // Ещё не выбран тип, либо цель уже Mk2 (повторный апгрейд запрещён).
             if (!quiet)
             {
-                _upgradePopup.PopupClient(
+                _popup.PopupClient(
                     Loc.GetString(switchable.SelectedBorgType == null
                         ? "borg-upgrade-invalid-target"
                         : "borg-upgrade-already-mk2"),
@@ -142,7 +142,7 @@ public sealed partial class BorgSwitchableTypeSystem
         if (_doAfter.IsRunning(switchable.ActiveUpgradeDoAfter))
         {
             if (!quiet)
-                _upgradePopup.PopupClient(Loc.GetString("borg-upgrade-in-progress"), target, user);
+                _popup.PopupClient(Loc.GetString("borg-upgrade-in-progress"), target, user);
 
             return false;
         }
@@ -184,7 +184,7 @@ public sealed partial class BorgSwitchableTypeSystem
         if (TryComp<BorgSwitchableTypeComponent>(target, out var switchable))
             switchable.ActiveUpgradeDoAfter = doAfterId;
 
-        _ambientSoundSystem.SetAmbience(item.Owner, true);
+        _ambientSound.SetAmbience(item.Owner, true);
         return true;
     }
 
@@ -302,10 +302,10 @@ public sealed partial class BorgSwitchableTypeSystem
             ApplyMk2Inventory(borg.Owner, targetProto);
         }
 
-        _upgradeAdminLog.Add(LogType.Action, LogImpact.Medium,
+        _adminLog.Add(LogType.Action, LogImpact.Medium,
             $"{user} upgraded borg {borg.Owner} to {target} with {item}");
 
-        _upgradePopup.PopupClient(Loc.GetString("borg-upgrade-complete"), borg.Owner, user);
+        _popup.PopupClient(Loc.GetString("borg-upgrade-complete"), borg.Owner, user);
     }
 
     // Имена chassis-рук совпадают с руками в borg_chassis_mk2.yml.

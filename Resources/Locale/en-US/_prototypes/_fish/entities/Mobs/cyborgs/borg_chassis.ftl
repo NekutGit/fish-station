@@ -63,3 +63,9 @@ ent-FishBorgChassisClownMk2Battery = { ent-FishBorgChassisClownMk2 }
 ent-FishBorgChassisSecurityMk2Battery = { ent-FishBorgChassisSecurityMk2 }
     .suffix = Battery
     .desc = { ent-FishBorgChassisSecurityMk2.desc }
+
+## Синди-риперы: Fish-вариант с постоянными chassis-руками; имя и описание
+## наследуются от Sunrise-шасси. Derelict без .desc — берётся из YAML-родителя.
+ent-FishBorgChassisSyndicateReaper = { ent-BorgChassisSyndicateReaper }
+    .desc = { ent-BorgChassisSyndicateReaper.desc }
+ent-FishBorgChassisSyndicateReaperDerelict = { ent-SyndicateReaperBorgChassisDerelictSunrise }

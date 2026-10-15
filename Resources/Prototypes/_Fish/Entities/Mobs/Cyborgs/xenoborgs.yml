@@ -1,3 +1,5 @@
+# Fish-ксеноборг-рипер (id и содержимое перенесены из _Sunrise/Entities/Mobs/Cyborgs/xenoborgs.yml
+# без изменений, чтобы Fish-контент жил в _Fish; путь/владение лежали в _Sunrise исторически).
 - type: entity
   parent: [ BaseXenoborgChassis, BaseXenoborgTransponder ]
   id: FishXenoReaper
@@ -43,7 +45,6 @@
   - type: Body
   # Fish: постоянные chassis-руки рипера; showInHands включает отображение
   # предметов из этих рук на спрайте. Модульные руки (Functional) не видны.
-  # Fish-Start
   - type: Hands
     hands:
       hand_right:
@@ -55,7 +56,6 @@
     - hand_left
     activeHandId: hand_right
     showInHands: true
-  # Fish-End
   - type: DamageStateVisuals
     states:
       Alive:

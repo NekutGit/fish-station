@@ -62,7 +62,6 @@
   - BorgModuleAdvancedChemical # Sunrise-Edit
   - BorgModuleRobotics
   - BorgModuleSurgical
-  - FishBorgUpgradeModuleRecipe # Fish-Edit
 
 - type: latheRecipePack
   id: SyndicateBorgModulesEmagSunrise
