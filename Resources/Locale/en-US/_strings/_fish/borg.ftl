@@ -43,3 +43,8 @@ borg-upgrade-invalid-target = This cyborg can't be upgraded.
 borg-upgrade-already-mk2 = This cyborg is already a Mk2.
 borg-upgrade-in-progress = Another upgrade is already in progress.
 borg-upgrade-complete = The cyborg has been upgraded to Mk2.
+
+## Borg rest action (entity FishBorgRestAction): toggles the resting state of Mk2 borgs.
+## While resting: movement and all actions except this one are disabled, power drain is reduced.
+ent-FishBorgRestAction = Rest
+    .desc = Lie down and rest. Movement and actions are disabled while resting and power drain is reduced. Press again to stand up.

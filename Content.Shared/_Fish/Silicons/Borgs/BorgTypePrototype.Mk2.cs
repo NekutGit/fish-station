@@ -101,4 +101,13 @@ public sealed partial class BorgTypePrototype : IInheritingPrototype
     /// </summary>
     [DataField]
     public string? SpriteWreckState;
+
+    /// <summary>
+    /// Состояние спрайта тела во время отдыха (механика BorgRest). <c>null</c> — тело не меняется.
+    /// У Mk2 используется rest-кадр из _Lust RSI (например, robot_rest).
+    /// Переключение выполняет клиентский BorgSystem при BorgRestVisuals.Resting;
+    /// при выходе из отдыха тело восстанавливается предыдущими обработчиками визуала.
+    /// </summary>
+    [DataField]
+    public string? SpriteRestingState;
 }

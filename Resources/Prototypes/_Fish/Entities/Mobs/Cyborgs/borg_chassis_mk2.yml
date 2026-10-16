@@ -57,6 +57,8 @@
   - type: BorgNoFall
   - type: BorgSwitchableType
     selectedBorgType: FishGenericMk2
+  # Механика отдыха: действие, блок движения и пониженный расход в rest.
+  - type: BorgRest
 
 - type: entity
   id: FishBorgChassisEngineerMk2
@@ -117,6 +119,8 @@
   - type: BorgNoFall
   - type: BorgSwitchableType
     selectedBorgType: FishEngineeringMk2
+  # Механика отдыха: действие, блок движения и пониженный расход в rest.
+  - type: BorgRest
 
 - type: entity
   id: FishBorgChassisMiningMk2
@@ -177,6 +181,8 @@
   - type: BorgNoFall
   - type: BorgSwitchableType
     selectedBorgType: FishMiningMk2
+  # Механика отдыха: действие, блок движения и пониженный расход в rest.
+  - type: BorgRest
 
 - type: entity
   id: FishBorgChassisJanitorMk2
@@ -237,6 +243,8 @@
   - type: BorgNoFall
   - type: BorgSwitchableType
     selectedBorgType: FishJanitorMk2
+  # Механика отдыха: действие, блок движения и пониженный расход в rest.
+  - type: BorgRest
 
 - type: entity
   id: FishBorgChassisMedicalMk2
@@ -297,6 +305,8 @@
   - type: BorgNoFall
   - type: BorgSwitchableType
     selectedBorgType: FishMedicalMk2
+  # Механика отдыха: действие, блок движения и пониженный расход в rest.
+  - type: BorgRest
 
 - type: entity
   id: FishBorgChassisMedicalMk2Battery
@@ -492,6 +502,8 @@
   - type: BorgNoFall
   - type: BorgSwitchableType
     selectedBorgType: FishServiceMk2
+  # Механика отдыха: действие, блок движения и пониженный расход в rest.
+  - type: BorgRest
 
 - type: entity
   id: FishBorgChassisPeaceMk2
@@ -552,6 +564,8 @@
   - type: BorgNoFall
   - type: BorgSwitchableType
     selectedBorgType: FishPeaceMk2
+  # Механика отдыха: действие, блок движения и пониженный расход в rest.
+  - type: BorgRest
 
 - type: entity
   id: FishBorgChassisClownMk2
@@ -612,6 +626,8 @@
   - type: BorgNoFall
   - type: BorgSwitchableType
     selectedBorgType: FishClownMk2
+  # Механика отдыха: действие, блок движения и пониженный расход в rest.
+  - type: BorgRest
 
 - type: entity
   id: FishBorgChassisSecurityMk2
@@ -672,3 +688,5 @@
   - type: BorgNoFall
   - type: BorgSwitchableType
     selectedBorgType: FishSecurityMk2
+  # Механика отдыха: действие, блок движения и пониженный расход в rest.
+  - type: BorgRest

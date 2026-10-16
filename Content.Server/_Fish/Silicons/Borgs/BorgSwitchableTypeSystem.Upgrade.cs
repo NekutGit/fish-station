@@ -348,6 +348,8 @@ public sealed partial class BorgSwitchableTypeSystem
         "BorgNoFall",
         // Радиус обзора AI у Mk2 шире (7 вместо 3), значения живут в borg_chassis_mk2.yml.
         "StationAiVision",
+        // Механика отдыха Mk2: действие, блок движения и пониженный расход в rest.
+        "BorgRest",
     ];
 
     /// <summary>

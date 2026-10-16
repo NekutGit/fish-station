@@ -5,7 +5,9 @@
 # Уникальность визуала даёт RSI у chassis (_Lust/Mobs/Silicon/chassis.rsi), а не имя state:
 # spriteBodyState у восьми типов совпадает с родителем и берётся из холста chassis.
 # Отдельные имена state нужны только FishSecurityMk2 (sec_mk2*).
-# *_rest / *_tipped из _Lust не используются и сюда не переносятся.
+# *_rest подключены через spriteRestingState (механика отдыха BorgRest);
+# *_tipped из _Lust больше нигде не используются — иконка действия отдыха взята как
+# их квадратная обрезка (_Fish/Actions/borg_rest.rsi).
 # *_wreck подключены через spriteWreckState: переключение на критическом/мёртвом
 # состоянии выполняет клиентский BorgSystem (Content.Client/_Fish/.../BorgSystem.Wreck.cs).
 
@@ -23,6 +25,7 @@
   spriteScale: 0.8
   spriteOffset: 0,0.4
   spriteWreckState: robot_wreck
+  spriteRestingState: robot_rest
 
 - type: borgType
   id: FishEngineeringMk2
@@ -35,6 +38,7 @@
   spriteScale: 0.8
   spriteOffset: 0,0.4
   spriteWreckState: engineer_wreck
+  spriteRestingState: engineer_rest
 
 - type: borgType
   id: FishMiningMk2
@@ -50,6 +54,7 @@
   spriteScale: 0.8
   spriteOffset: 0,0.4
   spriteWreckState: miner_wreck
+  spriteRestingState: miner_rest
 
 - type: borgType
   id: FishJanitorMk2
@@ -63,6 +68,7 @@
   spriteScale: 0.8
   spriteOffset: 0,0.4
   spriteWreckState: janitor_wreck
+  spriteRestingState: janitor_rest
 
 - type: borgType
   id: FishMedicalMk2
@@ -76,6 +82,7 @@
   spriteScale: 0.8
   spriteOffset: 0,0.4
   spriteWreckState: medical_wreck
+  spriteRestingState: medical_rest
 
 - type: borgType
   id: FishServiceMk2
@@ -88,6 +95,7 @@
   spriteScale: 0.8
   spriteOffset: 0,0.4
   spriteWreckState: service_wreck
+  spriteRestingState: service_rest
 
 - type: borgType
   id: FishPeaceMk2
@@ -100,6 +108,7 @@
   spriteScale: 0.8
   spriteOffset: 0,0.4
   spriteWreckState: peace_wreck
+  spriteRestingState: peace_rest
 
 - type: borgType
   id: FishClownMk2
@@ -112,6 +121,7 @@
   spriteScale: 0.8
   spriteOffset: 0,0.4
   spriteWreckState: clown_wreck
+  spriteRestingState: clown_rest
 
 - type: borgType
   id: FishSecurityMk2
@@ -128,3 +138,4 @@
   spriteScale: 0.8
   spriteOffset: 0,0.4
   spriteWreckState: sec_mk2_wreck
+  spriteRestingState: sec_mk2_rest
