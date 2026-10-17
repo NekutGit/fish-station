@@ -59,16 +59,46 @@ public sealed partial class BorgRestSystem : SharedBorgRestSystem
     }
 
     /// <summary>
-    /// Нажатие действия отдыха: проверяет условия и запускает DoAfter переключения.
+    /// Нажатие действия отдыха: роутер по схеме OnEvent -> TryDo -> CanDo -> Do
+    /// (правило ss14-interaction-flow).
     /// </summary>
     private void OnRestAction(Entity<BorgRestComponent> ent, ref BorgRestActionEvent args)
     {
-        args.Handled = true;
-
-        // Повторные нажатия пока идёт DoAfter, и переход только у живого борга.
-        if (_doAfter.IsRunning(ent.Comp.ActiveToggleDoAfter) || !_mobState.IsAlive(ent.Owner))
+        if (args.Handled)
             return;
 
+        if (TryToggleRest(ent))
+            args.Handled = true;
+    }
+
+    /// <summary>
+    /// Публичная попытка переключения состояния отдыха: проверяет условия
+    /// (<see cref="CanToggleRest"/>) и при успехе запускает DoAfter переключения.
+    /// </summary>
+    public bool TryToggleRest(Entity<BorgRestComponent> ent)
+    {
+        if (!CanToggleRest(ent))
+            return false;
+
+        return DoToggleRest(ent);
+    }
+
+    /// <summary>
+    /// Условия переключения: не идёт уже текущий DoAfter и борг жив.
+    /// Чистая проверка без побочных эффектов (правило ss14-interaction-flow).
+    /// </summary>
+    public bool CanToggleRest(Entity<BorgRestComponent> ent)
+    {
+        // Повторные нажатия пока идёт DoAfter, и переход только у живого борга.
+        return !_doAfter.IsRunning(ent.Comp.ActiveToggleDoAfter)
+            && _mobState.IsAlive(ent.Owner);
+    }
+
+    /// <summary>
+    /// Запуск DoAfter переключения; вызывается только после успешной проверки.
+    /// </summary>
+    private bool DoToggleRest(Entity<BorgRestComponent> ent)
+    {
         var doAfterArgs = new DoAfterArgs(EntityManager, ent.Owner, ent.Comp.ToggleDelay,
             new BorgRestDoAfterEvent(), ent.Owner)
         {
@@ -81,9 +111,10 @@ public sealed partial class BorgRestSystem : SharedBorgRestSystem
         };
 
         if (!_doAfter.TryStartDoAfter(doAfterArgs, out var doAfterId))
-            return;
+            return false;
 
         ent.Comp.ActiveToggleDoAfter = doAfterId;
+        return true;
     }
 
     /// <summary>
