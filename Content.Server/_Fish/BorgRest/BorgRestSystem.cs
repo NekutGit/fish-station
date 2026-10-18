@@ -164,8 +164,14 @@ public sealed partial class BorgRestSystem : SharedBorgRestSystem
 
         // Фонарь гасится при входе в отдых, как в wreck: слой LightStatus скрыт,
         // а горящая лампа впустую жгла бы батарею (см. BorgNoFallSystem).
+        // Исходное состояние запоминается, чтобы вернуть фонарь при выходе из отдыха.
         if (TryComp<HandheldLightComponent>(ent.Owner, out var light))
-            _handheldLight.TurnOff((ent.Owner, light), makeNoise: false);
+        {
+            ent.Comp.SavedLight = light.Activated;
+
+            if (light.Activated)
+                _handheldLight.TurnOff((ent.Owner, light), makeNoise: false);
+        }
 
         _appearance.SetData(ent.Owner, BorgRestVisuals.Resting, true);
     }
@@ -193,6 +199,7 @@ public sealed partial class BorgRestSystem : SharedBorgRestSystem
         }
 
         RestoreRestActions(ent);
+        RestoreLight(ent);
 
         _appearance.SetData(ent.Owner, BorgRestVisuals.Resting, false);
     }
@@ -278,5 +285,23 @@ public sealed partial class BorgRestSystem : SharedBorgRestSystem
         }
 
         ent.Comp.DisabledActions.Clear();
+    }
+
+    /// <summary>
+    /// Возвращает фонарь в состояние до отдыха: включается только если он горел до
+    /// входа в отдых и компонент всё ещё существует. Запись сбрасывается всегда.
+    /// Мёртвому/критовому боргу фонарь не зажигается — при не-Alive выходе из отдыха
+    /// его гасит BorgNoFallSystem, и он не должен светить на wreck-спрайт.
+    /// </summary>
+    private void RestoreLight(Entity<BorgRestComponent> ent)
+    {
+        var wasOn = ent.Comp.SavedLight == true;
+        ent.Comp.SavedLight = null;
+
+        if (!wasOn || !_mobState.IsAlive(ent.Owner))
+            return;
+
+        if (TryComp<HandheldLightComponent>(ent.Owner, out var light))
+            _handheldLight.TurnOn(ent.Owner, (ent.Owner, light));
     }
 }

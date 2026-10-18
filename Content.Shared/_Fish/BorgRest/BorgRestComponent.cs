@@ -35,6 +35,13 @@ public sealed partial class BorgRestComponent : Component
     public float? SavedDrawRate;
 
     /// <summary>
+    /// Был ли фонарь включён до входа в отдых, чтобы вернуть его при выходе.
+    /// <c>null</c> — отдых не активен (или запись уже обработана).
+    /// </summary>
+    [DataField]
+    public bool? SavedLight;
+
+    /// <summary>
     /// Задержка DoAfter входа/выхода из отдыха.
     /// </summary>
     [DataField]
@@ -53,13 +60,20 @@ public sealed partial class BorgRestComponent : Component
     /// <summary>
     /// BlockMovementComponent был добавлен именно этой механикой и должен быть
     /// удалён при выходе; чужой компонент при входе не перехватывается.
+    /// Сохраняется вместе с <see cref="IsResting"/>, иначе после загрузки карты
+    /// в отдыхе блок движения остался бы навсегда (см. <see cref="SharedBorgRestSystem"/>).
     /// </summary>
+    [DataField]
     public bool AddedBlockMovement;
 
     /// <summary>
     /// Действия, выключенные этой механикой при входе в отдых (Enabled = false).
     /// При выходе включаются обратно только они — уже выключенные кем-то другим
-    /// действия не включаются. Серверная запись, клиенту не реплицируется.
+    /// действия не включаются. Ссылки на сущности действий сохраняются вместе с
+    /// <see cref="IsResting"/>: движок поддерживает сохранение и восстановление EntityUid
+    /// (как ActionGrantComponent.ActionEntities и ActionsComponent.Actions), а удалённые
+    /// за это время действия пропускаются по Exists.
     /// </summary>
+    [DataField]
     public List<EntityUid> DisabledActions = new();
 }
