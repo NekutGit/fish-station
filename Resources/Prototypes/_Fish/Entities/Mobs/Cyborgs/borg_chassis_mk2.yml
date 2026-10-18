@@ -53,6 +53,7 @@
     - hand_left
     activeHandId: hand_right
     showInHands: true
+    canBeStripped: true
   # Не падает в крите и гасит фонарь (BorgNoFallSystem).
   - type: BorgNoFall
   - type: BorgSwitchableType
@@ -115,6 +116,7 @@
     - hand_left
     activeHandId: hand_right
     showInHands: true
+    canBeStripped: true
   # Не падает в крите и гасит фонарь (BorgNoFallSystem).
   - type: BorgNoFall
   - type: BorgSwitchableType
@@ -177,6 +179,7 @@
     - hand_left
     activeHandId: hand_right
     showInHands: true
+    canBeStripped: true
   # Не падает в крите и гасит фонарь (BorgNoFallSystem).
   - type: BorgNoFall
   - type: BorgSwitchableType
@@ -239,6 +242,7 @@
     - hand_left
     activeHandId: hand_right
     showInHands: true
+    canBeStripped: true
   # Не падает в крите и гасит фонарь (BorgNoFallSystem).
   - type: BorgNoFall
   - type: BorgSwitchableType
@@ -301,6 +305,7 @@
     - hand_left
     activeHandId: hand_right
     showInHands: true
+    canBeStripped: true
   # Не падает в крите и гасит фонарь (BorgNoFallSystem).
   - type: BorgNoFall
   - type: BorgSwitchableType
@@ -498,6 +503,7 @@
     - hand_left
     activeHandId: hand_right
     showInHands: true
+    canBeStripped: true
   # Не падает в крите и гасит фонарь (BorgNoFallSystem).
   - type: BorgNoFall
   - type: BorgSwitchableType
@@ -560,6 +566,7 @@
     - hand_left
     activeHandId: hand_right
     showInHands: true
+    canBeStripped: true
   # Не падает в крите и гасит фонарь (BorgNoFallSystem).
   - type: BorgNoFall
   - type: BorgSwitchableType
@@ -622,6 +629,7 @@
     - hand_left
     activeHandId: hand_right
     showInHands: true
+    canBeStripped: true
   # Не падает в крите и гасит фонарь (BorgNoFallSystem).
   - type: BorgNoFall
   - type: BorgSwitchableType
@@ -684,6 +692,7 @@
     - hand_left
     activeHandId: hand_right
     showInHands: true
+    canBeStripped: true
   # Не падает в крите и гасит фонарь (BorgNoFallSystem).
   - type: BorgNoFall
   - type: BorgSwitchableType

@@ -316,7 +316,7 @@ public sealed partial class BorgSwitchableTypeSystem
     /// Постоянные chassis-руки есть только у Mk2-прототипов и риперов, а у
     /// BorgChassisSelectable их нет — при апгрейде добавляем их на живой сущности.
     /// Словарь рук сетевой, поэтому AddHand реплицируется клиенту автоматически;
-    /// ShowInHands включается здесь же и уезжает в HandsComponentState.
+    /// ShowInHands и CanBeStripped включаются здесь же и уезжают в HandsComponentState.
     /// </summary>
     private void ApplyMk2Hands(EntityUid uid)
     {
@@ -332,6 +332,9 @@ public sealed partial class BorgSwitchableTypeSystem
             _hands.AddHand((uid, hands), Mk2LeftHandId, HandLocation.Left);
         }
 
+        // Апгрейд делает статические chassis-руки стрипаемыми в Strip-UI, как у Mk2-прототипов
+        // (borg_chassis_mk2.yml). Ставим безусловно, в том числе когда руки уже пришли из YAML.
+        _hands.SetCanBeStripped((uid, hands), true);
         _hands.SetShowInHands((uid, hands), true);
     }
 

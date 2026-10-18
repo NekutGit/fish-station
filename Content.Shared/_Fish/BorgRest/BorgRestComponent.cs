@@ -42,6 +42,14 @@ public sealed partial class BorgRestComponent : Component
     public bool? SavedLight;
 
     /// <summary>
+    /// Выбранный модуль, сложенный при входе в отдых (предмет убран из рук), чтобы
+    /// отдыхающий борг не мог пользоваться выдвинутым модулем. Восстанавливается при
+    /// выходе. <c>null</c> — отдых не активен (или модуль не был выдвинут).
+    /// </summary>
+    [DataField]
+    public EntityUid? SavedSelectedModule;
+
+    /// <summary>
     /// Задержка DoAfter входа/выхода из отдыха.
     /// </summary>
     [DataField]

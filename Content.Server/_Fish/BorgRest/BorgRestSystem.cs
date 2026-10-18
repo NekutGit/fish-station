@@ -1,3 +1,4 @@
+using Content.Server.Silicons.Borgs;
 using Content.Shared._Fish.BorgRest;
 using Content.Shared.Actions;
 using Content.Shared.Actions.Components;
@@ -9,6 +10,7 @@ using Content.Shared.Mobs;
 using Content.Shared.Mobs.Systems;
 using Content.Shared.PowerCell;
 using Content.Shared.PowerCell.Components;
+using Content.Shared.Silicons.Borgs.Components;
 using Robust.Shared.GameObjects;
 
 namespace Content.Server._Fish.BorgRest;
@@ -26,6 +28,7 @@ public sealed partial class BorgRestSystem : SharedBorgRestSystem
     [Dependency] private SharedAppearanceSystem _appearance = default!;
     [Dependency] private MobStateSystem _mobState = default!;
     [Dependency] private SharedHandheldLightSystem _handheldLight = default!;
+    [Dependency] private BorgSystem _borg = default!;
 
     public override void Initialize()
     {
@@ -161,6 +164,7 @@ public sealed partial class BorgRestSystem : SharedBorgRestSystem
         ApplyRestMovement(ent);
         ApplyRestDrawRate(ent);
         ApplyRestActions(ent);
+        ApplyRestModule(ent);
 
         // Фонарь гасится при входе в отдых, как в wreck: слой LightStatus скрыт,
         // а горящая лампа впустую жгла бы батарею (см. BorgNoFallSystem).
@@ -199,6 +203,7 @@ public sealed partial class BorgRestSystem : SharedBorgRestSystem
         }
 
         RestoreRestActions(ent);
+        RestoreRestModule(ent);
         RestoreLight(ent);
 
         _appearance.SetData(ent.Owner, BorgRestVisuals.Resting, false);
@@ -285,6 +290,45 @@ public sealed partial class BorgRestSystem : SharedBorgRestSystem
         }
 
         ent.Comp.DisabledActions.Clear();
+    }
+
+    /// <summary>
+    /// Складывает выдвинутый модуль на время отдыха: меню действий уже заблокировано
+    /// (<see cref="ApplyRestActions"/>), но предмет, выданный выбранным модулем, оставался
+    /// бы в руке и позволял отдыхающему боргу им пользоваться. Запоминаем выбор,
+    /// чтобы вернуть его при выходе (см. <see cref="RestoreRestModule"/>).
+    /// </summary>
+    private void ApplyRestModule(Entity<BorgRestComponent> ent)
+    {
+        if (!TryComp<BorgChassisComponent>(ent.Owner, out var chassis) || chassis.SelectedModule == null)
+            return;
+
+        ent.Comp.SavedSelectedModule = chassis.SelectedModule;
+        _borg.UnselectModule((ent.Owner, chassis));
+    }
+
+    /// <summary>
+    /// Возвращает модуль, сложенный при входе в отдых. Мёртвому/критовому боргу модуль
+    /// не выдвигается, а уже извлечённый или более не выбираемый модуль пропускается —
+    /// так SelectModule не сыпет ошибками в лог.
+    /// </summary>
+    private void RestoreRestModule(Entity<BorgRestComponent> ent)
+    {
+        var module = ent.Comp.SavedSelectedModule;
+        ent.Comp.SavedSelectedModule = null;
+
+        if (module is not { } moduleUid
+            || !_mobState.IsAlive(ent.Owner)
+            || !TryComp<BorgChassisComponent>(ent.Owner, out var chassis)
+            || !TryComp<BorgModuleComponent>(moduleUid, out var moduleComp)
+            || !moduleComp.Installed
+            || moduleComp.InstalledEntity != ent.Owner
+            || !HasComp<SelectableBorgModuleComponent>(moduleUid))
+        {
+            return;
+        }
+
+        _borg.SelectModule((ent.Owner, chassis), moduleUid);
     }
 
     /// <summary>

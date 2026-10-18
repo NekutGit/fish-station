@@ -73,6 +73,10 @@ namespace Content.Client.Hands.Systems
             // рук — перед _stripSys.UpdateUi. Логика: _Fish/Hands/Systems/HandsSystem.ShowInHands.cs.
             var showInHandsChanged = ApplyShowInHandsState(ent, state); // Fish-Edit
 
+            // Fish: CanBeStripped приходит в состоянии — рантайм-апгрейд борга на Mk2
+            // делает chassis-руки стрипаемыми и на клиенте (Strip-UI).
+            ent.Comp.CanBeStripped = state.CanBeStripped; // Fish-Edit
+
             var newHands = state.Hands.Keys.Except(ent.Comp.Hands.Keys); // hands that were added between states
             var oldHands = ent.Comp.Hands.Keys.Except(state.Hands.Keys); // hands that were removed between states
 

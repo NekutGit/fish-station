@@ -186,8 +186,13 @@ public sealed class HandsComponentState : ComponentState
     // рантайме (например, при апгрейде борга на Mk2), поэтому поле реплицируется.
     public readonly bool ShowInHands;  // Fish-Edit
 
+    // Fish: CanBeStripped, как и ShowInHands, сервер включает в рантайме при апгрейде
+    // борга на Mk2, поэтому поле реплицируется — иначе Strip-UI клиента не покажет руки.
+    public readonly bool CanBeStripped;  // Fish-Edit
+
     /// <summary>
-    /// Fish: включает <see cref="ShowInHands"/> в состояние — сервер может менять его в рантайме.
+    /// Fish: включает <see cref="ShowInHands"/> и <see cref="CanBeStripped"/> в состояние —
+    /// сервер может менять их в рантайме.
     /// </summary>
     public HandsComponentState(HandsComponent handComp)
     {
@@ -196,6 +201,7 @@ public sealed class HandsComponentState : ComponentState
         SortedHands = new(handComp.SortedHands);
         ActiveHandId = handComp.ActiveHandId;
         ShowInHands = handComp.ShowInHands;  // Fish-Edit
+        CanBeStripped = handComp.CanBeStripped;  // Fish-Edit
     }
 }
 

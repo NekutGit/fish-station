@@ -17,6 +17,7 @@
     - hand_left
     activeHandId: hand_right
     showInHands: true
+    canBeStripped: true
 
 - type: entity
   id: FishBorgChassisSyndicateReaperDerelict

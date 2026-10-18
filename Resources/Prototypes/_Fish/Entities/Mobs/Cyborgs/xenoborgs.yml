@@ -56,6 +56,7 @@
     - hand_left
     activeHandId: hand_right
     showInHands: true
+    canBeStripped: true
   - type: DamageStateVisuals
     states:
       Alive:
