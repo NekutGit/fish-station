@@ -809,3 +809,82 @@
     message: Различные обновления и улучшения шаттлов.
   id: 81
   url: https://github.com/makura-games/fish-station/pull/486
+- author: Kaiten
+  time: '2026-10-12T15:09:23.0000000+00:00'
+  changes:
+  - type: Tweak
+    message: Время для открытия золотого дигла у ГСБ уменьшено с 1984 часов до 198 часов и 4 минут.
+  id: 82
+  url: https://github.com/makura-games/fish-station/pull/492
+- author: TiFeRi
+  time: '2026-10-12T15:09:03.0000000+00:00'
+  changes:
+  - type: Remove
+    message: Убран доступ тех.обслуживания у пассажиров
+  id: 83
+  url: https://github.com/makura-games/fish-station/pull/494
+- author: Kaiten
+  time: '2026-10-12T19:36:08.0000000+00:00'
+  changes:
+  - type: Tweak
+    message: Переработан рассказчик, теперь классический и безумный рассказчик заготавлиают крупную угрозу к часу раунда, при условии что станция не развивается слишком сильно. Если станция слишком слаба для принятия угрозы, то рассказчик дает события с бонусами для станции и минимизирует угрозы до наращивания силы.
+  - type: Tweak
+    message: Теперь Ядерные оперативники (включая одинокого) не могут появиться в рассказчике вместе с Диверсионным отрядом. Только одни из них - либо ядеры, либо ДО.
+  - type: Tweak
+    message: Ребаланс стоимости угроз у рассказчика. Слабые угрозы по типу абдукторов, ниндзи стали дешевле, а одиночный оперативник и дракон с пиратами - дороже. Крупные антагонисты теперь имеют одинаковую стоимость кроме ДО и Ксеноборгов - они дешевле других ввиду их специфики.
+  - type: Tweak
+    message: 'Немного переработана система бюджета рассказчика: теперь 20% от поступающих очков угрозы сохраняются в банк крупной угрозы (мажорка), что замедляет наступление других событий, но гарантирует крупную угрозу в поздних стадиях раунда.'
+  id: 84
+  url: https://github.com/makura-games/fish-station/pull/490
+- author: Kaiten
+  time: '2026-10-12T20:00:48.0000000+00:00'
+  changes:
+  - type: Tweak
+    message: У ЦК синих щитов теперь есть броня синего щита по умолчанию.
+  - type: Tweak
+    message: Тактическая модификация брони синего щита получила изменения по защите до уровня тактика синдиката (с её слабостью к тепловому урону).
+  id: 85
+  url: https://github.com/makura-games/fish-station/pull/491
+- author: Endennsss
+  time: '2026-10-15T22:17:33.0000000+00:00'
+  changes:
+  - type: Fix
+    message: Отображение рук и ног в меню
+  - type: Fix
+    message: Если волосы цветные то они не обесцвечиваются
+  - type: Fix
+    message: Можно вылечить дефект речи
+  - type: Fix
+    message: Ноги после ампутации корректно обновляются
+  id: 86
+  url: https://github.com/makura-games/fish-station/pull/503
+- author: sakurochka
+  time: '2026-10-15T22:34:07.0000000+00:00'
+  changes:
+  - type: Add
+    message: Добавлен плащ для ПНТ
+  id: 87
+  url: https://github.com/makura-games/fish-station/pull/501
+- author: Kaiten
+  time: '2026-10-16T09:53:10.0000000+00:00'
+  changes:
+  - type: Add
+    message: Взрыв 240mm фугасом с мгновенным подрывом.
+  - type: Tweak
+    message: Локализация для пары других взрывов админ панели.
+  id: 88
+  url: https://github.com/makura-games/fish-station/pull/497
+- author: TiFeRi
+  time: '2026-10-17T06:24:53.0000000+00:00'
+  changes:
+  - type: Tweak
+    message: Доработка нового шаттла лон-опера.
+  id: 89
+  url: https://github.com/makura-games/fish-station/pull/506
+- author: dan4ikk3
+  time: '2026-10-17T07:27:53.0000000+00:00'
+  changes:
+  - type: Tweak
+    message: Теперь ЛЦУ ОБР слышно только на мапе, где он был вызван.
+  id: 90
+  url: https://github.com/makura-games/fish-station/pull/508
