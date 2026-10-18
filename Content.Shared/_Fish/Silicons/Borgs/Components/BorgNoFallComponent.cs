@@ -1,3 +1,5 @@
+using Robust.Shared.GameStates;
+
 namespace Content.Shared._Fish.Silicons.Borgs.Components;
 
 /// <summary>
@@ -6,5 +8,5 @@ namespace Content.Shared._Fish.Silicons.Borgs.Components;
 /// гасит фонарь и запускает искры (EffectMechSparks) при входе в крит.
 /// Вешается только на Mk2-шасси; ванильные борги не затрагиваются.
 /// </summary>
-[RegisterComponent]
+[RegisterComponent, NetworkedComponent]
 public sealed partial class BorgNoFallComponent : Component;
