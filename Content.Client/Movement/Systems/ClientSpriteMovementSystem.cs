@@ -28,8 +28,8 @@ public sealed partial class ClientSpriteMovementSystem : SharedSpriteMovementSys
         // Fish-Edit: пока борг Mk2 отдыхает (BorgRest), BlockMovement уже запрещает движение,
         // но ввод WASD всё равно взводит IsMoving (SharedMoverController.Input) и перекрывает
         // rest-кадр тела кадром ходьбы/стойки. Не применяем слои движения, пока идёт отдых.
-        if (TryComp<BorgRestComponent>(ent.Owner, out var rest) && rest.IsResting)
-            return;
+        if (TryComp<BorgRestComponent>(ent.Owner, out var rest) && rest.IsResting)  // Fish-edit
+            return;  // Fish-edit
 
         if (ent.Comp.IsMoving)
         {
