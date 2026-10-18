@@ -184,7 +184,7 @@ public sealed class HandsComponentState : ComponentState
 
     // Fish: ShowInHands больше не только YAML-значение: сервер может включить его в
     // рантайме (например, при апгрейде борга на Mk2), поэтому поле реплицируется.
-    public readonly bool ShowInHands;
+    public readonly bool ShowInHands;  // Fish-Edit
 
     /// <summary>
     /// Fish: включает <see cref="ShowInHands"/> в состояние — сервер может менять его в рантайме.

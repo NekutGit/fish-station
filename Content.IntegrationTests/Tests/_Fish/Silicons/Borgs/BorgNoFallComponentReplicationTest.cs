@@ -17,6 +17,13 @@ namespace Content.IntegrationTests.Tests._Fish.Silicons.Borgs;
 [TestOf(typeof(BorgNoFallComponent))]
 public sealed class BorgNoFallComponentReplicationTest : GameTest
 {
+    /// <summary>
+    /// Страховочный лимит синхронных тактов в <see cref="WaitForClientComponent"/>.
+    /// Это не фиксированная задержка: ожидание завершается сразу, как только компонент
+    /// появится на клиенте, а лимит нужен лишь чтобы тест не завис при регрессии.
+    /// </summary>
+    private const int MaxSyncTicks = 60;
+
     [Test]
     public async Task RuntimeAddedComponentReplicatesToClient()
     {
@@ -28,15 +35,14 @@ public sealed class BorgNoFallComponentReplicationTest : GameTest
 
         // Спавним «живого борга» и даём сущности дойти до клиента без компонента.
         var serverEnt = await SpawnAtPosition(null, testMap.GridCoords);
-
-        await pair.RunTicksSync(10);
-
         var netEnt = SEntMan.GetNetEntity(serverEnt);
 
-        await client.WaitPost(() =>
+        // RunUntilSynced — встроенное ожидание PVS-рассылки сущностей (без магических тактов).
+        await pair.RunUntilSynced();
+
+        await client.WaitAssertion(() =>
         {
-            var clientEnt = CEntMan.GetEntity(netEnt);
-            Assert.That(CEntMan.HasComponent<BorgNoFallComponent>(clientEnt), Is.False,
+            Assert.That(ClientHasComponent(netEnt), Is.False,
                 "До апгрейда у клиента не должно быть BorgNoFallComponent");
         });
 
@@ -44,13 +50,29 @@ public sealed class BorgNoFallComponentReplicationTest : GameTest
         // а не приходит из прототипа при спавне (MapInit).
         await server.WaitPost(() => SEntMan.AddComponent<BorgNoFallComponent>(serverEnt));
 
-        await pair.RunTicksSync(10);
+        await WaitForClientComponent(netEnt);
+    }
 
-        await client.WaitPost(() =>
+    /// <summary>
+    /// Крутит пару в синхронных тактах, пока клиент не получит <see cref="BorgNoFallComponent"/>.
+    /// Ждём именно целевого состояния, а не заранее заданное число тактов.
+    /// </summary>
+    private async Task WaitForClientComponent(NetEntity netEnt)
+    {
+        for (var i = 0; i < MaxSyncTicks; i++)
         {
-            var clientEnt = CEntMan.GetEntity(netEnt);
-            Assert.That(CEntMan.HasComponent<BorgNoFallComponent>(clientEnt), Is.True,
-                "BorgNoFallComponent должен реплицироваться клиенту как NetworkedComponent");
-        });
+            if (ClientHasComponent(netEnt))
+                return;
+
+            await Pair.RunTicksSync(1);
+        }
+
+        Assert.Fail($"BorgNoFallComponent не реплицировался клиенту за {MaxSyncTicks} синхронных тактов");
+    }
+
+    private bool ClientHasComponent(NetEntity netEnt)
+    {
+        return CEntMan.TryGetEntity(netEnt, out var clientEnt)
+            && CEntMan.HasComponent<BorgNoFallComponent>(clientEnt.Value);
     }
 }
