@@ -46,5 +46,5 @@ borg-upgrade-complete = The cyborg has been upgraded to Mk2.
 
 ## Borg rest action (entity FishBorgRestAction): toggles the resting state of Mk2 borgs.
 ## While resting: movement and all actions except this one are disabled, power drain is reduced.
-ent-FishBorgRestAction = Rest
+ent-FishBorgRestAction = rest
     .desc = Lie down and rest. Movement and actions are disabled while resting and power drain is reduced. OOC: Press again to stand up.
