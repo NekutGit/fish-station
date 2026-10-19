@@ -704,10 +704,13 @@
     action: ActionToggleThermalVision
     disableOnUnequip: true
     targetSlot: eyes
+  # Fish-start - температурная оптика и согласование нескольких приборов.
   - type: ComponentToggler
     parent: true
     components:
-    - type: ThermalVision
+    - type: FishThermalVision
+  - type: FishVisionDevice
+  # Fish-end
   - type: ItemToggle
     predictable: false
     onUse: false
