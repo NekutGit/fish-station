@@ -34,6 +34,37 @@ public sealed partial class BorgSwitchableTypeSystem
     [Dependency] private PowerCellSystem _powerCell = default!;
     [Dependency] private SharedHandsSystem _hands = default!;
 
+    // Имена chassis-рук совпадают с руками в borg_chassis_mk2.yml.
+    private const string Mk2RightHandId = "hand_right";
+    private const string Mk2LeftHandId = "hand_left";
+
+    /// <summary>
+    /// Компоненты, которые апгрейд должен применить к уже существующему боргу.
+    /// Их значения живут только в borg_chassis_mk2.yml и в C# не дублируются.
+    /// </summary>
+    private static readonly string[] Mk2UpgradeComponents =
+    [
+        "MobThresholds",
+        "PowerCellDraw",
+        "FlashImmunity",
+        // Борг не опрокидывается в крит/смерть и гасит фонарь (BorgNoFallSystem).
+        "BorgNoFall",
+        // Радиус обзора AI у Mk2 шире (7 вместо 3), значения живут в borg_chassis_mk2.yml.
+        "StationAiVision",
+        // Механика отдыха Mk2: действие, блок движения и пониженный расход в rest.
+        "BorgRest",
+    ];
+
+    /// <summary>
+    /// Шасси, которым дополнительная броня Mk2 положена и при апгрейде, и при спавне:
+    /// только СБ и миротворец. Остальные варианты Mk2 остаются на штатной BorgArmorSilicon.
+    /// </summary>
+    private static readonly string[] Mk2ArmorUpgradeWhitelist =
+    [
+        "FishBorgChassisSecurityMk2",
+        "FishBorgChassisPeaceMk2",
+    ];
+
     /// <summary>
     /// Подписывает обработчики апгрейда модулем BorgUpgradeModule.
     /// </summary>
@@ -127,7 +158,7 @@ public sealed partial class BorgSwitchableTypeSystem
             // Ещё не выбран тип, либо цель уже Mk2 (повторный апгрейд запрещён).
             if (!quiet)
             {
-                _popup.PopupClient(
+                _popup.PopupEntity(
                     Loc.GetString(switchable.SelectedBorgType == null
                         ? "borg-upgrade-invalid-target"
                         : "borg-upgrade-already-mk2"),
@@ -142,7 +173,7 @@ public sealed partial class BorgSwitchableTypeSystem
         if (_doAfter.IsRunning(switchable.ActiveUpgradeDoAfter))
         {
             if (!quiet)
-                _popup.PopupClient(Loc.GetString("borg-upgrade-in-progress"), target, user);
+                _popup.PopupEntity(Loc.GetString("borg-upgrade-in-progress"), target, user);
 
             return false;
         }
@@ -305,12 +336,8 @@ public sealed partial class BorgSwitchableTypeSystem
         _adminLog.Add(LogType.Action, LogImpact.Medium,
             $"{user} upgraded borg {borg.Owner} to {target} with {item}");
 
-        _popup.PopupClient(Loc.GetString("borg-upgrade-complete"), borg.Owner, user);
+        _popup.PopupEntity(Loc.GetString("borg-upgrade-complete"), borg.Owner, user);
     }
-
-    // Имена chassis-рук совпадают с руками в borg_chassis_mk2.yml.
-    private const string Mk2RightHandId = "hand_right";
-    private const string Mk2LeftHandId = "hand_left";
 
     /// <summary>
     /// Постоянные chassis-руки есть только у Mk2-прототипов и риперов, а у
@@ -337,23 +364,6 @@ public sealed partial class BorgSwitchableTypeSystem
         _hands.SetCanBeStripped((uid, hands), true);
         _hands.SetShowInHands((uid, hands), true);
     }
-
-    /// <summary>
-    /// Компоненты, которые апгрейд должен применить к уже существующему боргу.
-    /// Их значения живут только в borg_chassis_mk2.yml и в C# не дублируются.
-    /// </summary>
-    private static readonly string[] Mk2UpgradeComponents =
-    [
-        "MobThresholds",
-        "PowerCellDraw",
-        "FlashImmunity",
-        // Борг не опрокидывается в крит/смерть и гасит фонарь (BorgNoFallSystem).
-        "BorgNoFall",
-        // Радиус обзора AI у Mk2 шире (7 вместо 3), значения живут в borg_chassis_mk2.yml.
-        "StationAiVision",
-        // Механика отдыха Mk2: действие, блок движения и пониженный расход в rest.
-        "BorgRest",
-    ];
 
     /// <summary>
     /// Применяет к живому боргу те компоненты, которые есть у соответствующего Mk2-chassis.
@@ -386,16 +396,6 @@ public sealed partial class BorgSwitchableTypeSystem
             EntityManager.AddComponent(uid, entry, overwrite: true);
         }
     }
-
-    /// <summary>
-    /// Шасси, которым дополнительная броня Mk2 положена и при апгрейде, и при спавне:
-    /// только СБ и миротворец. Остальные варианты Mk2 остаются на штатной BorgArmorSilicon.
-    /// </summary>
-    private static readonly string[] Mk2ArmorUpgradeWhitelist =
-    [
-        "FishBorgChassisSecurityMk2",
-        "FishBorgChassisPeaceMk2",
-    ];
 
     /// <summary>
     /// Переводит инвентарь апгрейднутого борга на Mk2-шаблон (в нём есть belt-слот) и

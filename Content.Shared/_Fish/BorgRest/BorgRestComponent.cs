@@ -58,6 +58,7 @@ public sealed partial class BorgRestComponent : Component
     /// <summary>
     /// Действие отдыха, выданное этой механикой; удаляется при удалении компонента.
     /// </summary>
+    [DataField]
     public EntityUid? Action;
 
     /// <summary>
