@@ -33,8 +33,10 @@ public sealed partial class BorgSwitchableTypeSystem
 
         // Сдвиг уходит на корень спрайта: так runtime-слои предметов (in-hand,
         // надетая экипировка) наследуют сдвиг и едут вместе с телом, а не отстают.
-        // Присваиваем безусловно, чтобы сбросить сдвиг у типов без него.
-        _sprite.SetOffset((entity.Owner, sprite), prototype.SpriteOffset ?? Vector2.Zero);
+        // При null сдвиг не трогаем (контракт BorgTypePrototype.SpriteOffset):
+        // у типа без собственного смещения сохраняется сдвиг chassis.
+        if (prototype.SpriteOffset is { } spriteOffset)
+            _sprite.SetOffset((entity.Owner, sprite), spriteOffset);
 
         // Fish: масштаб корня спрайта (Mk2 — 0.8): применяется ко всему дереву
         // слоёв, включая in-hand предметы и одежду. Безусловный сброс в 1 —

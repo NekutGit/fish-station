@@ -40,10 +40,10 @@ borg-type-fish-security-mk2-transponder = киборг-охранник Мк2
 
 ## Borg Upgrade Module (предмет FishBorgUpgradeModule): отменяемый за 15 секунд
 ## апгрейд обычного киборга до его Mk2-варианта. Сущность не пересоздаётся — меняется только тип.
-borg-upgrade-invalid-target = Этот киборг нельзя апгрейдить.
+borg-upgrade-invalid-target = Этого киборга нельзя улучшить.
 borg-upgrade-already-mk2 = Этот киборг уже Mk2.
-borg-upgrade-in-progress = Апгрейд уже выполняется.
-borg-upgrade-complete = Киборг был апгрейднут до Mk2.
+borg-upgrade-in-progress = Улучшение уже выполняется.
+borg-upgrade-complete = Киборг был улучшен до Mk2.
 
 ## Действие отдыха (сущность FishBorgRestAction): переключает состояние отдыха боргов Mk2.
 ## Пока борг отдыхает: движение и все действия кроме этого заблокированы, расход батареи снижен.

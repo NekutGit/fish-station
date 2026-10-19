@@ -1,5 +1,6 @@
 using Content.Shared._Fish.BorgRest;
 using Content.Shared.Mobs;
+using Content.Shared.Movement.Components;
 using Content.Shared.Silicons.Borgs;
 using Content.Shared.Silicons.Borgs.Components;
 using Content.Shared.Toggleable;
@@ -60,11 +61,20 @@ public sealed partial class BorgSystem
             return;
         }
 
-        // Выход: тело — исходный кадр типа, фонарь — по фактическому ToggleableVisuals.Enabled
-        // (тот же источник, что у wreck-обработчика при возврате в Alive). Слой Light
-        // восстанавливает ванильный визуал, вызвавший эту смену раньше нас в цепочке.
-        if (prototype.SpriteBodyState != null)
-            _sprite.LayerSetRsiState((chassis.Owner, args.Sprite), BorgVisualLayers.Body, prototype.SpriteBodyState);
+        // Выход: тело — кадр движения, если борг движется, иначе исходный кадр типа;
+        // фонарь — по фактическому ToggleableVisuals.Enabled (тот же источник, что у
+        // wreck-обработчика при возврате в Alive). Слой Light восстанавливает ванильный
+        // визуал, вызвавший эту смену раньше нас в цепочке. Без учёта движения выход из
+        // отдыха на ходу оставил бы тело на стоячем кадре: SpriteMovementComponent не
+        // перерассылает состояние, если IsMoving не менялся, и кадр не переприменился бы.
+        var bodyState = prototype.SpriteBodyState;
+        if (prototype.SpriteBodyMovementState is { } movementState
+            && TryComp<SpriteMovementComponent>(chassis.Owner, out var movement)
+            && movement.IsMoving)
+        {
+            bodyState = movementState;
+        }
+        _sprite.LayerSetRsiState((chassis.Owner, args.Sprite), BorgVisualLayers.Body, bodyState);
 
         var lightVisible = _appearance.TryGetData<bool>(
             chassis.Owner,
