@@ -1,0 +1,56 @@
+- type: entity
+  name: Thompson SMG
+  parent: [BaseWeaponSubMachineGun, BaseSecurityContraband]
+  id: WeaponSubMachineGunThompson
+  description: An American automatic weapon developed in 1919, it became a symbol of the gangster era. It was known for its high rate of fire and powerful 7.62mmR cartridge, but it was heavy and expensive to manufacture.
+  components:
+  - type: Sprite
+    sprite: _Fish/Objects/Weapons/Guns/SMGs/tommy_gun/big.rsi
+    layers:
+    - state: base
+      map: ["enum.GunVisualLayers.Base"]
+    - state: mag-0
+      map: ["enum.GunVisualLayers.Mag"]
+  - type: Clothing
+    sprite: _Fish/Objects/Weapons/Guns/SMGs/tommy_gun/tiny.rsi
+  - type: Item
+    sprite: _Fish/Objects/Weapons/Guns/SMGs/tommy_gun/tiny.rsi
+  - type: Wieldable
+    unwieldOnUse: false
+  - type: GunWieldBonus
+    minAngle: -11
+    maxAngle: -9
+  - type: Gun
+    minAngle: 21
+    maxAngle: 32
+    fireRate: 8
+    selectedMode: FullAuto
+    availableModes:
+    - SemiAuto
+    - FullAuto
+    soundGunshot:
+      path: /Audio/_Starlight/Weapons/Guns/Gunshots/ppsh.ogg
+  - type: MagazineVisuals
+    magState: mag
+    steps: 1
+    zeroVisible: true
+  - type: Appearance
+  - type: ItemSlots
+    slots:
+      gun_magazine:
+        name: Magazine
+        startingItem: MagazinePistolSubMachineGunThompson
+        insertSound: /Audio/Weapons/Guns/MagIn/smg_magin.ogg
+        ejectSound: /Audio/Weapons/Guns/MagOut/smg_magout.ogg
+        priority: 2
+        whitelist:
+          tags:
+            - MagazineSMGThompson
+        whitelistFailPopup: gun-magazine-whitelist-fail
+      gun_chamber:
+        name: Chamber
+        startingItem: CartridgePistol40SP
+        priority: 1
+        whitelist:
+          tags:
+            - CartridgePistolDP

@@ -1,0 +1,1 @@
+ent-MagazinePistolSubMachineGunThompson = магазин Томпсон
