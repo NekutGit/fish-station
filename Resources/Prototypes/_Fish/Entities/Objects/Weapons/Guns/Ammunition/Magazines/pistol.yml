@@ -1,7 +1,8 @@
 - type: entity
-  id: MagazinePistolSubMachineGunThompson
-  name: Thompson magazine
+  id: FishMagazinePistolSubMachineGunThompson
+  name: thompson magazine
   parent: BaseMagazinePistolSubMachineGun
+  suffix: FISH
   components:
   - type: BallisticAmmoProvider
     proto: CartridgePistol40SP
@@ -21,4 +22,4 @@
     steps: 2
   - type: Tag
     tags:
-      - MagazineSMGThompson
+      - FishMagazineSMGThompson

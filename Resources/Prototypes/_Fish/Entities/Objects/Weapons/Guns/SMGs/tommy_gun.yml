@@ -1,8 +1,9 @@
 - type: entity
-  name: Thompson SMG
+  name: thompson smg
   parent: [BaseWeaponSubMachineGun, BaseSecurityContraband]
-  id: WeaponSubMachineGunThompson
-  description: An American automatic weapon developed in 1919, it became a symbol of the gangster era. It was known for its high rate of fire and powerful 7.62mmR cartridge, but it was heavy and expensive to manufacture.
+  id: FishWeaponSubMachineGunThompson
+  description: An American automatic weapon developed in 1919, it became a symbol of the gangster era. It was known for its high rate of fire and powerful .40-caliber cartridges, but it was heavy and expensive to manufacture.
+  suffix: FISH
   components:
   - type: Sprite
     sprite: _Fish/Objects/Weapons/Guns/SMGs/tommy_gun/big.rsi
@@ -39,13 +40,13 @@
     slots:
       gun_magazine:
         name: Magazine
-        startingItem: MagazinePistolSubMachineGunThompson
+        startingItem: FishMagazinePistolSubMachineGunThompson
         insertSound: /Audio/Weapons/Guns/MagIn/smg_magin.ogg
         ejectSound: /Audio/Weapons/Guns/MagOut/smg_magout.ogg
         priority: 2
         whitelist:
           tags:
-            - MagazineSMGThompson
+            - FishMagazineSMGThompson
         whitelistFailPopup: gun-magazine-whitelist-fail
       gun_chamber:
         name: Chamber

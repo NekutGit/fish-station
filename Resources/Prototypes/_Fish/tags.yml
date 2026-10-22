@@ -20,4 +20,4 @@
   id: FishPouchMedical # разрешает выбранным вариантам подсумка храниться в медицинских поясах
 
 - type: Tag
-  id: MagazineSMGThompson
+  id: FishMagazineSMGThompson
