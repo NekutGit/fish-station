@@ -2,7 +2,7 @@
   id: FishMagazinePistolSubMachineGunThompson
   name: thompson magazine
   parent: BaseMagazinePistolSubMachineGun
-  suffix: FISH
+  suffix: Fish
   components:
   - type: BallisticAmmoProvider
     proto: CartridgePistol40SP
