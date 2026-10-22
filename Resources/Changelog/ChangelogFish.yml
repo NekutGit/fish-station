@@ -1010,3 +1010,10 @@
     message: Фикс 2-3 шлюзов
   id: 99
   url: https://github.com/makura-games/fish-station/pull/527
+- author: TiFeRi
+  time: '2026-10-22T09:11:33.0000000+00:00'
+  changes:
+  - type: Add
+    message: Включение шаттлов stellar stories в ротацию шаттлов сб.
+  id: 100
+  url: https://github.com/makura-games/fish-station/pull/533
