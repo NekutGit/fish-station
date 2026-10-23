@@ -1024,3 +1024,10 @@
     message: Удаление всякого из миграции
   id: 101
   url: https://github.com/makura-games/fish-station/pull/521
+- author: TiFeRi
+  time: '2026-10-22T21:43:36.0000000+00:00'
+  changes:
+  - type: Remove
+    message: 'Удаление карт из пула на фиксы: Ирефит, Сухарик, Оазис, Плазма, Сноуболл, Терра Исланд,'
+  id: 102
+  url: https://github.com/makura-games/fish-station/pull/540
