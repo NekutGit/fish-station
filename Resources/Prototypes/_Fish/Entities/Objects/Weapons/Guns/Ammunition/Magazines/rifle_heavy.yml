@@ -1,0 +1,74 @@
+- type: entity
+  id: FishMagazineScarH
+  name: "SCAR-H magazine (.308)"
+  parent: BaseMagazineRifleHeavy
+  suffix: Fish
+  abstract: true
+  components:
+  - type: Tag
+    tags:
+      - FishMagazineScarH
+  - type: BallisticAmmoProvider
+    mayTransfer: true
+    whitelist:
+      tags:
+        - CartridgeHeavyRifle
+    capacity: 20
+  - type: Sprite
+    sprite: _Fish/Objects/Weapons/Guns/Ammunition/Magazines/scar_h.rsi
+    layers:
+    - state: base-0
+      map: ["enum.GunVisualLayers.Base"]
+    - state: mag-0
+      map: ["enum.GunVisualLayers.Mag"]
+  - type: Item
+    inhandVisuals:
+      left:
+      - state: inhand-left-mag
+      right:
+      - state: inhand-right-mag
+
+- type: entity
+  id: FishMagazineScarHEmpty
+  name: "SCAR-H magazine (.308 any)"
+  suffix: Fish, empty
+  parent: FishMagazineScarH
+  components:
+  - type: BallisticAmmoProvider
+    proto: null
+
+- type: entity
+  id: FishMagazineScarHFMJ
+  name: "SCAR-H magazine (.308 FMJ)"
+  parent: FishMagazineScarH
+  components:
+  - type: BallisticAmmoProvider
+    proto: CartridgeRifleHeavyFMJ
+
+- type: entity
+  id: FishMagazineLargeScarHEmpty
+  name: "SCAR-H large magazine (.308 any)"
+  parent: FishMagazineScarHEmpty
+  components:
+  - type: BallisticAmmoProvider
+    capacity: 30
+  - type: Sprite
+    layers:
+    - state: base-1
+      map: ["enum.GunVisualLayers.Base"]
+    - state: mag-1
+      map: ["enum.GunVisualLayers.Mag"]
+
+- type: entity
+  id: FishMagazineLargeScarHFMJ
+  name: "SCAR-H large magazine (.308 FMJ)"
+  parent: FishMagazineScarHFMJ
+  components:
+  - type: BallisticAmmoProvider
+    capacity: 30
+  - type: Sprite
+    layers:
+    - state: base-1
+      map: ["enum.GunVisualLayers.Base"]
+    - state: mag-1
+      map: ["enum.GunVisualLayers.Mag"]
