@@ -8,13 +8,7 @@
     },
     "states": [
         {
-            "name": "base-0"
-        },
-        {
-            "name": "base-1"
-        },
-        {
-            "name": "mag-0"
+            "name": "base"
         },
         {
             "name": "mag-1"

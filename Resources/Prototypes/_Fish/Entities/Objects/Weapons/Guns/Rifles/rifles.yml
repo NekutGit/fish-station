@@ -8,10 +8,16 @@
   - type: Sprite
     sprite: _Fish/Objects/Weapons/Guns/Rifles/scarh/Syndicate/big.rsi
     layers:
-    - state: icon
+    - state: base
       map: ["enum.GunVisualLayers.Base"]
+    - state: base-unshaded
+      map: ["enum.GunVisualLayers.BaseUnshaded"]
+      shader: unshaded
     - state: mag-0
       map: ["enum.GunVisualLayers.Mag"]
+    - state: mag-unshaded-0
+      map: ["enum.GunVisualLayers.MagUnshaded"]
+      shader: unshaded
   - type: Clothing
     sprite: _Fish/Objects/Weapons/Guns/Rifles/scarh/Syndicate/tiny.rsi
   - type: Item
@@ -31,7 +37,7 @@
     - FullAuto
     - Burst
     - SemiAuto
-    burstFireRate: 11
+    burstFireRate: 9
     soundGunshot:
       path: /Audio/_Sunrise/Weapons/Guns/Rifles/skm28/skm28_shot.ogg
       params:
@@ -64,7 +70,7 @@
       gun_chamber: !type:ContainerSlot
   - type: MagazineVisuals
     magState: mag
-    steps: 1
+    steps: 4
     zeroVisible: true
   - type: Appearance
   - type: Wieldable
