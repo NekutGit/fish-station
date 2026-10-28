@@ -21,7 +21,7 @@ public sealed partial class BorgSwitchableTypeSystem
         SpriteComponent sprite,
         BorgTypePrototype prototype)
     {
-        // Mk2 рисуется из отдельного холста (_Lust), а RSI слоёв у живой сущности
+        // Mk2 рисуется из отдельного холста (_Fish), а RSI слоёв у живой сущности
         // остался от родительского chassis. Меняем его до выставления state, иначе
         // state вроде sec_mk2* будет искаться в vanilla-RSI и даст ERRO.
         if (prototype.SpriteRsiPath is { } rsiPath)

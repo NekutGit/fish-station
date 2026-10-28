@@ -17,6 +17,7 @@ using Robust.Client.Player;
 using Robust.Client.UserInterface;
 using Robust.Shared.Containers;
 using Robust.Shared.GameStates;
+using Robust.Shared.Map;
 using Robust.Shared.Player;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Timing;
@@ -60,22 +61,20 @@ namespace Content.Client.Hands.Systems
         #region StateHandling
 
         /// <summary>
-        /// Fish: применяет сетевое состояние рук и при смене ShowInHands перерисовывает
-        /// in-hand слои уже занятых рук — сам флаг изменения состояния не вызывает
-        /// UpdateHandVisuals.
+        /// Fish: применяет сетевое состояние рук и обновляет in-hand слои всех рук
+        /// после полного состояния, включая смену ShowInHands.
         /// </summary>
         private void HandleComponentState(Entity<HandsComponent> ent, ref ComponentHandleState args)
         {
+            // No need to update everything if we are only switching hands.
+            if (args.Current is HandsComponentActiveHandDeltaState activeHandState)
+            {
+                SetActiveHand(ent.AsNullable(), activeHandState.ActiveHandId);
+                return;
+            }
+
             if (args.Current is not HandsComponentState state)
                 return;
-
-            // Fish: смена ShowInHands запоминается и применяется здесь же; refresh занятых
-            // рук — перед _stripSys.UpdateUi. Логика: _Fish/Hands/Systems/HandsSystem.ShowInHands.cs.
-            var showInHandsChanged = ApplyShowInHandsState(ent, state); // Fish-Edit
-
-            // Fish: CanBeStripped приходит в состоянии — рантайм-апгрейд борга на Mk2
-            // делает chassis-руки стрипаемыми и на клиенте (Strip-UI).
-            ent.Comp.CanBeStripped = state.CanBeStripped; // Fish-Edit
 
             var newHands = state.Hands.Keys.Except(ent.Comp.Hands.Keys); // hands that were added between states
             var oldHands = ent.Comp.Hands.Keys.Except(state.Hands.Keys); // hands that were removed between states
@@ -89,17 +88,18 @@ namespace Content.Client.Hands.Systems
             {
                 AddHand(ent.AsNullable(), handId, state.Hands[handId]);
             }
-            ent.Comp.SortedHands = new (state.SortedHands);
+            ent.Comp.SortedHands = new(state.SortedHands);
 
             SetActiveHand(ent.AsNullable(), state.ActiveHandId);
 
-            // Fish: смена флага сама по себе не вызывает UpdateHandVisuals —
-            // обновляем слои всех рук, в которых уже лежат предметы.
-            // Fish-Start
-            if (showInHandsChanged)
-                RefreshHeldInHandsVisuals(ent);
-            // Fish-End
+            ent.Comp.ShowInHands = state.ShowInHands;
+            ent.Comp.HandDisplacement = state.HandDisplacement;
+            ent.Comp.LeftHandDisplacement = state.LeftHandDisplacement;
+            ent.Comp.RightHandDisplacement = state.RightHandDisplacement;
+            ent.Comp.CanBeStripped = state.CanBeStripped;
 
+            // TODO: Ideally this would only update if the displacement data actually changed, but there is no way to compare it since the type is not equatable.
+            UpdateAllHandVisuals((ent.Owner, ent.Comp));
             _stripSys.UpdateUi(ent);
         }
         #endregion
@@ -117,9 +117,11 @@ namespace Content.Client.Hands.Systems
         public override void DoDrop(Entity<HandsComponent?> ent,
             string handId,
             bool doDropInteraction = true,
-            bool log = true)
+            bool log = true,
+            EntityCoordinates? targetDropLocation = null
+        )
         {
-            base.DoDrop(ent, handId, doDropInteraction, log);
+            base.DoDrop(ent, handId, doDropInteraction, log, targetDropLocation);
 
             if (TryGetHeldItem(ent, handId, out var held) && TryComp(held, out SpriteComponent? sprite))
                 sprite.RenderOrder = EntityManager.CurrentTick.Value;
@@ -266,6 +268,20 @@ namespace Content.Client.Hands.Systems
         }
 
         /// <summary>
+        /// Update the players sprite with new in-hand visuals for all held items.
+        /// </summary>
+        private void UpdateAllHandVisuals(Entity<HandsComponent?> ent)
+        {
+            foreach (var handId in EnumerateHands(ent))
+            {
+                if (!TryGetHeldItem(ent, handId, out var held))
+                    continue;
+
+                UpdateHandVisuals(ent, held.Value, handId);
+            }
+        }
+
+        /// <summary>
         ///     Update the players sprite with new in-hand visuals.
         /// </summary>
         private void UpdateHandVisuals(Entity<HandsComponent?, SpriteComponent?> ent, EntityUid held, string handId)
@@ -284,10 +300,10 @@ namespace Content.Client.Hands.Systems
 
             // Fish: очистка старых слоёв до раннего выхода по ShowInHands и привязка
             // RevealedLayers по handId — _Fish/Hands/Systems/HandsSystem.ShowInHands.cs.
-            // Fish-Start
+            // Fish-start
             if (!TryPrepareRevealedLayers(ent.Owner, handComp, sprite, handId, out var revealedLayers))
                 return;
-            // Fish-End
+            // Fish-end
 
             if (HandIsEmpty((ent, handComp), handId))
             {
@@ -307,7 +323,7 @@ namespace Content.Client.Hands.Systems
 
             // Fish: компенсация in-hand смещения Mk2 зависит только от сущности и её
             // borgType, а не от слоя — вычисляем один раз на вызов вне цикла по слоям.
-            var needsMk2Compensation = NeedsMk2HandOffsetCompensation(ent.Owner); // Fish-Edit
+            var needsMk2Compensation = NeedsMk2HandOffsetCompensation(ent.Owner); // Fish-edit
 
             // add the new layers
             foreach (var (key, layerData) in ev.Layers)
@@ -333,15 +349,11 @@ namespace Content.Client.Hands.Systems
 
                 _sprite.LayerSetData((ent, sprite), index, layerData);
 
-                ApplyMk2HandOffsetCompensation((ent, sprite), index, needsMk2Compensation); // Fish-Edit
+                ApplyMk2HandOffsetCompensation((ent, sprite), index, needsMk2Compensation); // Fish-edit
 
                 // Add displacement maps
-                var displacement = hand.Value.Location switch
-                {
-                    HandLocation.Left => handComp.LeftHandDisplacement,
-                    HandLocation.Right => handComp.RightHandDisplacement,
-                    _ => handComp.HandDisplacement
-                };
+                // Sunrise-Edit - учитываем displacement-карты выбранного типа тела.
+                var displacement = GetSunriseHandDisplacement(ent.Owner, hand.Value.Location, handComp);
 
                 if (displacement is not null && _displacement.TryAddDisplacement(displacement, (ent, sprite), index, key, out var displacementKey))
                     revealedLayers.Add(displacementKey);

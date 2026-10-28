@@ -63,7 +63,7 @@ public sealed partial class BorgTypePrototype : IInheritingPrototype
     }
 
     // Отдельный холст спрайта для типов, чей RSI не совпадает с RSI chassis сущности.
-    // Нужен Mk2: у них корпус рисуется из _Lust/Mobs/Silicon/chassis.rsi, а живая сущность
+    // Нужен Mk2: у них корпус рисуется из _Fish/Mobs/Silicon/chassis.rsi, а живая сущность
     // осталась на Mobs/Silicon/chassis.rsi от родительского chassis. Без этого поля
     // смена borgType меняла бы только state и оставляла старый холст (а у security
     // state sec_mk2* на vanilla-RSI вообще отсутствует).
@@ -75,7 +75,7 @@ public sealed partial class BorgTypePrototype : IInheritingPrototype
 
     /// <summary>
     /// Смещение слоёв спрайта в тайлах. <c>null</c> — смещение не трогаем.
-    /// Для _Lust (холст 32x64 против vanilla 32x32) нужно 0,0.4 (= 0,0.5 × SpriteScale),
+    /// Для _Fish (холст 32x64 против vanilla 32x32) нужно 0,0.4 (= 0,0.5 × SpriteScale),
     /// иначе борг висит ниже: корневой Offset задаётся в мировых метрах и корневым
     /// Scale не масштабируется, а тело на холсте смещено на пол-холста.
     /// Вешается на корень SpriteComponent, а не на отдельные слои: так runtime-слои
@@ -86,7 +86,7 @@ public sealed partial class BorgTypePrototype : IInheritingPrototype
 
     /// <summary>
     /// Единый масштаб спрайта типа (по X и Y). <c>null</c> — масштаб сбрасывается в 1.
-    /// Mk2: 0.8 — _Lust-холст крупнее vanilla-пропорций, тело визуально больше тайла.
+    /// Mk2: 0.8 — _Fish-холст крупнее vanilla-пропорций, тело визуально больше тайла.
     /// Масштабируется всё дерево слоёв, включая in-hand предметы и надетую одежду;
     /// физика/хитбоксы при этом не меняются.
     /// </summary>
@@ -95,7 +95,7 @@ public sealed partial class BorgTypePrototype : IInheritingPrototype
 
     /// <summary>
     /// Состояние спрайта тела в критическом/мёртвом состоянии. <c>null</c> — тело не меняется.
-    /// У Mk2 используется wreck-кадр из _Lust RSI (например, robot_wreck).
+    /// У Mk2 используется wreck-кадр из _Fish RSI (например, robot_wreck).
     /// Переключение выполняет клиентский BorgSystem при смене MobStateVisuals.State;
     /// при возврате в Alive тело восстанавливается в <see cref="SpriteBodyState"/>.
     /// </summary>
@@ -104,7 +104,7 @@ public sealed partial class BorgTypePrototype : IInheritingPrototype
 
     /// <summary>
     /// Состояние спрайта тела во время отдыха (механика BorgRest). <c>null</c> — тело не меняется.
-    /// У Mk2 используется rest-кадр из _Lust RSI (например, robot_rest).
+    /// У Mk2 используется rest-кадр из _Fish RSI (например, robot_rest).
     /// Переключение выполняет клиентский BorgSystem при BorgRestVisuals.Resting;
     /// при выходе из отдыха тело восстанавливается предыдущими обработчиками визуала.
     /// </summary>

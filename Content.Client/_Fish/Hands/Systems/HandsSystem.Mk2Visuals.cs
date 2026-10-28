@@ -2,7 +2,6 @@
 #pragma warning disable IDE0130 // Namespace does not match folder structure
 using System.Numerics;
 using static Robust.Client.GameObjects.SpriteComponent;
-using Content.Shared.Hands.Components;
 using Content.Shared.Silicons.Borgs;
 using Content.Shared.Silicons.Borgs.Components;
 using Robust.Client.GameObjects;
@@ -13,22 +12,6 @@ namespace Content.Client.Hands.Systems;
 public sealed partial class HandsSystem
 {
     [Dependency] private IPrototypeManager _prototype = default!;
-
-    /// <summary>
-    /// Fish: перерисовывает in-hand слои уже занятых рук после смены ShowInHands —
-    /// сам флаг изменения состояния не вызывает UpdateHandVisuals.
-    /// </summary>
-    private void RefreshHeldInHandsVisuals(Entity<HandsComponent> ent)
-    {
-        if (!TryComp(ent, out SpriteComponent? sprite))
-            return;
-
-        foreach (var handId in ent.Comp.SortedHands)
-        {
-            if (GetHeldItem((ent, ent.Comp), handId) is { } held)
-                UpdateHandVisuals((ent, ent.Comp, sprite), held, handId);
-        }
-    }
 
     /// <summary>
     /// Fish: компенсирует смещение in-hand слоя (-0.25 по Y) для боргов Mk2.

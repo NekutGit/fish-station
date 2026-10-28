@@ -9,26 +9,14 @@ namespace Content.Client.Hands.Systems;
 public sealed partial class HandsSystem
 {
     /// <summary>
-    /// Fish: применяет сетевое состояние <see cref="HandsComponentState.ShowInHands"/> к компоненту
-    /// и сообщает, изменился ли флаг. Сама смена флага не вызывает UpdateHandVisuals —
-    /// вызывающий после обработки состояния решает, перерисовывать ли занятые руки.
-    /// </summary>
-    private bool ApplyShowInHandsState(Entity<HandsComponent> ent, HandsComponentState state)
-    {
-        var showInHandsChanged = state.ShowInHands != ent.Comp.ShowInHands;
-        ent.Comp.ShowInHands = state.ShowInHands;
-        return showInHandsChanged;
-    }
-
-    /// <summary>
     /// Fish: готовит набор RevealedLayers для руки перед обновлением in-hand визуала:
     /// очищает (и удаляет со спрайта) старые слои, возвращаем false — когда обновлять нечего.
     /// </summary>
     /// <remarks>
-    /// Порядок важен и совпадает с исходной правкой: очистка старых слоёв идёт
-    /// до раннего выхода по ShowInHands — при выключении флага (true -> false)
-    /// иначе ранее добавленные слои остаются на спрайте (HandleComponentState
-    /// вызывает UpdateHandVisuals при смене флага в обе стороны).
+    /// Порядок важен: очистка старых слоёв идёт до раннего выхода по ShowInHands —
+    /// при выключении флага (true -> false) иначе ранее добавленные слои остаются
+    /// на спрайте. HandleComponentState вызывает UpdateAllHandVisuals после полного
+    /// состояния, поэтому смена флага в обе стороны доходит до этой очистки.
     /// Привязка — по handId (а не HandLocation), чтобы несколько Functional-рук
     /// не разделяли один HashSet.
     /// </remarks>

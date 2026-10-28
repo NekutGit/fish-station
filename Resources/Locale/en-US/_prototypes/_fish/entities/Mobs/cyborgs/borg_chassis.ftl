@@ -64,8 +64,22 @@ ent-FishBorgChassisSecurityMk2Battery = { ent-FishBorgChassisSecurityMk2 }
     .suffix = Battery
     .desc = { ent-FishBorgChassisSecurityMk2.desc }
 
-## Синди-риперы: Fish-вариант с постоянными chassis-руками; имя и описание
-## наследуются от Sunrise-шасси. Derelict без .desc — берётся из YAML-родителя.
-ent-FishBorgChassisSyndicateReaper = { ent-BorgChassisSyndicateReaper }
-    .desc = { ent-BorgChassisSyndicateReaper.desc }
-ent-FishBorgChassisSyndicateReaperDerelict = { ent-SyndicateReaperBorgChassisDerelictSunrise }
+## Синди-риперы: Fish-вариант с постоянными chassis-руками. Шасси перенесено
+## из _Sunrise в _Fish и больше не зависит от удалённых upstream-прототипов.
+ent-FishBorgChassisSyndicateReaper = syndicate reaper cyborg
+    .desc = A stealthy infiltration unit designed for sabotage and assassination.
+
+ent-FishBorgChassisSyndicateReaperDerelict = derelict syndicate reaper cyborg
+    .desc = A stealthy infiltration unit designed for sabotage and assassination. This one has seen better days.
+
+ent-FishPlayerBorgSyndicateReaperBattery = { ent-FishBorgChassisSyndicateReaper }
+    .suffix = Battery, Tools
+    .desc = { ent-FishBorgChassisSyndicateReaper.desc }
+
+ent-FishPlayerSyndicateReaperBorgDerelict = { ent-FishBorgChassisSyndicateReaperDerelict }
+    .suffix = Battery, Module
+    .desc = { ent-FishBorgChassisSyndicateReaperDerelict.desc }
+
+ent-FishPlayerBorgSyndicateReaperDerelictGhostRole = { ent-FishPlayerSyndicateReaperBorgDerelict }
+    .suffix = Ghost role
+    .desc = { ent-FishPlayerSyndicateReaperBorgDerelict.desc }

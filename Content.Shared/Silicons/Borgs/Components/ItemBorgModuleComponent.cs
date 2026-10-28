@@ -1,4 +1,4 @@
-﻿using Content.Shared.Hands.Components;
+using Content.Shared.Hands.Components;
 using Robust.Shared.GameStates;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Serialization;
@@ -51,16 +51,16 @@ public partial record struct BorgHand
     public EntProtoId? Item;
 
     /// <summary>
-    /// The settings for the hand, including a whitelist.
+    /// The settings for the hand, including a whitelist of items hand can pick up.
     /// Fish: руки, которые выдаёт модуль, по умолчанию функциональные: они идут отдельным
     /// рядом (FunctionalHandContainer), а не серединой между chassis-руками Right/Left.
     /// Явно заданный location в YAML это значение переопределяет.
     /// </summary>
     [DataField]
-    public Hand Hand = new(HandLocation.Functional);  // Fish-Edit
+    public Hand Hand = new(HandLocation.Functional);  // Fish-edit
 
     /// <summary>
-    /// Whether the hand can be removed by hand.
+    /// Allows hand to act like normal universal humanoid hand. Pick up and put down items.
     /// </summary>
     [DataField]
     public bool ForceRemovable = false;
@@ -71,11 +71,11 @@ public partial record struct BorgHand
     /// (обнуление без конструктора) — field initializer выше не выполнялся бы, и реальным
     /// дефолтом оставался бы HandLocation.Right вместо Functional.
     /// </summary>
-    // Fish-Start
+    // Fish-start
     public BorgHand()
     {
     }
-    // Fish-End
+    // Fish-end
 
     /// <summary>
     /// Рука модуля: предмет, слот и флаг принудительного изъятия.

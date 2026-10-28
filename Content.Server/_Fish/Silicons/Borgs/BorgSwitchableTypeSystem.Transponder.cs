@@ -19,7 +19,7 @@ public sealed partial class BorgSwitchableTypeSystem
         if (!TryComp(ent, out BorgTransponderComponent? transponder))
             return;
 
-        var prototype = Prototypes.Index(borgType);
+        var prototype = ProtoMan.Index(borgType);
 
         var transponderRsi = prototype.SpriteRsiPath
             ?? (transponder.Sprite as SpriteSpecifier.Rsi)?.RsiPath

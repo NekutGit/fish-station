@@ -4,7 +4,7 @@
   name: generic cyborg Mk2
   components:
   - type: Sprite
-    sprite: _Lust/Mobs/Silicon/chassis.rsi
+    sprite: _Fish/Mobs/Silicon/chassis.rsi
     offset: 0,0.4
     scale: 0.8,0.8
     layers:
@@ -23,7 +23,7 @@
     noMindState: robot_e_r
   - type: BorgTransponder
     sprite:
-      sprite: _Lust/Mobs/Silicon/chassis.rsi
+      sprite: _Fish/Mobs/Silicon/chassis.rsi
       state: robot
     name: generic cyborg Mk2
   - type: FlashImmunity
@@ -43,15 +43,11 @@
   # Постоянные chassis-руки только у Mk2 (и риперов); showInHands включает
   # отображение предметов из этих рук на спрайте. Модульные руки (Functional) не видны.
   - type: Hands
-    hands:
+    startingHands:
       hand_right:
         location: Right
       hand_left:
         location: Left
-    sortedHands:
-    - hand_right
-    - hand_left
-    activeHandId: hand_right
     showInHands: true
     canBeStripped: true
   # Не падает в крите и гасит фонарь (BorgNoFallSystem).
@@ -67,7 +63,7 @@
   name: engineer cyborg Mk2
   components:
   - type: Sprite
-    sprite: _Lust/Mobs/Silicon/chassis.rsi
+    sprite: _Fish/Mobs/Silicon/chassis.rsi
     offset: 0,0.4
     scale: 0.8,0.8
     layers:
@@ -86,7 +82,7 @@
     noMindState: engineer_e_r
   - type: BorgTransponder
     sprite:
-      sprite: _Lust/Mobs/Silicon/chassis.rsi
+      sprite: _Fish/Mobs/Silicon/chassis.rsi
       state: engineer
     name: engineer cyborg Mk2
   - type: FlashImmunity
@@ -106,15 +102,11 @@
   # Постоянные chassis-руки только у Mk2 (и риперов); showInHands включает
   # отображение предметов из этих рук на спрайте. Модульные руки (Functional) не видны.
   - type: Hands
-    hands:
+    startingHands:
       hand_right:
         location: Right
       hand_left:
         location: Left
-    sortedHands:
-    - hand_right
-    - hand_left
-    activeHandId: hand_right
     showInHands: true
     canBeStripped: true
   # Не падает в крите и гасит фонарь (BorgNoFallSystem).
@@ -130,7 +122,7 @@
   name: salvage cyborg Mk2
   components:
   - type: Sprite
-    sprite: _Lust/Mobs/Silicon/chassis.rsi
+    sprite: _Fish/Mobs/Silicon/chassis.rsi
     offset: 0,0.4
     scale: 0.8,0.8
     layers:
@@ -149,7 +141,7 @@
     noMindState: miner_e_r
   - type: BorgTransponder
     sprite:
-      sprite: _Lust/Mobs/Silicon/chassis.rsi
+      sprite: _Fish/Mobs/Silicon/chassis.rsi
       state: miner
     name: salvage cyborg Mk2
   - type: FlashImmunity
@@ -169,15 +161,11 @@
   # Постоянные chassis-руки только у Mk2 (и риперов); showInHands включает
   # отображение предметов из этих рук на спрайте. Модульные руки (Functional) не видны.
   - type: Hands
-    hands:
+    startingHands:
       hand_right:
         location: Right
       hand_left:
         location: Left
-    sortedHands:
-    - hand_right
-    - hand_left
-    activeHandId: hand_right
     showInHands: true
     canBeStripped: true
   # Не падает в крите и гасит фонарь (BorgNoFallSystem).
@@ -193,7 +181,7 @@
   name: janitor cyborg Mk2
   components:
   - type: Sprite
-    sprite: _Lust/Mobs/Silicon/chassis.rsi
+    sprite: _Fish/Mobs/Silicon/chassis.rsi
     offset: 0,0.4
     scale: 0.8,0.8
     layers:
@@ -212,7 +200,7 @@
     noMindState: janitor_e_r
   - type: BorgTransponder
     sprite:
-      sprite: _Lust/Mobs/Silicon/chassis.rsi
+      sprite: _Fish/Mobs/Silicon/chassis.rsi
       state: janitor
     name: janitor cyborg Mk2
   - type: FlashImmunity
@@ -232,15 +220,11 @@
   # Постоянные chassis-руки только у Mk2 (и риперов); showInHands включает
   # отображение предметов из этих рук на спрайте. Модульные руки (Functional) не видны.
   - type: Hands
-    hands:
+    startingHands:
       hand_right:
         location: Right
       hand_left:
         location: Left
-    sortedHands:
-    - hand_right
-    - hand_left
-    activeHandId: hand_right
     showInHands: true
     canBeStripped: true
   # Не падает в крите и гасит фонарь (BorgNoFallSystem).
@@ -256,7 +240,7 @@
   name: medical cyborg Mk2
   components:
   - type: Sprite
-    sprite: _Lust/Mobs/Silicon/chassis.rsi
+    sprite: _Fish/Mobs/Silicon/chassis.rsi
     offset: 0,0.4
     scale: 0.8,0.8
     layers:
@@ -275,7 +259,7 @@
     noMindState: medical_e_r
   - type: BorgTransponder
     sprite:
-      sprite: _Lust/Mobs/Silicon/chassis.rsi
+      sprite: _Fish/Mobs/Silicon/chassis.rsi
       state: medical
     name: medical cyborg Mk2
   - type: FlashImmunity
@@ -295,15 +279,11 @@
   # Постоянные chassis-руки только у Mk2 (и риперов); showInHands включает
   # отображение предметов из этих рук на спрайте. Модульные руки (Functional) не видны.
   - type: Hands
-    hands:
+    startingHands:
       hand_right:
         location: Right
       hand_left:
         location: Left
-    sortedHands:
-    - hand_right
-    - hand_left
-    activeHandId: hand_right
     showInHands: true
     canBeStripped: true
   # Не падает в крите и гасит фонарь (BorgNoFallSystem).
@@ -454,7 +434,7 @@
   name: service cyborg Mk2
   components:
   - type: Sprite
-    sprite: _Lust/Mobs/Silicon/chassis.rsi
+    sprite: _Fish/Mobs/Silicon/chassis.rsi
     offset: 0,0.4
     scale: 0.8,0.8
     layers:
@@ -473,7 +453,7 @@
     noMindState: service_e_r
   - type: BorgTransponder
     sprite:
-      sprite: _Lust/Mobs/Silicon/chassis.rsi
+      sprite: _Fish/Mobs/Silicon/chassis.rsi
       state: service
     name: service cyborg Mk2
   - type: FlashImmunity
@@ -493,15 +473,11 @@
   # Постоянные chassis-руки только у Mk2 (и риперов); showInHands включает
   # отображение предметов из этих рук на спрайте. Модульные руки (Functional) не видны.
   - type: Hands
-    hands:
+    startingHands:
       hand_right:
         location: Right
       hand_left:
         location: Left
-    sortedHands:
-    - hand_right
-    - hand_left
-    activeHandId: hand_right
     showInHands: true
     canBeStripped: true
   # Не падает в крите и гасит фонарь (BorgNoFallSystem).
@@ -517,7 +493,7 @@
   name: peace cyborg Mk2
   components:
   - type: Sprite
-    sprite: _Lust/Mobs/Silicon/chassis.rsi
+    sprite: _Fish/Mobs/Silicon/chassis.rsi
     offset: 0,0.4
     scale: 0.8,0.8
     layers:
@@ -536,7 +512,7 @@
     noMindState: peace_e_r
   - type: BorgTransponder
     sprite:
-      sprite: _Lust/Mobs/Silicon/chassis.rsi
+      sprite: _Fish/Mobs/Silicon/chassis.rsi
       state: peace
     name: peace cyborg Mk2
   - type: FlashImmunity
@@ -556,15 +532,11 @@
   # Постоянные chassis-руки только у Mk2 (и риперов); showInHands включает
   # отображение предметов из этих рук на спрайте. Модульные руки (Functional) не видны.
   - type: Hands
-    hands:
+    startingHands:
       hand_right:
         location: Right
       hand_left:
         location: Left
-    sortedHands:
-    - hand_right
-    - hand_left
-    activeHandId: hand_right
     showInHands: true
     canBeStripped: true
   # Не падает в крите и гасит фонарь (BorgNoFallSystem).
@@ -580,7 +552,7 @@
   name: clown cyborg Mk2
   components:
   - type: Sprite
-    sprite: _Lust/Mobs/Silicon/chassis.rsi
+    sprite: _Fish/Mobs/Silicon/chassis.rsi
     offset: 0,0.4
     scale: 0.8,0.8
     layers:
@@ -599,7 +571,7 @@
     noMindState: clown_e_r
   - type: BorgTransponder
     sprite:
-      sprite: _Lust/Mobs/Silicon/chassis.rsi
+      sprite: _Fish/Mobs/Silicon/chassis.rsi
       state: clown
     name: clown cyborg Mk2
   - type: FlashImmunity
@@ -619,15 +591,11 @@
   # Постоянные chassis-руки только у Mk2 (и риперов); showInHands включает
   # отображение предметов из этих рук на спрайте. Модульные руки (Functional) не видны.
   - type: Hands
-    hands:
+    startingHands:
       hand_right:
         location: Right
       hand_left:
         location: Left
-    sortedHands:
-    - hand_right
-    - hand_left
-    activeHandId: hand_right
     showInHands: true
     canBeStripped: true
   # Не падает в крите и гасит фонарь (BorgNoFallSystem).
@@ -643,7 +611,7 @@
   name: security cyborg Mk2
   components:
   - type: Sprite
-    sprite: _Lust/Mobs/Silicon/chassis.rsi
+    sprite: _Fish/Mobs/Silicon/chassis.rsi
     offset: 0,0.4
     scale: 0.8,0.8
     layers:
@@ -662,7 +630,7 @@
     noMindState: sec_mk2_e_r
   - type: BorgTransponder
     sprite:
-      sprite: _Lust/Mobs/Silicon/chassis.rsi
+      sprite: _Fish/Mobs/Silicon/chassis.rsi
       state: sec_mk2
     name: security cyborg Mk2
   - type: FlashImmunity
@@ -682,15 +650,11 @@
   # Постоянные chassis-руки только у Mk2 (и риперов); showInHands включает
   # отображение предметов из этих рук на спрайте. Модульные руки (Functional) не видны.
   - type: Hands
-    hands:
+    startingHands:
       hand_right:
         location: Right
       hand_left:
         location: Left
-    sortedHands:
-    - hand_right
-    - hand_left
-    activeHandId: hand_right
     showInHands: true
     canBeStripped: true
   # Не падает в крите и гасит фонарь (BorgNoFallSystem).

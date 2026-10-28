@@ -287,7 +287,7 @@ public sealed partial class BorgSwitchableTypeSystem
         // Пустую строку проверяем до индексации: TryIndex на "" всегда неудачен,
         // а кандидат Fish{char.ToUpperInvariant(sourceStr[0])}... бросил бы IndexOutOfRange.
         if (sourceStr.Length == 0
-            || !Prototypes.TryIndex(sourceStr, out BorgTypePrototype? sourceProto)
+            || !ProtoMan.TryIndex(sourceStr, out BorgTypePrototype? sourceProto)
             || sourceProto.HideInMenu)
         {
             return false;
@@ -296,7 +296,7 @@ public sealed partial class BorgSwitchableTypeSystem
         // Fish-прототипы форка обязаны иметь Fish-префикс: generic → FishGenericMk2.
         var candidate = $"Fish{char.ToUpperInvariant(sourceStr[0])}{sourceStr[1..]}Mk2";
 
-        if (!Prototypes.TryIndex(candidate, out BorgTypePrototype? targetProto) || !targetProto.HideInMenu)
+        if (!ProtoMan.TryIndex(candidate, out BorgTypePrototype? targetProto) || !targetProto.HideInMenu)
             return false;
 
         target = candidate;
@@ -327,7 +327,7 @@ public sealed partial class BorgSwitchableTypeSystem
         // компонентов сохраняются.
         ApplyMk2Hands(borg.Owner);
 
-        if (Prototypes.TryIndex(target, out BorgTypePrototype? targetProto))
+        if (ProtoMan.TryIndex(target, out BorgTypePrototype? targetProto))
         {
             ApplyMk2Components(borg.Owner, targetProto);
             ApplyMk2Inventory(borg.Owner, targetProto);
@@ -374,7 +374,7 @@ public sealed partial class BorgSwitchableTypeSystem
     {
         string dummyId = prototype.DummyPrototype;
 
-        if (!Prototypes.TryIndex<EntityPrototype>(dummyId, out var chassis))
+        if (!ProtoMan.TryIndex<EntityPrototype>(dummyId, out var chassis))
             return;
 
         foreach (var key in Mk2UpgradeComponents)
@@ -469,13 +469,13 @@ public sealed partial class BorgSwitchableTypeSystem
     {
         armorId = default;
 
-        if (!Prototypes.TryIndex<EntityPrototype>(prototype.DummyPrototype, out var chassis))
+        if (!ProtoMan.TryIndex<EntityPrototype>(prototype.DummyPrototype, out var chassis))
             return false;
 
         if (!chassis.Components.TryGetValue("Loadout", out var entry)
             || entry.Component is not LoadoutComponent loadout
             || loadout.StartingGear is not { Count: > 0 } gears
-            || !Prototypes.TryIndex(gears[0], out var gear))
+            || !ProtoMan.TryIndex(gears[0], out var gear))
         {
             return false;
         }
@@ -488,6 +488,6 @@ public sealed partial class BorgSwitchableTypeSystem
         armorId = gearId;
 
         // Защита от опечатки в YAML: Spawn на несуществующий прототип дал бы невалидный EntityUid.
-        return Prototypes.TryIndex<EntityPrototype>(armorId, out _);
+        return ProtoMan.TryIndex<EntityPrototype>(armorId, out _);
     }
 }
