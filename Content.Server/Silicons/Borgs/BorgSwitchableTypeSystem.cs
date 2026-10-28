@@ -26,10 +26,6 @@ public sealed partial class BorgSwitchableTypeSystem : SharedBorgSwitchableTypeS
     [Dependency] private StationRecordsSystem _record = default!;
     [Dependency] private MessengerServerSystem _messenger = default!;
     [Dependency] private StationSystem _station = default!;
-
-    /// <summary>
-    /// Fish: применяет выбранный тип — радиоканалы, транспондер, модули и максимум слотов.
-    /// </summary>
     protected override void SelectBorgModule(Entity<BorgSwitchableTypeComponent> ent, ProtoId<BorgTypePrototype> borgType)
     {
         var prototype = ProtoMan.Index(borgType);
@@ -43,11 +39,11 @@ public sealed partial class BorgSwitchableTypeSystem : SharedBorgSwitchableTypeS
             activeRadio.Channels = [.. radioChannels];
 
         // Borg transponder for the robotics console
-        // Fish-Start
+        // Fish-start
         // Спрайт и имя транспондера обновляем через общий хелпер: он же используется
         // при апгрейде до Mk2, где RSI берётся из холста нового borgType.
         UpdateTransponder(ent, borgType);
-        // Fish-End
+        // Fish-end
 
         // Configure modules
         if (TryComp(ent, out BorgChassisComponent? chassis))

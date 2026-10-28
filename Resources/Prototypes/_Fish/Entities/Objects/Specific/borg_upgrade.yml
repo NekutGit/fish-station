@@ -6,6 +6,7 @@
   id: FishBorgUpgradeModule
   parent: BaseSecurityUpgrade
   name: cyborg upgrade module
+  suffix: Fish
   description: An upgrade module that converts a standard cyborg into its upgraded Mk2 variant.
   components:
   - type: BorgUpgradeModule

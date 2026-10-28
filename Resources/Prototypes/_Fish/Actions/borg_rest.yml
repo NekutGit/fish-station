@@ -4,6 +4,7 @@
 - type: entity
   parent: BaseAction
   id: FishBorgRestAction
+  suffix: Fish
   categories: [ HideSpawnMenu ]
   components:
   - type: Action

@@ -1,6 +1,6 @@
 ## Borg Mk2 (borgType: FishGenericMk2, FishEngineeringMk2, FishMiningMk2, FishJanitorMk2, FishMedicalMk2,
-## FishServiceMk2, FishPeaceMk2, FishClownMk2, FishSecurityMk2). Скрыты из меню выбора специализации
-## (hideInMenu), назначаются только через отдельный Mk2-chassis.
+## FishServiceMk2, FishPeaceMk2, FishClownMk2, FishSecurityMk2). Hidden from the specialization selection menu
+## (hideInMenu), assigned only via a separate Mk2-chassis.
 borg-type-fish-generic-mk2-name = Generic Mk2
 borg-type-fish-generic-mk2-desc = A hardened variant of the generic cyborg, fitted with upgraded internal systems. Does a bit of everything, only tougher.
 borg-type-fish-generic-mk2-transponder = generic Mk2 cyborg

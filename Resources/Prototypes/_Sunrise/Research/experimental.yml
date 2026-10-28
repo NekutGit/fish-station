@@ -16,7 +16,7 @@
   technologyPrerequisites:
   - BasicRobotics
   - IndustrialEngineering
-# - Durand Fish-Edit
+# - Durand  Fish-edit: убрано требование Durand для Industrial Robotics
 
 # - type: technology
 #   id: Phazon

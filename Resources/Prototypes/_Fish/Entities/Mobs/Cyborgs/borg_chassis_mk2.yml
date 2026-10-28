@@ -2,6 +2,7 @@
   id: FishBorgChassisGenericMk2
   parent: BorgChassisGeneric
   name: generic cyborg Mk2
+  suffix: Fish
   components:
   - type: Sprite
     sprite: _Fish/Mobs/Silicon/chassis.rsi
@@ -61,6 +62,7 @@
   id: FishBorgChassisEngineerMk2
   parent: BorgChassisEngineer
   name: engineer cyborg Mk2
+  suffix: Fish
   components:
   - type: Sprite
     sprite: _Fish/Mobs/Silicon/chassis.rsi
@@ -120,6 +122,7 @@
   id: FishBorgChassisMiningMk2
   parent: BorgChassisMining
   name: salvage cyborg Mk2
+  suffix: Fish
   components:
   - type: Sprite
     sprite: _Fish/Mobs/Silicon/chassis.rsi
@@ -179,6 +182,7 @@
   id: FishBorgChassisJanitorMk2
   parent: BorgChassisJanitor
   name: janitor cyborg Mk2
+  suffix: Fish
   components:
   - type: Sprite
     sprite: _Fish/Mobs/Silicon/chassis.rsi
@@ -238,6 +242,7 @@
   id: FishBorgChassisMedicalMk2
   parent: BorgChassisMedical
   name: medical cyborg Mk2
+  suffix: Fish
   components:
   - type: Sprite
     sprite: _Fish/Mobs/Silicon/chassis.rsi
@@ -296,7 +301,7 @@
 - type: entity
   id: FishBorgChassisMedicalMk2Battery
   parent: FishBorgChassisMedicalMk2
-  suffix: Battery
+  suffix: Fish, Battery
   components:
   - type: ContainerFill
     containers:
@@ -311,7 +316,7 @@
 - type: entity
   id: FishBorgChassisGenericMk2Battery
   parent: FishBorgChassisGenericMk2
-  suffix: Battery
+  suffix: Fish, Battery
   components:
   - type: ContainerFill
     containers:
@@ -326,7 +331,7 @@
 - type: entity
   id: FishBorgChassisEngineerMk2Battery
   parent: FishBorgChassisEngineerMk2
-  suffix: Battery
+  suffix: Fish, Battery
   components:
   - type: ContainerFill
     containers:
@@ -341,7 +346,7 @@
 - type: entity
   id: FishBorgChassisMiningMk2Battery
   parent: FishBorgChassisMiningMk2
-  suffix: Battery
+  suffix: Fish, Battery
   components:
   - type: ContainerFill
     containers:
@@ -356,7 +361,7 @@
 - type: entity
   id: FishBorgChassisJanitorMk2Battery
   parent: FishBorgChassisJanitorMk2
-  suffix: Battery
+  suffix: Fish, Battery
   components:
   - type: ContainerFill
     containers:
@@ -371,7 +376,7 @@
 - type: entity
   id: FishBorgChassisServiceMk2Battery
   parent: FishBorgChassisServiceMk2
-  suffix: Battery
+  suffix: Fish, Battery
   components:
   - type: ContainerFill
     containers:
@@ -386,7 +391,7 @@
 - type: entity
   id: FishBorgChassisPeaceMk2Battery
   parent: FishBorgChassisPeaceMk2
-  suffix: Battery
+  suffix: Fish, Battery
   components:
   - type: ContainerFill
     containers:
@@ -401,7 +406,7 @@
 - type: entity
   id: FishBorgChassisClownMk2Battery
   parent: FishBorgChassisClownMk2
-  suffix: Battery
+  suffix: Fish, Battery
   components:
   - type: ContainerFill
     containers:
@@ -416,7 +421,7 @@
 - type: entity
   id: FishBorgChassisSecurityMk2Battery
   parent: FishBorgChassisSecurityMk2
-  suffix: Battery
+  suffix: Fish, Battery
   components:
   - type: ContainerFill
     containers:
@@ -432,6 +437,7 @@
   id: FishBorgChassisServiceMk2
   parent: BorgChassisService
   name: service cyborg Mk2
+  suffix: Fish
   components:
   - type: Sprite
     sprite: _Fish/Mobs/Silicon/chassis.rsi
@@ -491,6 +497,7 @@
   id: FishBorgChassisPeaceMk2
   parent: BorgChassisPeace
   name: peace cyborg Mk2
+  suffix: Fish
   components:
   - type: Sprite
     sprite: _Fish/Mobs/Silicon/chassis.rsi
@@ -550,6 +557,7 @@
   id: FishBorgChassisClownMk2
   parent: BorgChassisClown
   name: clown cyborg Mk2
+  suffix: Fish
   components:
   - type: Sprite
     sprite: _Fish/Mobs/Silicon/chassis.rsi
@@ -609,6 +617,7 @@
   id: FishBorgChassisSecurityMk2
   parent: BorgChassisSecurity
   name: security cyborg Mk2
+  suffix: Fish
   components:
   - type: Sprite
     sprite: _Fish/Mobs/Silicon/chassis.rsi

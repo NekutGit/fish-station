@@ -1,15 +1,11 @@
 - type: entity
-  parent: BaseAntagGhostRoleRule
+  parent: BaseDerelictCyborgSpawn
   id: FishDerelictSyndicateReaperCyborgSpawn
   components:
   - type: StationEvent
     weight: 1
     earliestStart: 25
-    reoccurrenceDelay: 20
     minimumPlayers: 15
-    duration: null
-  - type: SpaceSpawnRule
-    spawnDistance: 0
   - type: AntagSpawner
     prototype: FishPlayerBorgSyndicateReaperDerelictGhostRole
   - type: AntagSelection

@@ -1,7 +1,7 @@
 - type: entity
   id: FishPlayerBorgSyndicateReaperBattery
   parent: FishBorgChassisSyndicateReaper
-  suffix: Battery, Tools
+  suffix: Battery, Tools, Fish
   components:
   - type: NukeOperative
   - type: GhostPanelAntagonistMarker
