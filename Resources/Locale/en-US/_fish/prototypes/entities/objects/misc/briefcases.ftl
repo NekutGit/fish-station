@@ -1,0 +1,6 @@
+ent-BriefcaseWeapon = secure weapon case
+    .desc = Useful for aspiring mercenaries, whether you're fighting for a company, a nation or anyone else. Or just making a really big omelette.
+ent-BriefcaseWeaponSmall = { ent-BriefcaseWeapon }
+    .desc = { ent-BriefcaseWeapon.desc }
+ent-BriefcaseWeaponHushpupFilled = кейс для «Молчуна»
+    .desc = { ent-BriefcaseWeaponSmall.desc }

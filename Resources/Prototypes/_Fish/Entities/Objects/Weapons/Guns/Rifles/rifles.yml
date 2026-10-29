@@ -50,7 +50,7 @@
     slots:
       gun_magazine:
         name: Magazine
-        startingItem: FishMagazineScarHFMJ
+        startingItem: FishMagazineScarHAP
         insertSound: /Audio/_Sunrise/Weapons/Guns/Rifles/skm24/skm_reload.ogg
         ejectSound: /Audio/_Sunrise/Weapons/Guns/Rifles/m28/m28_unload.ogg
         priority: 2
@@ -83,3 +83,13 @@
   - type: SpeedModifiedOnWield
     walkModifier: 1
     sprintModifier: 0.85
+
+- type: entity
+  parent: FishWeaponRifleDarkScarH
+  id: FishWeaponRifleDarkScarHBiocode
+  suffix: Fish, Biocode
+  components:
+  - type: FactionWeaponBlocker
+    factions:
+    - Syndicate
+    - Pirate

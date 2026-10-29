@@ -7,7 +7,7 @@
     containers:
       storagebase: !type:AllSelector
         children:
-        - id: FishWeaponRifleDarkScarH
+        - id: FishWeaponRifleDarkScarHBiocode
         - id: FishMagazineScarHFMJ
           amount: 2
         - id: FishMagazineLargeScarHFMJ
