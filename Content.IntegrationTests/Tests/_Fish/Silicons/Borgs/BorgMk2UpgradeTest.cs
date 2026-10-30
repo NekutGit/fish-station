@@ -20,25 +20,39 @@ public sealed class BorgMk2UpgradeTest : GameTest
     [Test]
     public async Task SuccessfulUpgradeAppliesMk2TypeAndArmor()
     {
-        await Server.WaitAssertion(() =>
-        {
-            var borg = SSpawn("BorgChassisSecurity");
-            var module = SSpawn("FishBorgUpgradeModule");
-            var switchable = SComp<BorgSwitchableTypeComponent>(borg);
-            var inventory = SComp<InventoryComponent>(borg);
-            var inventorySystem = Server.System<InventorySystem>();
-            var upgradeSystem = Server.System<BorgSwitchableTypeSystem>();
+        EntityUid borg = default;
+        EntityUid module = default;
+        BorgSwitchableTypeComponent switchable = default!;
+        InventoryComponent inventory = default!;
+        InventorySystem inventorySystem = default!;
+        BorgSwitchableTypeSystem upgradeSystem = default!;
+        var result = false;
+        var moduleConsumed = false;
 
-            var result = upgradeSystem.TryFinishUpgrade(
+        await Server.WaitPost(() =>
+        {
+            borg = SSpawn("BorgChassisSecurity");
+            module = SSpawn("FishBorgUpgradeModule");
+            switchable = SComp<BorgSwitchableTypeComponent>(borg);
+            inventory = SComp<InventoryComponent>(borg);
+            inventorySystem = Server.System<InventorySystem>();
+            upgradeSystem = Server.System<BorgSwitchableTypeSystem>();
+
+            result = upgradeSystem.TryFinishUpgrade(
                 new Entity<BorgUpgradeModuleComponent>(module, SComp<BorgUpgradeModuleComponent>(module)),
                 borg,
                 borg);
 
+            moduleConsumed = SEntMan.IsQueuedForDeletion(module);
+        });
+
+        await Server.WaitAssertion(() =>
+        {
             Assert.Multiple(() =>
             {
                 Assert.That(result, Is.True, "Апгрейд должен завершиться успешно");
                 Assert.That(switchable.SelectedBorgType?.Id, Is.EqualTo("FishSecurityMk2"));
-                Assert.That(SEntMan.IsQueuedForDeletion(module), Is.True,
+                Assert.That(moduleConsumed, Is.True,
                     "Успешный апгрейд должен израсходовать предмет-модуль");
                 Assert.That(inventorySystem.TryGetSlotEntity(borg, "armor", out var armor, inventory), Is.True);
                 Assert.That(SEntMan.GetComponent<MetaDataComponent>(armor!.Value).EntityPrototype?.ID,
@@ -50,30 +64,46 @@ public sealed class BorgMk2UpgradeTest : GameTest
     [Test]
     public async Task FailedArmorEquipRestoresOldArmorAndKeepsType()
     {
-        await Server.WaitAssertion(() =>
-        {
-            var borg = SSpawn("BorgChassisSecurity");
-            var module = SSpawn("FishBorgUpgradeModule");
-            var switchable = SComp<BorgSwitchableTypeComponent>(borg);
-            var inventory = SComp<InventoryComponent>(borg);
-            var inventorySystem = Server.System<InventorySystem>();
-            var upgradeSystem = Server.System<BorgSwitchableTypeSystem>();
+        EntityUid borg = default;
+        EntityUid module = default;
+        EntityUid? oldArmor = default;
+        BorgSwitchableTypeComponent switchable = default!;
+        InventoryComponent inventory = default!;
+        InventorySystem inventorySystem = default!;
+        BorgSwitchableTypeSystem upgradeSystem = default!;
+        var hadOldArmor = false;
+        var result = false;
+        var moduleConsumed = false;
 
-            Assert.That(inventorySystem.TryGetSlotEntity(borg, "armor", out var oldArmor, inventory), Is.True,
-                "Security-борг должен начинать со старой бронёй");
+        await Server.WaitPost(() =>
+        {
+            borg = SSpawn("BorgChassisSecurity");
+            module = SSpawn("FishBorgUpgradeModule");
+            switchable = SComp<BorgSwitchableTypeComponent>(borg);
+            inventory = SComp<InventoryComponent>(borg);
+            inventorySystem = Server.System<InventorySystem>();
+            upgradeSystem = Server.System<BorgSwitchableTypeSystem>();
+
+            hadOldArmor = inventorySystem.TryGetSlotEntity(borg, "armor", out oldArmor, inventory);
 
             SEntMan.AddComponent<BlockMk2ArmorInsertComponent>(borg);
 
-            var result = upgradeSystem.TryFinishUpgrade(
+            result = upgradeSystem.TryFinishUpgrade(
                 new Entity<BorgUpgradeModuleComponent>(module, SComp<BorgUpgradeModuleComponent>(module)),
                 borg,
                 borg);
 
+            moduleConsumed = SEntMan.IsQueuedForDeletion(module);
+        });
+
+        await Server.WaitAssertion(() =>
+        {
             Assert.Multiple(() =>
             {
+                Assert.That(hadOldArmor, Is.True, "Security-борг должен начинать со старой бронёй");
                 Assert.That(result, Is.False, "Апгрейд должен отмениться при сбое надевания брони");
                 Assert.That(switchable.SelectedBorgType?.Id, Is.EqualTo("security"));
-                Assert.That(SEntMan.IsQueuedForDeletion(module), Is.False,
+                Assert.That(moduleConsumed, Is.False,
                     "Неудачный апгрейд не должен расходовать предмет-модуль");
                 Assert.That(inventorySystem.TryGetSlotEntity(borg, "armor", out var armor, inventory), Is.True);
                 Assert.That(armor, Is.EqualTo(oldArmor), "Старая броня должна быть возвращена в слот");

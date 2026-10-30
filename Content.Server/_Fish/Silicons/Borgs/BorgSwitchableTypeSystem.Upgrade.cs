@@ -120,6 +120,11 @@ public sealed partial class BorgSwitchableTypeSystem
             return;
 
         args.Handled = TryFinishUpgrade(ent, target, args.User);
+
+        // При неудаче предмет остаётся у игрока, но без объяснения он не понимает,
+        // почему улучшение не состоялось.
+        if (!args.Handled && !TerminatingOrDeleted(target))
+            _popup.PopupEntity(Loc.GetString("borg-upgrade-failed"), target, args.User);
     }
 
     /// <summary>

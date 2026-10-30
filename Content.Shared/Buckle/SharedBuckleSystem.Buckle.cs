@@ -402,13 +402,15 @@ public abstract partial class SharedBuckleSystem
                 break;
         }
 
-        _joints.SetRelay(buckle, strap);  // Fish-edit: ставим relay после событий, чтобы PullingSystem успел снять pull-joint до SetRelay
-
         var ev = new StrappedEvent(strap, buckle);
         RaiseLocalEvent(strap, ref ev);
 
         var gotEv = new BuckledEvent(strap, buckle);
         RaiseLocalEvent(buckle, ref gotEv);
+
+        // Fish-edit: relay после событий, чтобы PullingSystem снял pull-joint до SetRelay.
+        // У StrapVehicle Strap и Vehicle на одной сущности, поэтому relay не перезаписывается.
+        _joints.SetRelay(buckle, strap);
 
         if (TryComp<PhysicsComponent>(buckle, out var physics))
             _physics.ResetDynamics(buckle, physics);

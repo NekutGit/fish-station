@@ -57,7 +57,5 @@ public sealed partial class HotbarGui
         }
     }
 
-    // Fish: GetHandContainer(HandLocation) перенесён в _Fish/UserInterface/Systems/Hotbar/Widgets/HotbarGui.FunctionalRouting.cs
-    // Fish: выбор контейнера там определяется по FunctionalInMainRow, а не только по location.
-    // Fish-Edit
+    // Fish-edit: GetHandContainer реализован в _Fish/UserInterface/Systems/Hotbar/Widgets/HotbarGui.FunctionalRouting.cs.
 }
