@@ -7,6 +7,7 @@
   components:
   - type: Sprite
     sprite: _Fish/Objects/Weapons/Guns/Rifles/scarh/Syndicate/big.rsi
+    scale: 0.8, 0.8
     layers:
     - state: base
       map: ["enum.GunVisualLayers.Base"]
@@ -39,9 +40,7 @@
     - SemiAuto
     burstFireRate: 9
     soundGunshot:
-      path: /Audio/_Sunrise/Weapons/Guns/Rifles/skm28/skm28_shot.ogg
-      params:
-        pitch: 1.3
+      path: /Audio/_Fish/Weapons/Guns/Rifles/scarh/scarh_shot.ogg
   - type: ChamberMagazineAmmoProvider
     soundRack:
       path: /Audio/_Sunrise/Weapons/Guns/Rifles/skm24/skm_cocked.ogg
@@ -59,7 +58,6 @@
             - FishMagazineScarH
       gun_chamber:
         name: Chamber
-        startingItem: CartridgeRifleHeavySP
         priority: 1
         whitelist:
           tags:

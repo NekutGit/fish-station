@@ -1,5 +1,6 @@
 - type: entity
   id: FishBriefcaseWeaponScarHFilled
+  suffix: Fish
   parent: BriefcaseWeapon
   name: secure SCAR-H case
   components:
