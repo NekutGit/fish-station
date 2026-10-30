@@ -1,7 +1,10 @@
 #nullable enable
 using System.Numerics;
+using System.Reflection;
+using Content.Client.Weapons.Melee;
 using Content.IntegrationTests.Fixtures;
 using Content.Shared._Fish.BorgRest;
+using Content.Shared.Mobs;
 using Content.Shared.Movement.Components;
 using Content.Shared.Silicons.Borgs;
 using Content.Shared.Silicons.Borgs.Components;
@@ -39,6 +42,13 @@ public sealed class BorgMk2VisualsTest : GameTest
   spriteBodyMovementState: robot
   spriteRestingState: miner_rest
 
+- type: borgType
+  id: FishTestWreckMove
+  parent: mining
+  spriteBodyState: miner
+  spriteBodyMovementState: robot
+  spriteWreckState: miner_wreck
+
 - type: entity
   id: FishTestBorgChassisNoOffset
   parent: FishBorgChassisMiningMk2
@@ -52,6 +62,13 @@ public sealed class BorgMk2VisualsTest : GameTest
   components:
   - type: BorgSwitchableType
     selectedBorgType: FishTestRestMove
+
+- type: entity
+  id: FishTestBorgChassisWreckMove
+  parent: FishBorgChassisMiningMk2
+  components:
+  - type: BorgSwitchableType
+    selectedBorgType: FishTestWreckMove
 ";
 
     /// <summary>
@@ -100,6 +117,57 @@ public sealed class BorgMk2VisualsTest : GameTest
             appearanceSys.OnChangeData(borg, sprite, appearance);
             Assert.That(GetBodyState(borg, sprite), Is.EqualTo("robot"),
                 "При выходе из отдыха на ходу тело должно вернуться в кадр движения");
+        });
+    }
+
+    /// <summary>
+    /// После wreck-кадра возврат в Alive должен выбрать кадр движения, если борг движется,
+    /// а не стоячий кадр типа.
+    /// </summary>
+    [Test]
+    public async Task MovingAliveBorgUsesMovementFrameAfterWreck()
+    {
+        await Client.WaitAssertion(() =>
+        {
+            var borg = CSpawn("FishTestBorgChassisWreckMove");
+            var sprite = CComp<SpriteComponent>(borg);
+            var appearanceSys = Client.System<AppearanceSystem>();
+            var appearance = CEnsureComp<AppearanceComponent>(borg);
+
+            CEnsureComp<SpriteMovementComponent>(borg).IsMoving = true;
+
+            appearanceSys.SetData(borg, MobStateVisuals.State, MobState.Dead, appearance);
+            appearanceSys.OnChangeData(borg, sprite, appearance);
+            Assert.That(GetBodyState(borg, sprite), Is.EqualTo("miner_wreck"),
+                "В мёртвом состоянии тело должно быть на wreck-кадре");
+
+            appearanceSys.SetData(borg, MobStateVisuals.State, MobState.Alive, appearance);
+            appearanceSys.OnChangeData(borg, sprite, appearance);
+            Assert.That(GetBodyState(borg, sprite), Is.EqualTo("robot"),
+                "При возврате в Alive движущийся борг должен использовать кадр движения");
+        });
+    }
+
+    /// <summary>
+    /// Тип без собственного <c>spriteOffset</c> не должен возвращать <see cref="Vector2.Zero"/>
+    /// из lunge-анимации: базой остаётся offset из прототипа chassis.
+    /// </summary>
+    [Test]
+    public async Task LungeOffsetFallsBackToChassisSpriteOffset()
+    {
+        await Client.WaitAssertion(() =>
+        {
+            var borg = CSpawn("FishTestBorgChassisNoOffset");
+            var melee = Client.System<MeleeWeaponSystem>();
+            var method = typeof(MeleeWeaponSystem).GetMethod(
+                "GetBaseSpriteOffset",
+                BindingFlags.Instance | BindingFlags.NonPublic);
+
+            Assert.That(method, Is.Not.Null, "GetBaseSpriteOffset должен существовать");
+
+            var offset = (Vector2) method!.Invoke(melee, new object[] { borg })!;
+            Assert.That(offset, Is.EqualTo(new Vector2(0f, 0.4f)),
+                "Lunge-анимация должна сохранять offset chassis при null SpriteOffset типа");
         });
     }
 

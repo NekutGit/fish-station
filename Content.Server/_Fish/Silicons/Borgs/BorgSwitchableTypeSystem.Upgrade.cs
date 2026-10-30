@@ -232,8 +232,7 @@ public sealed partial class BorgSwitchableTypeSystem
         if (!CanFinishUpgrade(target))
             return false;
 
-        DoFinishUpgrade(item, target, user);
-        return true;
+        return DoFinishUpgrade(item, target, user);
     }
 
     /// <summary>
@@ -254,20 +253,22 @@ public sealed partial class BorgSwitchableTypeSystem
     /// Выполняет сам апгрейд: переключает тип, применяет компоненты, руки, инвентарь и броню Mk2
     /// и расходует предмет-апгрейд.
     /// </summary>
-    private void DoFinishUpgrade(Entity<BorgUpgradeModuleComponent> item, EntityUid target, EntityUid user)
+    private bool DoFinishUpgrade(Entity<BorgUpgradeModuleComponent> item, EntityUid target, EntityUid user)
     {
         // Условия уже проверены в CanFinishUpgrade; повторно добираем компонент и цель
         // только для передачи в UpgradeToMk2.
         if (!TryComp<BorgSwitchableTypeComponent>(target, out var switchable)
             || !TryGetUpgradeTarget(switchable.SelectedBorgType, out var upgradeTarget))
         {
-            return;
+            return false;
         }
 
-        UpgradeToMk2((target, switchable), upgradeTarget, user, item.Owner);
+        if (!UpgradeToMk2((target, switchable), upgradeTarget, user, item.Owner))
+            return false;
 
         // Апгрейд успешен — предмет расходуется. При отмене сюда не доходим.
         QueueDel(item.Owner);
+        return true;
     }
 
     /// <summary>
@@ -306,12 +307,21 @@ public sealed partial class BorgSwitchableTypeSystem
     /// <summary>
     /// Переключает борга на Mk2-тип на месте.
     /// </summary>
-    private void UpgradeToMk2(
+    private bool UpgradeToMk2(
         Entity<BorgSwitchableTypeComponent> borg,
         ProtoId<BorgTypePrototype> target,
         EntityUid user,
         EntityUid item)
     {
+        if (!ProtoMan.TryIndex(target, out BorgTypePrototype? targetProto))
+            return false;
+
+        // Инвентарь и броня могут не примениться (например, при отсутствии слота или
+        // невозможности надеть новую броню). Делаем их до смены типа, чтобы при отказе
+        // борг остался в исходном borgType, а предмет-апгрейд не был израсходован.
+        if (!ApplyMk2Inventory(borg.Owner, targetProto))
+            return false;
+
         borg.Comp.SelectedBorgType = target;
         Dirty(borg);
 
@@ -322,21 +332,16 @@ public sealed partial class BorgSwitchableTypeSystem
         UpdateTransponder(borg, target);
 
         // Компоненты Mk2 (пороги здоровья, скорость разряда, флаш-иммунитет, радиус обзора AI)
-        // и инвентарь (belt-слот + броня) применяются к живой сущности: сущность не
-        // пересоздаём, поэтому мозг, имя, установленные модули, инвентарь и runtime-состояние
-        // компонентов сохраняются.
+        // и руки применяются к живой сущности: сущность не пересоздаём, поэтому мозг, имя,
+        // установленные модули, инвентарь и runtime-состояние компонентов сохраняются.
         ApplyMk2Hands(borg.Owner);
-
-        if (ProtoMan.TryIndex(target, out BorgTypePrototype? targetProto))
-        {
-            ApplyMk2Components(borg.Owner, targetProto);
-            ApplyMk2Inventory(borg.Owner, targetProto);
-        }
+        ApplyMk2Components(borg.Owner, targetProto);
 
         _adminLog.Add(LogType.Action, LogImpact.Medium,
             $"{user} upgraded borg {borg.Owner} to {target} with {item}");
 
         _popup.PopupEntity(Loc.GetString("borg-upgrade-complete"), borg.Owner, user);
+        return true;
     }
 
     /// <summary>
@@ -401,17 +406,54 @@ public sealed partial class BorgSwitchableTypeSystem
     /// Переводит инвентарь апгрейднутого борга на Mk2-шаблон (в нём есть belt-слот) и
     /// заменяет BorgArmorSilicon на BorgArmorSiliconMk2 — но только для шасси из
     /// <see cref="Mk2ArmorUpgradeWhitelist"/>; остальные остаются на прежней броне.
+    /// Возвращает false, если обязательные операции не удались; в этом случае тип борга
+    /// ещё не изменён и предмет-апгрейд не должен расходоваться.
     /// </summary>
-    private void ApplyMk2Inventory(EntityUid uid, BorgTypePrototype prototype)
+    private bool ApplyMk2Inventory(EntityUid uid, BorgTypePrototype prototype)
     {
+        // Проверяем всё, что может понадобиться, до любых изменений: dummy-прототип,
+        // шаблон инвентаря, наличие armor-слота и прототипа брони Mk2.
+        if (!ProtoMan.TryIndex<EntityPrototype>(prototype.DummyPrototype, out _))
+            return false;
+
+        if (!TryComp<InventoryComponent>(uid, out var inventory))
+            return !RequiresMk2Armor(prototype);
+
+        if (!ProtoMan.TryIndex(prototype.InventoryTemplateId, out InventoryTemplatePrototype? template))
+            return false;
+
+        if (RequiresMk2Armor(prototype)
+            && (!HasSlot(template, "armor") || !TryGetMk2Armor(prototype, out _)))
+        {
+            return false;
+        }
+
+        // Сначала меняем броню: если это не удастся, шаблон инвентаря и тип борга
+        // останутся прежними. Старую броню не удаляем до успешной смены шаблона.
+        if (!ApplyMk2Armor(uid, prototype, out var oldArmor))
+            return false;
+
         // SelectBorgModule при апгрейде не вызывается (он работает только на MapInit),
         // поэтому шаблон меняем явно. head/armor есть и в старом, и в новом шаблоне —
         // UpdateInventoryTemplate удалит только отсутствующие контейнеры, надетые вещи
         // и содержимое модулей не пострадают.
-        if (TryComp<InventoryComponent>(uid, out var inventory))
-            _inventorySystem.SetTemplateId((uid, inventory), prototype.InventoryTemplateId);
+        _inventorySystem.SetTemplateId((uid, inventory), prototype.InventoryTemplateId);
 
-        ApplyMk2Armor(uid, prototype);
+        if (RequiresMk2Armor(prototype)
+            && !_inventorySystem.TryGetSlotEntity(uid, "armor", out _, inventory))
+        {
+            Log.Error($"Mk2 upgrade of {ToPrettyString(uid)} lost armor after inventory template change.");
+
+            if (oldArmor is { } armor)
+                TryRestoreMk2Armor(uid, armor, inventory);
+
+            return false;
+        }
+
+        if (oldArmor is { } old)
+            QueueDel(old);
+
+        return true;
     }
 
     /// <summary>
@@ -419,46 +461,104 @@ public sealed partial class BorgSwitchableTypeSystem
     /// свежеспавненный Mk2 через Loadout. Loadout здесь не срабатывает, потому что он
     /// привязан к MapInitEvent, а сущность не пересоздаётся.
     /// Для шасси вне <see cref="Mk2ArmorUpgradeWhitelist"/> — no-op.
+    /// Старая броня возвращается через <paramref name="oldArmor"/> и удаляется только
+    /// после успешного применения нового шаблона инвентаря.
     /// </summary>
-    private void ApplyMk2Armor(EntityUid uid, BorgTypePrototype prototype)
+    private bool ApplyMk2Armor(EntityUid uid, BorgTypePrototype prototype, out EntityUid? oldArmor)
     {
+        oldArmor = null;
+
         // Броню Mk2 при апгрейде получают только Security и Peace —
         // остальные варианты Mk2 остаются на штатной BorgArmorSilicon.
-        // Сравниваем строки (.Id): EntProtoId и string конвертируются друг в друга,
-        // из-за чего Array.IndexOf выбрал бы не-generic перегрузку (Array, object)
-        // и сравнивал бы строку с бокснутым EntProtoId (всегда false).
-        if (Array.IndexOf(Mk2ArmorUpgradeWhitelist, prototype.DummyPrototype.Id) < 0)
-            return;
+        if (!RequiresMk2Armor(prototype))
+            return true;
 
         if (!TryGetMk2Armor(prototype, out var armorId))
-            return;
+            return false;
+
+        if (!TryComp<InventoryComponent>(uid, out var inventory))
+            return false;
 
         // BorgArmorSilicon помечен Unremoveable, поэтому снять его можно только через force.
-        _inventorySystem.TryGetSlotEntity(uid, "armor", out var oldArmor);
+        _inventorySystem.TryGetSlotEntity(uid, "armor", out oldArmor, inventory);
 
-        if (oldArmor != null && !_inventorySystem.TryUnequip(uid, "armor", out _, silent: true, force: true))
-            return; // Снять не удалось — остаёмся на старой броне, без брони борг не остаётся.
+        if (oldArmor is { } oldArmorId)
+        {
+            if (!_inventorySystem.TryUnequip(uid, "armor", out var removed, silent: true, force: true, inventory: inventory)
+                || removed != oldArmorId
+                || _inventorySystem.TryGetSlotEntity(uid, "armor", out _, inventory))
+            {
+                return false; // Снять не удалось — остаёмся на старой броне.
+            }
+        }
 
         var newArmor = Spawn(armorId, Transform(uid).Coordinates);
 
         // TryEquip возвращает true только если предмет реально оказался в слоте, но на всякий
         // случай сверяем содержимое слота: борг не должен остаться без брони ни при каком исходе.
-        var equipped = _inventorySystem.TryEquip(uid, newArmor, "armor", silent: true, force: true)
-            && _inventorySystem.TryGetSlotEntity(uid, "armor", out var slotArmor)
+        var equipped = _inventorySystem.TryEquip(uid, newArmor, "armor", silent: true, force: true, inventory: inventory)
+            && _inventorySystem.TryGetSlotEntity(uid, "armor", out var slotArmor, inventory)
             && slotArmor == newArmor;
 
         if (equipped)
-        {
-            if (oldArmor != null)
-                QueueDel(oldArmor.Value);
-            return;
-        }
+            return true;
 
         // Не наделась: убираем новый предмет и возвращаем старую броню.
+        if (_inventorySystem.TryGetSlotEntity(uid, "armor", out var currentArmor, inventory)
+            && currentArmor == newArmor)
+        {
+            _inventorySystem.TryUnequip(uid, "armor", out _, silent: true, force: true, inventory: inventory);
+        }
+
         QueueDel(newArmor);
 
-        if (oldArmor != null)
-            _inventorySystem.TryEquip(uid, oldArmor.Value, "armor", silent: true, force: true);
+        if (oldArmor is { } oldArmorToRestore)
+            TryRestoreMk2Armor(uid, oldArmorToRestore, inventory);
+
+        return false;
+    }
+
+    /// <summary>
+    /// Возвращает старую броню в armor-слот и проверяет фактическое содержимое слота.
+    /// Ошибка восстановления логируется явно: борг не должен молча остаться без брони.
+    /// </summary>
+    private bool TryRestoreMk2Armor(EntityUid uid, EntityUid oldArmor, InventoryComponent inventory)
+    {
+        if (Deleted(oldArmor))
+        {
+            Log.Error($"Cannot restore deleted armor {oldArmor} to {ToPrettyString(uid)} after Mk2 upgrade failure.");
+            return false;
+        }
+
+        var restored = _inventorySystem.TryEquip(uid, oldArmor, "armor", silent: true, force: true, inventory: inventory)
+            && _inventorySystem.TryGetSlotEntity(uid, "armor", out var slotArmor, inventory)
+            && slotArmor == oldArmor;
+
+        if (!restored)
+        {
+            Log.Error($"Failed to restore {ToPrettyString(oldArmor)} to armor slot of {ToPrettyString(uid)} after Mk2 upgrade failure.");
+        }
+
+        return restored;
+    }
+
+    /// <summary>
+    /// Нужна ли этому Mk2-типу замена брони при апгрейде.
+    /// </summary>
+    private static bool RequiresMk2Armor(BorgTypePrototype prototype)
+    {
+        // Сравниваем строки (.Id): EntProtoId и string конвертируются друг в друга,
+        // из-за чего Array.IndexOf выбрал бы не-generic перегрузку (Array, object)
+        // и сравнивал бы строку с бокснутым EntProtoId (всегда false).
+        return Array.IndexOf(Mk2ArmorUpgradeWhitelist, prototype.DummyPrototype.Id) >= 0;
+    }
+
+    /// <summary>
+    /// Есть ли в шаблоне инвентаря слот с указанным именем.
+    /// </summary>
+    private static bool HasSlot(InventoryTemplatePrototype template, string slot)
+    {
+        return Array.Exists(template.Slots, definition => definition.Name == slot);
     }
 
     /// <summary>

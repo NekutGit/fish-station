@@ -26,9 +26,10 @@ public sealed partial class MeleeWeaponSystem
     {
         if (TryComp(uid, out BorgSwitchableTypeComponent? switchable)
             && switchable.SelectedBorgType is { } borgType
-            && _prototype.TryIndex(borgType, out BorgTypePrototype? prototype))
+            && _prototype.TryIndex(borgType, out BorgTypePrototype? prototype)
+            && prototype.SpriteOffset is { } offset)
         {
-            return prototype.SpriteOffset ?? Vector2.Zero;
+            return offset;
         }
 
         if (MetaData(uid).EntityPrototype?.Components.TryGetComponent("Sprite", out var spriteComp) == true

@@ -1,4 +1,5 @@
 using Content.Shared.Mobs;
+using Content.Shared.Movement.Components;
 using Content.Shared.Silicons.Borgs;
 using Content.Shared.Silicons.Borgs.Components;
 using Content.Shared.Toggleable;
@@ -43,11 +44,19 @@ public sealed partial class BorgSystem
         if (!_appearance.TryGetData<MobState>(chassis.Owner, MobStateVisuals.State, out var state, args.Component))
             return;
 
-        // При возврате в Alive восстанавливаем исходный Body-состояние типа;
+        // При возврате в Alive восстанавливаем Body-состояние типа с учётом движения;
         // в критическом/мёртвом переключаемся на wreck-кадр.
-        var bodyState = state == MobState.Alive
-            ? prototype.SpriteBodyState
-            : prototype.SpriteWreckState;
+        var bodyState = prototype.SpriteWreckState;
+        if (state == MobState.Alive)
+        {
+            bodyState = prototype.SpriteBodyState;
+            if (prototype.SpriteBodyMovementState is { } movementState
+                && TryComp<SpriteMovementComponent>(chassis.Owner, out var movement)
+                && movement.IsMoving)
+            {
+                bodyState = movementState;
+            }
+        }
 
         _sprite.LayerSetRsiState((chassis.Owner, args.Sprite), BorgVisualLayers.Body, bodyState!);
 
