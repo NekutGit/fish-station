@@ -168,10 +168,25 @@ public sealed partial class CentCommSupplyConsoleSystem : EntitySystem
 
         var station = GetEntity(stationNet);
         var owningStation = _station.GetOwningStation(ent.Owner);
-        if (station == owningStation
-            || !TryComp<StationDataComponent>(station, out var data)
-            || !HasBuyPallets(data)
-            || !TryComp<StationCargoOrderDatabaseComponent>(station, out _))
+        if (station == owningStation)
+        {
+            error = Loc.GetString("centcomm-supply-error-invalid-station");
+            return false;
+        }
+
+        if (!TryComp<StationDataComponent>(station, out var data))
+        {
+            error = Loc.GetString("centcomm-supply-error-invalid-station");
+            return false;
+        }
+
+        if (!HasBuyPallets(data))
+        {
+            error = Loc.GetString("centcomm-supply-error-invalid-station");
+            return false;
+        }
+
+        if (!TryComp<StationCargoOrderDatabaseComponent>(station, out _))
         {
             error = Loc.GetString("centcomm-supply-error-invalid-station");
             return false;
@@ -338,10 +353,25 @@ public sealed partial class CentCommSupplyConsoleSystem : EntitySystem
         }
 
         var owningStation = _station.GetOwningStation(ent.Owner);
-        if (station == owningStation
-            || !TryComp<StationDataComponent>(station, out var stationData)
-            || !HasBuyPallets(stationData)
-            || !TryComp<StationCargoOrderDatabaseComponent>(station, out _))
+        if (station == owningStation)
+        {
+            error = Loc.GetString("centcomm-supply-error-invalid-station");
+            return false;
+        }
+
+        if (!TryComp<StationDataComponent>(station, out var stationData))
+        {
+            error = Loc.GetString("centcomm-supply-error-invalid-station");
+            return false;
+        }
+
+        if (!HasBuyPallets(stationData))
+        {
+            error = Loc.GetString("centcomm-supply-error-invalid-station");
+            return false;
+        }
+
+        if (!TryComp<StationCargoOrderDatabaseComponent>(station, out _))
         {
             error = Loc.GetString("centcomm-supply-error-invalid-station");
             return false;
@@ -381,8 +411,13 @@ public sealed partial class CentCommSupplyConsoleSystem : EntitySystem
                 return false;
             }
 
-            if (!_prototypes.TryIndex(entry.ProductId, out CentCommSupplyProductPrototype? product)
-                || !product.Enabled)
+            if (!_prototypes.TryIndex(entry.ProductId, out CentCommSupplyProductPrototype? product))
+            {
+                error = Loc.GetString("centcomm-supply-error-unknown-product");
+                return false;
+            }
+
+            if (!product.Enabled)
             {
                 error = Loc.GetString("centcomm-supply-error-unknown-product");
                 return false;
@@ -426,9 +461,19 @@ public sealed partial class CentCommSupplyConsoleSystem : EntitySystem
             return false;
         }
 
-        if (!_prototypes.TryIndex(ent.Comp.CratePrototype, out EntityPrototype? crateProto)
-            || !crateProto.TryComp<EntityStorageComponent>(out var storageProto, EntityManager.ComponentFactory)
-            || storageProto.Capacity <= 0)
+        if (!_prototypes.TryIndex(ent.Comp.CratePrototype, out EntityPrototype? crateProto))
+        {
+            error = Loc.GetString("centcomm-supply-error-bad-config");
+            return false;
+        }
+
+        if (!crateProto.TryComp<EntityStorageComponent>(out var storageProto, EntityManager.ComponentFactory))
+        {
+            error = Loc.GetString("centcomm-supply-error-bad-config");
+            return false;
+        }
+
+        if (storageProto.Capacity <= 0)
         {
             error = Loc.GetString("centcomm-supply-error-bad-config");
             return false;
@@ -724,11 +769,11 @@ public sealed partial class CentCommSupplyConsoleSystem : EntitySystem
                 ("contents", order.Contents)));
         }
 
-        if (TryComp<PaperLabelComponent>(crate, out var label)
-            && !_slots.TryInsert(crate, label.LabelSlot, paper, null))
-        {
+        if (!TryComp<PaperLabelComponent>(crate, out var label))
+            return;
+
+        if (!_slots.TryInsert(crate, label.LabelSlot, paper, null))
             Log.Warning($"Failed to attach CentComm supply invoice to {ToPrettyString(crate)}.");
-        }
     }
 
     /// <summary>
@@ -887,14 +932,14 @@ public sealed partial class CentCommSupplyConsoleSystem : EntitySystem
         var result = new List<Fixture>();
         noLocalRotation = false;
 
-        if (!_prototypes.TryIndex(crateProtoId, out EntityPrototype? crateProto)
-            || !crateProto.TryComp<FixturesComponent>(out var fixtures, EntityManager.ComponentFactory))
-        {
+        if (!_prototypes.TryIndex(crateProtoId, out EntityPrototype? crateProto))
             return result;
-        }
 
-        noLocalRotation = crateProto.TryComp<TransformComponent>(out var transform, EntityManager.ComponentFactory)
-            && transform.NoLocalRotation;
+        if (!crateProto.TryComp<FixturesComponent>(out var fixtures, EntityManager.ComponentFactory))
+            return result;
+
+        if (crateProto.TryComp<TransformComponent>(out var transform, EntityManager.ComponentFactory))
+            noLocalRotation = transform.NoLocalRotation;
         foreach (var fixture in fixtures.Fixtures.Values)
         {
             if (fixture.Hard)
@@ -917,7 +962,13 @@ public sealed partial class CentCommSupplyConsoleSystem : EntitySystem
 
         foreach (var content in product.Contents)
         {
-            if (content.Amount <= 0 || !_prototypes.TryIndex(content.Id, out EntityPrototype? entity) || entity.Abstract)
+            if (content.Amount <= 0)
+                return false;
+
+            if (!_prototypes.TryIndex(content.Id, out EntityPrototype? entity))
+                return false;
+
+            if (entity.Abstract)
                 return false;
 
             productEntity ??= entity;
@@ -946,16 +997,20 @@ public sealed partial class CentCommSupplyConsoleSystem : EntitySystem
 
     private void NotifyOrderCancelled(PendingOrder order, string message)
     {
-        CentCommSupplyConsoleComponent? component = null;
-        var consoleValid = !TerminatingOrDeleted(order.Console)
-            && TryComp(order.Console, out component);
-
         // Fish-start: уведомление игрока даже при удалении консоли
         if (!TerminatingOrDeleted(order.Actor))
             _popup.PopupEntity(message, order.Actor, order.Actor, PopupType.MediumCaution);
 
-        if (consoleValid && component!.UserStates.ContainsKey(order.Actor))
-            UpdateUi((order.Console, component), order.Actor, message);
+        if (TerminatingOrDeleted(order.Console))
+            return;
+
+        if (!TryComp(order.Console, out CentCommSupplyConsoleComponent? component))
+            return;
+
+        if (!component.UserStates.ContainsKey(order.Actor))
+            return;
+
+        UpdateUi((order.Console, component), order.Actor, message);
         // Fish-end
     }
 
